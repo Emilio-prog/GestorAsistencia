@@ -1,0 +1,36 @@
+/* Estilo base de la aplicación para una fuente moderna */
+.root {
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+/* --- ESTILOS PARA LAS FILAS DE LA TABLA --- */
+
+/* Rojo suave para Faltas */
+.fila-falta {
+    -fx-background-color: #ffe6e6;
+    -fx-text-background-color: #cc0000; /* Texto rojo oscuro */
+}
+
+/* Amarillo suave para Retrasos */
+.fila-retraso {
+    -fx-background-color: #fff9e6;
+    -fx-text-background-color: #997a00; /* Texto dorado oscuro */
+}
+
+/* Verde muy suave para Presente (para que no moleste) */
+.fila-presente {
+    -fx-background-color: #e6fffa;
+    -fx-text-background-color: #006644; /* Texto verde oscuro */
+}
+
+/* Gris para Justificadas */
+.fila-justificada {
+    -fx-background-color: #f2f2f2;
+    -fx-text-background-color: #555555;
+}
+
+/* Efecto Hover (cuando pasas el ratón por encima) */
+.table-row-cell:hover {
+    -fx-background-color: #e6f7ff; /* Azul muy clarito */
+    -fx-background-insets: 0;
+}
