@@ -1,36 +1,525 @@
-/* Estilo base de la aplicación para una fuente moderna */
+/* ============================================================
+   GESTOR ASISTENCIA — DISEÑO "PIXEL PERFECT"
+   Estilo: Modern Flat / Clean Dashboard
+   ============================================================ */
+
+/* 1. RESET GLOBAL & FUENTES */
 .root {
-    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #F8FAFC; /* Slate 50 - Fondo muy limpio */
+    -fx-text-fill: #334155;
+    -fx-focus-color: transparent; /* Adiós al anillo azul de enfoque */
+    -fx-faint-focus-color: transparent;
 }
 
-/* --- ESTILOS PARA LAS FILAS DE LA TABLA --- */
-
-/* Rojo suave para Faltas */
-.fila-falta {
-    -fx-background-color: #ffe6e6;
-    -fx-text-background-color: #cc0000; /* Texto rojo oscuro */
+/* 2. TABLA LIMPIA (FLAT TABLE) */
+.table-view {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    /* Sombra suave "elevada" */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 15, 0, 0, 4);
+    -fx-padding: 0; /* Sin relleno interno */
+    -fx-border-color: transparent;
 }
 
-/* Amarillo suave para Retrasos */
-.fila-retraso {
-    -fx-background-color: #fff9e6;
-    -fx-text-background-color: #997a00; /* Texto dorado oscuro */
+/* Cabecera plana y minimalista */
+.table-view .column-header-background {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #E2E8F0 transparent; /* Solo línea gris abajo */
+    -fx-border-width: 2px;
+    -fx-background-radius: 12 12 0 0; /* Redondear solo arriba */
 }
 
-/* Verde muy suave para Presente (para que no moleste) */
-.fila-presente {
-    -fx-background-color: #e6fffa;
-    -fx-text-background-color: #006644; /* Texto verde oscuro */
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-size: 50px; /* Cabecera alta y aireada */
+    -fx-border-color: transparent;
 }
 
-/* Gris para Justificadas */
-.fila-justificada {
-    -fx-background-color: #f2f2f2;
-    -fx-text-background-color: #555555;
+.table-view .column-header .label {
+    -fx-text-fill: #64748B; /* Texto gris elegante */
+    -fx-font-weight: 800;
+    -fx-font-size: 11px;
+    -fx-text-transform: uppercase;
+    -fx-letter-spacing: 1px; /* Espaciado entre letras */
 }
 
-/* Efecto Hover (cuando pasas el ratón por encima) */
-.table-row-cell:hover {
-    -fx-background-color: #e6f7ff; /* Azul muy clarito */
-    -fx-background-insets: 0;
+/* Eliminar líneas verticales feas entre columnas */
+.table-view .table-cell {
+    -fx-border-color: transparent;
+    -fx-padding: 12 15; /* Celdas más altas y cómodas */
+}
+
+/* Filas vacías transparentes */
+.table-row-cell:empty {
+    -fx-background-color: transparent;
+}
+
+/* 3. FILAS DE ESTADO (EL SEMÁFORO VISUAL) */
+
+/* Base de la fila */
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #F1F5F9 transparent; /* Línea separadora muy sutil */
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+/* --- ESTADO: PRESENTE (VERDE) --- */
+.table-row-cell.fila-presente .table-cell {
+    -fx-text-fill: #059669; /* Texto verde esmeralda */
+}
+/* Indicador lateral */
+.table-row-cell.fila-presente {
+    -fx-background-image: url("data:image/svg+xml;utf8,<svg width='6' height='100' xmlns='http://www.w3.org/2000/svg'><rect width='6' height='100' fill='%2310B981'/></svg>");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;
+}
+
+/* --- ESTADO: FALTA (ROJO) --- */
+.table-row-cell.fila-falta {
+    -fx-background-color: #FEF2F2; /* Fondo rojo muy suave */
+    -fx-background-image: url("data:image/svg+xml;utf8,<svg width='6' height='100' xmlns='http://www.w3.org/2000/svg'><rect width='6' height='100' fill='%23EF4444'/></svg>");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;
+}
+.table-row-cell.fila-falta .table-cell {
+    -fx-text-fill: #DC2626;
+    -fx-font-weight: bold;
+}
+
+/* --- ESTADO: RETRASO (AMARILLO) --- */
+.table-row-cell.fila-retraso {
+    -fx-background-color: #FFFBEB;
+    -fx-background-image: url("data:image/svg+xml;utf8,<svg width='6' height='100' xmlns='http://www.w3.org/2000/svg'><rect width='6' height='100' fill='%23F59E0B'/></svg>");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;
+}
+.table-row-cell.fila-retraso .table-cell {
+    -fx-text-fill: #B45309;
+}
+
+/* --- ESTADO: JUSTIFICADA (GRIS) --- */
+.table-row-cell.fila-justificada {
+    -fx-background-color: #F8FAFC;
+    -fx-background-image: url("data:image/svg+xml;utf8,<svg width='6' height='100' xmlns='http://www.w3.org/2000/svg'><rect width='6' height='100' fill='%2394A3B8'/></svg>");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;
+}
+.table-row-cell.fila-justificada .table-cell {
+    -fx-text-fill: #64748B;
+    -fx-font-style: italic;
+}
+
+/* 4. EFECTOS DE INTERACCIÓN */
+
+/* Hover (Pasar ratón) - Un gris muy suave */
+.table-row-cell:filled:hover {
+    -fx-background-color: #F1F5F9;
+}
+
+/* Selección - Un azul índigo muy transparente para no tapar el estado */
+.table-view:focused > .virtual-flow > .clipped-container > .sheet > .table-row-cell:filled:selected,
+.table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell:filled:selected {
+    -fx-background-color: #EEF2FF; /* Indigo 50 */
+    -fx-table-cell-border-color: transparent;
+}
+.table-row-cell:filled:selected .table-cell {
+    -fx-text-fill: #4338CA; /* Indigo 700 */
+}
+
+/* 5. RESTO DE COMPONENTES */
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 6;
+    -fx-padding: 9 18;
+    -fx-background-color: white;
+    -fx-text-fill: #475569;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.05), 2, 0, 0, 2);
+    -fx-font-weight: 600;
+}
+.button:hover { -fx-background-color: #F8FAFC; }
+.button:pressed { -fx-translate-y: 1; -fx-effect: none; }
+
+/* Botones con colores específicos */
+.button[style*="17a2b8"] { -fx-background-color: #0EA5E9; -fx-text-fill: white; }
+.button[style*="28a745"] { -fx-background-color: #10B981; -fx-text-fill: white; }
+.button[style*="dc3545"] { -fx-background-color: #EF4444; -fx-text-fill: white; }
+
+/* Inputs limpios */
+.text-field, .combo-box, .date-picker {
+    -fx-background-color: white;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 8;
+}
+.text-field:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #6366F1;
+}
+
+
+/* ============================================================
+   6. TIPOGRAFIA UTILITARIA
+   ============================================================ */
+
+.title-xl {
+    -fx-font-size: 28px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #1E293B;
+}
+
+.title-lg {
+    -fx-font-size: 22px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #1E293B;
+}
+
+.title-md {
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #334155;
+}
+
+.text-secondary {
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748B;
+}
+
+.text-muted {
+    -fx-font-size: 12px;
+    -fx-text-fill: #94A3B8;
+}
+
+
+/* ============================================================
+   7. BOTONES CON CLASE
+   ============================================================ */
+
+.btn-primary {
+    -fx-background-color: #6366F1;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.3), 8, 0, 0, 2);
+}
+.btn-primary:hover {
+    -fx-background-color: #4F46E5;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.4), 10, 0, 0, 3);
+}
+.btn-primary:pressed {
+    -fx-background-color: #4338CA;
+}
+
+.btn-success {
+    -fx-background-color: #10B981;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: transparent;
+}
+.btn-success:hover { -fx-background-color: #059669; }
+
+.btn-danger {
+    -fx-background-color: #EF4444;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: transparent;
+}
+.btn-danger:hover { -fx-background-color: #DC2626; }
+
+.btn-warning {
+    -fx-background-color: #F59E0B;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: transparent;
+}
+.btn-warning:hover { -fx-background-color: #D97706; }
+
+.btn-ghost {
+    -fx-background-color: transparent;
+    -fx-text-fill: #64748B;
+    -fx-border-color: transparent;
+    -fx-effect: none;
+}
+.btn-ghost:hover {
+    -fx-background-color: #F1F5F9;
+    -fx-text-fill: #334155;
+    -fx-effect: none;
+}
+
+.btn-outline-primary {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6366F1;
+    -fx-border-color: #6366F1;
+    -fx-border-width: 1.5;
+}
+.btn-outline-primary:hover { -fx-background-color: #EEF2FF; }
+
+.btn-lg {
+    -fx-font-size: 15px;
+    -fx-padding: 14 28 14 28;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.btn-sm {
+    -fx-font-size: 12px;
+    -fx-padding: 6 14 6 14;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+}
+
+.btn-icon {
+    -fx-padding: 8 12 8 12;
+    -fx-graphic-text-gap: 8;
+}
+
+
+/* ============================================================
+   8. ICONOS (Ikonli FontIcon)
+   ============================================================ */
+
+.icon-xs  { -fx-icon-size: 14; }
+.icon-sm  { -fx-icon-size: 16; }
+.icon-md  { -fx-icon-size: 20; }
+.icon-lg  { -fx-icon-size: 24; }
+.icon-xl  { -fx-icon-size: 32; }
+
+.icon-primary { -fx-icon-color: #6366F1; }
+.icon-success { -fx-icon-color: #10B981; }
+.icon-danger  { -fx-icon-color: #EF4444; }
+.icon-warning { -fx-icon-color: #F59E0B; }
+.icon-muted   { -fx-icon-color: #94A3B8; }
+.icon-white   { -fx-icon-color: #FFFFFF; }
+
+
+/* ============================================================
+   9. LOGIN SPLIT SCREEN
+   ============================================================ */
+
+.login-split-root {
+    -fx-background-color: #F8FAFC;
+}
+
+/* Panel izquierdo: gradiente indigo */
+.login-brand-panel {
+    -fx-background-color: linear-gradient(to bottom, #6366F1, #4338CA);
+    -fx-padding: 40;
+    -fx-alignment: CENTER;
+}
+
+/* Anillo circular del icono principal */
+.login-brand-icon-ring {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-background-radius: 999;
+    -fx-pref-width: 96;
+    -fx-pref-height: 96;
+    -fx-min-width: 96;
+    -fx-min-height: 96;
+    -fx-max-width: 96;
+    -fx-max-height: 96;
+}
+
+.login-brand-icon {
+    -fx-icon-color: #FFFFFF;
+    -fx-icon-size: 44;
+}
+
+.login-brand-title {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 36px;
+    -fx-font-weight: 700;
+}
+
+.login-brand-subtitle {
+    -fx-text-fill: rgba(255, 255, 255, 0.70);
+    -fx-font-size: 14px;
+    -fx-font-weight: 400;
+}
+
+/* Pastillas decorativas */
+.login-brand-pill {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+    -fx-background-radius: 20;
+    -fx-text-fill: rgba(255, 255, 255, 0.85);
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-padding: 6 16 6 16;
+}
+
+/* Panel derecho: formulario */
+.login-form-panel {
+    -fx-background-color: #F8FAFC;
+    -fx-alignment: CENTER;
+    -fx-padding: 40;
+}
+
+/* Card blanca del formulario */
+.login-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1;
+    -fx-padding: 40;
+    -fx-pref-width: 380;
+    -fx-max-width: 420;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 20, 0, 0, 4);
+    -fx-spacing: 6;
+    -fx-alignment: CENTER;
+}
+
+/* Circulo del candado */
+.login-icon-container {
+    -fx-background-color: #EEF2FF;
+    -fx-background-radius: 999;
+    -fx-padding: 16;
+    -fx-alignment: CENTER;
+    -fx-pref-width: 60;
+    -fx-pref-height: 60;
+    -fx-min-width: 60;
+    -fx-min-height: 60;
+    -fx-max-width: 60;
+    -fx-max-height: 60;
+}
+
+.login-icon {
+    -fx-icon-color: #6366F1;
+    -fx-icon-size: 26;
+}
+
+/* Labels de campo */
+.input-label {
+    -fx-text-fill: #475569;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-padding: 4 0 2 2;
+}
+
+/* Input group: icono + campo en una sola caja */
+.input-group {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 2 4 2 12;
+    -fx-spacing: 8;
+}
+
+.input-group-icon {
+    -fx-icon-color: #94A3B8;
+    -fx-icon-size: 18;
+}
+
+/* Campo dentro del input group: sin borde propio */
+.input-group-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 10 10 10 4;
+    -fx-font-size: 14px;
+    -fx-text-fill: #1E293B;
+    -fx-prompt-text-fill: #94A3B8;
+}
+.input-group-field:focused {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-effect: none;
+}
+
+/* Separador del login */
+.login-separator {
+    -fx-padding: 8 0 4 0;
+}
+
+.separator .line {
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* Link de olvide contrasena */
+.login-link {
+    -fx-text-fill: #6366F1;
+    -fx-font-size: 13px;
+    -fx-border-color: transparent;
+}
+.login-link:hover {
+    -fx-text-fill: #4F46E5;
+}
+
+
+/* ============================================================
+   10. DASHBOARD (Main Menu)
+   ============================================================ */
+
+.dashboard-root {
+    -fx-background-color: linear-gradient(to bottom right, #EEF2FF, #F8FAFC, #F1F5F9);
+    -fx-padding: 20;
+}
+
+.dashboard-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 24, 0, 0, 6);
+}
+
+.dashboard-header {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16 16 0 0;
+}
+
+.dashboard-header-icon-bg {
+    -fx-background-color: #EEF2FF;
+    -fx-background-radius: 10;
+    -fx-pref-width: 40;
+    -fx-pref-height: 40;
+    -fx-min-width: 40;
+    -fx-min-height: 40;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
+}
+
+.dashboard-table-container {
+    -fx-background-color: transparent;
+}
+
+.dashboard-footer {
+    -fx-background-color: #FAFBFC;
+    -fx-background-radius: 0 0 16 16;
+    -fx-border-color: #E2E8F0 transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* Barra de filtros */
+.filter-bar {
+    -fx-background-color: #F8FAFC;
+    -fx-border-color: transparent transparent #E2E8F0 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* Scrollbar minimalista */
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 8;
+}
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #CBD5E1;
+    -fx-background-radius: 4;
+}
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #94A3B8;
+}
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-padding: 0;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+}
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: "";
+    -fx-padding: 0;
 }

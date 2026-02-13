@@ -2,28 +2,122 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.gestorasistencia.controller.LoginController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.dam.gestorasistencia.controller.LoginController"
+      styleClass="login-split-root"
+      prefHeight="600.0" prefWidth="900.0">
 
-    <Label text="Gestor de Asistencia">
-        <font>
-            <Font name="System Bold" size="24.0" />
-        </font>
-    </Label>
+    <!-- PANEL IZQUIERDO: Branding (40%) -->
+    <VBox styleClass="login-brand-panel" alignment="CENTER" spacing="20"
+          prefWidth="360" minWidth="360" maxWidth="360">
 
-    <Label text="Iniciar Sesión" />
+        <!-- Icono grande centrado -->
+        <StackPane styleClass="login-brand-icon-ring" alignment="CENTER">
+            <FontIcon iconLiteral="mdmz-school" styleClass="login-brand-icon"/>
+        </StackPane>
 
-    <TextField fx:id="txtEmail" promptText="Correo electrónico" maxWidth="300" />
+        <!-- Nombre de la app -->
+        <Label text="Gestor" styleClass="login-brand-title"/>
+        <Label text="Asistencia" styleClass="login-brand-title" style="-fx-padding: -18 0 0 0;"/>
 
-    <PasswordField fx:id="txtPassword" promptText="Contraseña" maxWidth="300" />
+        <!-- Tagline -->
+        <Label text="Control de asistencia inteligente"
+               styleClass="login-brand-subtitle"/>
 
-    <Button text="Entrar" onAction="#onLogin" defaultButton="true" maxWidth="300" style="-fx-background-color: #007bff; -fx-text-fill: white;"/>
-</VBox>
+        <!-- Spacer decorativo -->
+        <Region prefHeight="20"/>
+
+        <!-- Tres feature pills -->
+        <HBox alignment="CENTER" spacing="8">
+            <Label text="Rapido" styleClass="login-brand-pill"/>
+            <Label text="Seguro" styleClass="login-brand-pill"/>
+            <Label text="Simple" styleClass="login-brand-pill"/>
+        </HBox>
+    </VBox>
+
+    <!-- PANEL DERECHO: Formulario (60%) -->
+    <VBox alignment="CENTER" HBox.hgrow="ALWAYS" styleClass="login-form-panel">
+
+        <!-- Card del formulario -->
+        <VBox styleClass="login-card" spacing="6" maxWidth="380">
+
+            <!-- Icono decorativo pequeño -->
+            <StackPane styleClass="login-icon-container" alignment="CENTER">
+                <FontIcon iconLiteral="mdal-lock_open" styleClass="login-icon"/>
+            </StackPane>
+
+            <Region prefHeight="4"/>
+
+            <!-- Título -->
+            <Label text="Bienvenido de nuevo" styleClass="title-lg"/>
+
+            <!-- Subtítulo -->
+            <Label text="Introduce tus credenciales para acceder"
+                   styleClass="text-secondary"/>
+
+            <Region prefHeight="12"/>
+
+            <!-- Campo Email -->
+            <Label text="Correo electronico" styleClass="input-label"/>
+            <HBox styleClass="input-group" alignment="CENTER_LEFT">
+                <FontIcon iconLiteral="mdal-email" styleClass="input-group-icon"/>
+                <TextField fx:id="txtEmail"
+                           promptText="profesor@instituto.es"
+                           HBox.hgrow="ALWAYS"
+                           styleClass="input-group-field"/>
+            </HBox>
+
+            <Region prefHeight="4"/>
+
+            <!-- Campo Contrasena -->
+            <Label text="Contrasena" styleClass="input-label"/>
+            <HBox styleClass="input-group" alignment="CENTER_LEFT">
+                <FontIcon iconLiteral="mdal-lock" styleClass="input-group-icon"/>
+                <PasswordField fx:id="txtPassword"
+                               promptText="Tu contrasena"
+                               HBox.hgrow="ALWAYS"
+                               styleClass="input-group-field"
+                               onAction="#onLogin"/>
+            </HBox>
+
+            <Region prefHeight="8"/>
+
+            <!-- Boton Entrar -->
+            <Button text="Iniciar Sesion"
+                    onAction="#onLogin"
+                    defaultButton="true"
+                    maxWidth="Infinity"
+                    styleClass="btn-primary, btn-lg, btn-icon">
+                <graphic>
+                    <FontIcon iconLiteral="mdal-arrow_forward" styleClass="icon-white, icon-md"/>
+                </graphic>
+            </Button>
+
+            <Region prefHeight="2"/>
+
+            <!-- Separador -->
+            <Separator styleClass="login-separator"/>
+
+            <!-- Link decorativo -->
+            <HBox alignment="CENTER">
+                <Hyperlink text="Olvidaste tu contrasena?" styleClass="login-link"/>
+            </HBox>
+
+        </VBox>
+
+    </VBox>
+
+</HBox>
