@@ -289,7 +289,7 @@
 .icon-lg  { -fx-icon-size: 24; }
 .icon-xl  { -fx-icon-size: 32; }
 
-.icon-primary { -fx-icon-color: #6366F1; }
+.icon-primary { -fx-icon-color: #206BC4; }
 .icon-success { -fx-icon-color: #10B981; }
 .icon-danger  { -fx-icon-color: #EF4444; }
 .icon-warning { -fx-icon-color: #F59E0B; }
@@ -474,13 +474,13 @@
 
 /* Root: sin padding, ocupa toda la ventana */
 .dashboard-root {
-    -fx-background-color: #F1F5F9;
+    -fx-background-color: #F3F4F6;
 }
 
 /* --- SIDEBAR --- */
 .sidebar {
     -fx-background-color: linear-gradient(to bottom, #F1F6FC, #E4EDF8, #DCE9F9);
-    -fx-border-color: transparent #D0DCE8 transparent transparent;
+    -fx-border-color: transparent #C8D9EC transparent transparent;
     -fx-border-width: 0 1 0 0;
 }
 
@@ -580,43 +580,43 @@
 
 /* --- AREA DE CONTENIDO PRINCIPAL --- */
 .dashboard-main {
-    -fx-background-color: #F1F5F9;
+    -fx-background-color: #F3F4F6;
 }
 
 .dashboard-page-title {
-    -fx-font-size: 26px;
+    -fx-font-size: 24px;
     -fx-font-weight: 700;
-    -fx-text-fill: #0F172A;
+    -fx-text-fill: #333333;
 }
 
 /* Breadcrumbs */
 .breadcrumb-link {
-    -fx-text-fill: #3B82F6;
+    -fx-text-fill: #206BC4;
     -fx-font-size: 13px;
     -fx-font-weight: 400;
 }
 .breadcrumb-separator {
-    -fx-text-fill: #94A3B8;
+    -fx-text-fill: #999999;
     -fx-font-size: 13px;
 }
 .breadcrumb-current {
-    -fx-text-fill: #64748B;
+    -fx-text-fill: #666666;
     -fx-font-size: 13px;
     -fx-font-weight: 400;
 }
 
 .dashboard-section-title {
-    -fx-font-size: 17px;
+    -fx-font-size: 16px;
     -fx-font-weight: 600;
-    -fx-text-fill: #1E293B;
+    -fx-text-fill: #333333;
 }
 
 /* Card del contenido principal */
 .dashboard-card {
     -fx-background-color: #FFFFFF;
-    -fx-background-radius: 14;
-    -fx-border-radius: 14;
-    -fx-border-color: #E2E8F0;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #E5E7EB;
     -fx-border-width: 1;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 16, 0, 0, 4);
 }
@@ -625,11 +625,20 @@
     -fx-background-color: transparent;
 }
 
+/* Table inside dashboard card: no shadow, no radius */
+.dashboard-card .table-view {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-effect: none;
+    -fx-border-color: transparent;
+}
+
 /* Barra de filtros */
 .filter-bar {
     -fx-background-color: #FFFFFF;
-    -fx-background-radius: 14 14 0 0;
-    -fx-border-color: transparent transparent #E2E8F0 transparent;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent transparent #E5E7EB transparent;
     -fx-border-width: 0 0 1 0;
 }
 
@@ -640,35 +649,35 @@
 
 /* Footer (azul claro como el header de tabla) */
 .dashboard-footer {
-    -fx-background-color: #EFF6FF;
-    -fx-background-radius: 0 0 14 14;
-    -fx-border-color: #DBEAFE transparent transparent transparent;
+    -fx-background-color: #E0EDF9;
+    -fx-background-radius: 0 0 8 8;
+    -fx-border-color: #C8D9EC transparent transparent transparent;
     -fx-border-width: 1 0 0 0;
 }
 
 .footer-info-text {
-    -fx-text-fill: #475569;
+    -fx-text-fill: #333333;
     -fx-font-size: 13px;
     -fx-font-weight: 500;
 }
 
 /* Table header azul claro */
 .dashboard-card .table-view .column-header-background {
-    -fx-background-color: #EFF6FF;
-    -fx-border-color: transparent transparent #DBEAFE transparent;
+    -fx-background-color: #E0EDF9;
+    -fx-border-color: transparent transparent #C8D9EC transparent;
     -fx-border-width: 0 0 2 0;
     -fx-background-radius: 0;
 }
 
 .dashboard-card .table-view .column-header .label {
-    -fx-text-fill: #1E40AF;
+    -fx-text-fill: #206BC4;
     -fx-font-weight: 700;
     -fx-font-size: 12px;
 }
 
 /* Bordes visibles entre columnas */
 .dashboard-card .table-view .table-cell {
-    -fx-border-color: transparent #E8ECF0 #EDF0F4 transparent;
+    -fx-border-color: transparent #E5E7EB #E5E7EB transparent;
     -fx-border-width: 0 1 1 0;
     -fx-padding: 10 14;
 }
@@ -679,6 +688,26 @@
 }
 .dashboard-card .table-view .table-row-cell.fila-falta:hover {
     -fx-background-color: #F3A5A5;
+}
+
+/* Dashboard-specific btn-primary (azul #206BC4) */
+.dashboard-card .btn-primary {
+    -fx-background-color: #206BC4;
+    -fx-effect: dropshadow(gaussian, rgba(32, 107, 196, 0.35), 10, 0, 0, 3);
+}
+.dashboard-card .btn-primary:hover {
+    -fx-background-color: #1A5BA0;
+    -fx-effect: dropshadow(gaussian, rgba(32, 107, 196, 0.45), 12, 0, 0, 4);
+}
+
+/* Dashboard-specific outline buttons */
+.dashboard-footer .btn-outline-primary {
+    -fx-text-fill: #206BC4;
+    -fx-border-color: #A5C4E6;
+}
+.dashboard-footer .btn-outline-primary:hover {
+    -fx-background-color: #E0EDF9;
+    -fx-border-color: #206BC4;
 }
 
 /* Scrollbar minimalista */

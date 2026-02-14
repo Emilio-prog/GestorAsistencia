@@ -113,13 +113,13 @@
 
         <Region prefHeight="16"/>
 
-        <!-- Subtitulo de seccion -->
-        <Label text="Gesti&#xf3;n de asistencia diaria" styleClass="dashboard-section-title"/>
-
-        <Region prefHeight="12"/>
-
         <!-- CONTENEDOR BLANCO (card principal) -->
         <VBox styleClass="dashboard-card" VBox.vgrow="ALWAYS" spacing="0">
+
+            <!-- Subtitulo de seccion (dentro del card) -->
+            <Label text="Gesti&#xf3;n de asistencia diaria" styleClass="dashboard-section-title">
+                <padding><Insets top="16" right="20" bottom="0" left="20"/></padding>
+            </Label>
 
             <!-- BARRA DE FILTROS -->
             <HBox styleClass="filter-bar" alignment="CENTER_LEFT" spacing="10">
