@@ -4,63 +4,88 @@ import com.dam.gestorasistencia.model.EstadoAsistencia;
 import com.dam.gestorasistencia.model.RegistroAsistencia;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(MockitoExtension.class) // Habilita el soporte para Mockito si lo necesitaramos
+@DisplayName("Suite unitaria del algoritmo de riesgo de asistencia")
 class AsistenciaServiceTest {
 
-    @InjectMocks
-    private AsistenciaService asistenciaService; // La clase que vamos a probar
+    private final AsistenciaService asistenciaService = new AsistenciaService();
 
     @Test
-    @DisplayName("Debe devolver 0.0 si la lista de registros está vacía (Caso Límite)")
-    void testCalcularPorcentajeListaVacia() {
-        List<RegistroAsistencia> listaVacia = new ArrayList<>();
-        double resultado = asistenciaService.calcularPorcentajeFaltas(listaVacia);
-        assertEquals(0.0, resultado, "El porcentaje debería ser 0 para lista vacía");
+    @DisplayName("Devuelve 0.0 cuando la lista es null")
+    void calcularPorcentaje_listaNull_devuelveCero() {
+        double resultado = asistenciaService.calcularPorcentajeFaltas(null);
+
+        assertEquals(0.0, resultado, 1e-9);
+        assertFalse(asistenciaService.esAlumnoEnRiesgo(null));
     }
 
     @Test
-    @DisplayName("Debe calcular correctamente el 50% de faltas")
-    void testCalcularPorcentajeMitadFaltas() {
-        // Preparamos datos de prueba (Mock Data)
+    @DisplayName("Devuelve 0.0 cuando la lista está vacía")
+    void calcularPorcentaje_listaVacia_devuelveCero() {
         List<RegistroAsistencia> registros = new ArrayList<>();
-        registros.add(crearRegistro(EstadoAsistencia.FALTA));
-        registros.add(crearRegistro(EstadoAsistencia.PRESENTE));
-
-        // Ejecutamos la lógica
-        double resultado = asistenciaService.calcularPorcentajeFaltas(registros);
-
-        // Verificamos (Assert)
-        assertEquals(0.5, resultado, "Debería ser 0.5 (50%)");
-        assertTrue(asistenciaService.esAlumnoEnRiesgo(registros), "Con 50% debería estar en riesgo");
-    }
-
-    @Test
-    @DisplayName("No debe contar Retrasos o Justificadas como Faltas Injustificadas")
-    void testSoloCuentaFaltas() {
-        List<RegistroAsistencia> registros = new ArrayList<>();
-        registros.add(crearRegistro(EstadoAsistencia.RETRASO));
-        registros.add(crearRegistro(EstadoAsistencia.JUSTIFICADA));
-        registros.add(crearRegistro(EstadoAsistencia.PRESENTE));
 
         double resultado = asistenciaService.calcularPorcentajeFaltas(registros);
 
-        assertEquals(0.0, resultado, "Retrasos y Justificadas no deben sumar al porcentaje de faltas");
-        assertFalse(asistenciaService.esAlumnoEnRiesgo(registros), "No debería estar en riesgo");
+        assertEquals(0.0, resultado, 1e-9);
+        assertFalse(asistenciaService.esAlumnoEnRiesgo(registros));
     }
 
-    // Método auxiliar para crear registros rápido
+    @Test
+    @DisplayName("Cuenta solo faltas injustificadas en el porcentaje")
+    void calcularPorcentaje_soloCuentaEstadoFalta() {
+        List<RegistroAsistencia> registros = List.of(
+                crearRegistro(EstadoAsistencia.FALTA),
+                crearRegistro(EstadoAsistencia.PRESENTE),
+                crearRegistro(EstadoAsistencia.RETRASO),
+                crearRegistro(EstadoAsistencia.JUSTIFICADA),
+                crearRegistro(EstadoAsistencia.FALTA)
+        );
+
+        double resultado = asistenciaService.calcularPorcentajeFaltas(registros);
+
+        assertEquals(0.4, resultado, 1e-9);
+        assertTrue(asistenciaService.esAlumnoEnRiesgo(registros));
+    }
+
+    @ParameterizedTest(name = "{0} faltas de {1} clases => {2} y riesgo {3}")
+    @CsvSource({
+            "0, 5, 0.0, false",
+            "1, 5, 0.2, true",
+            "2, 10, 0.2, true",
+            "1, 10, 0.1, false",
+            "5, 5, 1.0, true"
+    })
+    @DisplayName("Evalúa correctamente umbrales y casos representativos")
+    void evaluarUmbralRiesgo_variosEscenarios(int faltas, int totalClases, double esperado, boolean riesgoEsperado) {
+        List<RegistroAsistencia> registros = crearRegistros(faltas, totalClases);
+
+        double resultado = asistenciaService.calcularPorcentajeFaltas(registros);
+
+        assertEquals(esperado, resultado, 1e-9);
+        assertEquals(riesgoEsperado, asistenciaService.esAlumnoEnRiesgo(registros));
+    }
+
+    private List<RegistroAsistencia> crearRegistros(int faltas, int totalClases) {
+        List<RegistroAsistencia> registros = new ArrayList<>();
+        for (int i = 0; i < totalClases; i++) {
+            EstadoAsistencia estado = i < faltas ? EstadoAsistencia.FALTA : EstadoAsistencia.PRESENTE;
+            registros.add(crearRegistro(estado));
+        }
+        return registros;
+    }
+
     private RegistroAsistencia crearRegistro(EstadoAsistencia estado) {
-        RegistroAsistencia r = new RegistroAsistencia();
-        r.setEstado(estado);
-        return r;
+        RegistroAsistencia registro = new RegistroAsistencia();
+        registro.setEstado(estado);
+        return registro;
     }
 }
