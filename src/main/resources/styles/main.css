@@ -881,3 +881,98 @@
     -fx-pref-height: 26;
     -fx-padding: 0;
 }
+
+/* ============================================================
+   8. CONFIGURACIÓN Y TEMAS
+   ============================================================ */
+.settings-view {
+    -fx-background-color: linear-gradient(to bottom right, rgba(191, 219, 254, 0.45), rgba(167, 243, 208, 0.35));
+}
+
+.settings-card {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 16;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.10), 12, 0, 0, 4);
+}
+
+.settings-card-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #0F172A;
+}
+
+.settings-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #334155;
+}
+
+.theme-toggle {
+    -fx-background-color: #F8FAFC;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+}
+
+.theme-toggle:selected {
+    -fx-background-color: #2563EB;
+    -fx-text-fill: white;
+    -fx-border-color: #1D4ED8;
+}
+
+.settings-about-text {
+    -fx-font-size: 16px;
+    -fx-text-fill: #1E293B;
+    -fx-line-spacing: 3;
+}
+
+.theme-dark {
+    -fx-background-color: #0F172A;
+}
+
+.theme-dark .dashboard-main,
+.theme-dark .dashboard-card,
+.theme-dark .settings-card,
+.theme-dark .table-view,
+.theme-dark .filter-bar,
+.theme-dark .dashboard-footer,
+.theme-dark .class-card,
+.theme-dark .sidebar,
+.theme-dark .summary-card {
+    -fx-background-color: #1E293B;
+    -fx-border-color: #334155;
+}
+
+.theme-dark .label,
+.theme-dark .dashboard-page-title,
+.theme-dark .dashboard-section-title,
+.theme-dark .sidebar-item-text,
+.theme-dark .settings-card-title,
+.theme-dark .settings-label,
+.theme-dark .settings-about-text,
+.theme-dark .table-cell {
+    -fx-text-fill: #E2E8F0;
+}
+
+.theme-dark .button,
+.theme-dark .text-field,
+.theme-dark .combo-box,
+.theme-dark .date-picker,
+.theme-dark .theme-toggle {
+    -fx-background-color: #0F172A;
+    -fx-border-color: #475569;
+    -fx-text-fill: #E2E8F0;
+}
+
+.theme-dark .theme-toggle:selected {
+    -fx-background-color: #3B82F6;
+    -fx-text-fill: #FFFFFF;
+}
+
+.theme-system {
+    /* Usa los estilos base de la app (modo por defecto) */
+}

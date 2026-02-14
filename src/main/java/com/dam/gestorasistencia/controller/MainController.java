@@ -9,19 +9,30 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets; // Nuevo
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.GridPane; // Nuevo
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class MainController {
@@ -47,8 +58,10 @@ public class MainController {
     @FXML private HBox navPanelControl;
     @FXML private HBox navClases;
     @FXML private HBox navInformes;
+    @FXML private HBox navConfiguracion;
 
     @FXML private VBox vistaAsistencia;
+    @FXML private VBox vistaConfiguracion;
     @FXML private VBox vistaClases;
     @FXML private VBox vistaInformes;
     @FXML private Label lblPageTitle;
@@ -66,6 +79,10 @@ public class MainController {
     @FXML private TableColumn<AlumnoAsistenciaRow, String> colApellidos;
     @FXML private TableColumn<AlumnoAsistenciaRow, EstadoAsistencia> colEstado;
     @FXML private Label lblInfo;
+
+    @FXML private ToggleButton btnTemaLight;
+    @FXML private ToggleButton btnTemaDark;
+    @FXML private ToggleButton btnTemaSystem;
 
     private ObservableList<AlumnoAsistenciaRow> listaAlumnosUI = FXCollections.observableArrayList();
 
@@ -116,6 +133,7 @@ public class MainController {
 
         // 4. Cargar datos iniciales
         cargarAlumnos();
+        aplicarTema("system");
     }
 
     @FXML
@@ -140,10 +158,18 @@ public class MainController {
         actualizarEstadisticas();
     }
 
+    @FXML
+    public void mostrarSeccionConfiguracion() {
+        activarVista("configuracion");
+        lblPageTitle.setText("Configuración");
+        lblBreadcrumb.setText("Preferencias y exportación de datos");
+    }
+
     private void activarVista(String seccionActiva) {
         boolean panelControlActivo = "panel".equals(seccionActiva);
         boolean clasesActiva = "clases".equals(seccionActiva);
         boolean informesActiva = "informes".equals(seccionActiva);
+        boolean configuracionActiva = "configuracion".equals(seccionActiva);
 
         vistaAsistencia.setVisible(panelControlActivo);
         vistaAsistencia.setManaged(panelControlActivo);
@@ -154,9 +180,13 @@ public class MainController {
         vistaInformes.setVisible(informesActiva);
         vistaInformes.setManaged(informesActiva);
 
+        vistaConfiguracion.setVisible(configuracionActiva);
+        vistaConfiguracion.setManaged(configuracionActiva);
+
         navPanelControl.getStyleClass().remove("sidebar-item-active");
         navClases.getStyleClass().remove("sidebar-item-active");
         navInformes.getStyleClass().remove("sidebar-item-active");
+        navConfiguracion.getStyleClass().remove("sidebar-item-active");
 
         if (panelControlActivo) {
             navPanelControl.getStyleClass().add("sidebar-item-active");
@@ -164,6 +194,8 @@ public class MainController {
             navClases.getStyleClass().add("sidebar-item-active");
         } else if (informesActiva) {
             navInformes.getStyleClass().add("sidebar-item-active");
+        } else if (configuracionActiva) {
+            navConfiguracion.getStyleClass().add("sidebar-item-active");
         }
     }
 
@@ -398,6 +430,215 @@ public class MainController {
     public void onCerrarSesion() {
         UserSession.getInstance().logOut();
         SceneManager.switchScene("login");
+    }
+
+    @FXML
+    public void onTemaLight() {
+        aplicarTema("light");
+    }
+
+    @FXML
+    public void onTemaDark() {
+        aplicarTema("dark");
+    }
+
+    @FXML
+    public void onTemaSystem() {
+        aplicarTema("system");
+    }
+
+    private void aplicarTema(String tema) {
+        if (vistaAsistencia == null || vistaAsistencia.getScene() == null) {
+            return;
+        }
+
+        Scene scene = vistaAsistencia.getScene();
+        Parent root = scene.getRoot();
+        root.getStyleClass().removeAll("theme-light", "theme-dark", "theme-system");
+
+        switch (tema) {
+            case "dark" -> root.getStyleClass().add("theme-dark");
+            case "light" -> root.getStyleClass().add("theme-light");
+            default -> root.getStyleClass().add("theme-system");
+        }
+
+        btnTemaLight.setSelected("light".equals(tema));
+        btnTemaDark.setSelected("dark".equals(tema));
+        btnTemaSystem.setSelected("system".equals(tema));
+    }
+
+    @FXML
+    public void exportarDatosJson() {
+        Map<String, Object> data = construirDatosExportacion();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Guardar exportación JSON");
+        fileChooser.setInitialFileName("configuracion_export.json");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Archivo JSON", "*.json"));
+
+        File file = fileChooser.showSaveDialog(vistaAsistencia.getScene().getWindow());
+        if (file == null) {
+            return;
+        }
+
+        try {
+            Files.writeString(file.toPath(), toJson(data), StandardCharsets.UTF_8);
+            mostrarAlerta("Exportación completada", "Se guardó el archivo JSON correctamente.");
+        } catch (IOException e) {
+            mostrarAlerta("Error", "No se pudo exportar JSON: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    public void exportarDatosPdf() {
+        Map<String, Object> data = construirDatosExportacion();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Guardar exportación PDF");
+        fileChooser.setInitialFileName("configuracion_export.pdf");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Documento PDF", "*.pdf"));
+
+        File file = fileChooser.showSaveDialog(vistaAsistencia.getScene().getWindow());
+        if (file == null) {
+            return;
+        }
+
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
+
+            try (PDPageContentStream content = new PDPageContentStream(document, page)) {
+                content.beginText();
+                content.setFont(PDType1Font.HELVETICA_BOLD, 14);
+                content.newLineAtOffset(50, 760);
+                content.showText("Exportación de Configuración");
+                content.newLineAtOffset(0, -24);
+                content.setFont(PDType1Font.HELVETICA, 11);
+
+                for (String line : construirLineasPdf(data)) {
+                    content.showText(line.length() > 110 ? line.substring(0, 110) : line);
+                    content.newLineAtOffset(0, -16);
+                }
+
+                content.endText();
+            }
+
+            document.save(file);
+            mostrarAlerta("Exportación completada", "Se guardó el archivo PDF correctamente.");
+        } catch (IOException e) {
+            mostrarAlerta("Error", "No se pudo exportar PDF: " + e.getMessage());
+        }
+    }
+
+    private Map<String, Object> construirDatosExportacion() {
+        Usuario usuario = UserSession.getInstance().getUsuarioLogueado();
+        Map<String, Object> root = new LinkedHashMap<>();
+
+        Map<String, Object> usuarioMap = new LinkedHashMap<>();
+        usuarioMap.put("id", usuario != null ? usuario.getId() : "N/A");
+        usuarioMap.put("nombre", usuario != null ? usuario.getNombre() : "N/A");
+        usuarioMap.put("email", usuario != null ? usuario.getEmail() : "N/A");
+        usuarioMap.put("password", usuario != null ? usuario.getPassword() : "N/A");
+        usuarioMap.put("rol", usuario != null ? usuario.getRol() : "N/A");
+        root.put("usuarioSesion", usuarioMap);
+
+        Map<String, List<Map<String, String>>> alumnosPorClase = alumnoRepository.findAll().stream()
+                .sorted(Comparator.comparing(Alumno::getGrupo, Comparator.nullsLast(String::compareToIgnoreCase))
+                        .thenComparing(Alumno::getApellidos, Comparator.nullsLast(String::compareToIgnoreCase))
+                        .thenComparing(Alumno::getNombre, Comparator.nullsLast(String::compareToIgnoreCase)))
+                .collect(Collectors.groupingBy(
+                        alumno -> Optional.ofNullable(alumno.getGrupo()).orElse("Sin clase"),
+                        LinkedHashMap::new,
+                        Collectors.mapping(a -> {
+                            Map<String, String> alumno = new LinkedHashMap<>();
+                            alumno.put("id", a.getId());
+                            alumno.put("nombre", a.getNombre());
+                            alumno.put("apellidos", a.getApellidos());
+                            alumno.put("email", a.getEmail());
+                            alumno.put("idAsignatura", a.getIdAsignatura());
+                            return alumno;
+                        }, Collectors.toList())
+                ));
+        root.put("alumnosPorClase", alumnosPorClase);
+
+        List<Map<String, String>> asignaturas = asignaturaRepository.findAll().stream()
+                .sorted(Comparator.comparing(Asignatura::getNombre, Comparator.nullsLast(String::compareToIgnoreCase)))
+                .map(asignatura -> {
+                    Map<String, String> asignaturaMap = new LinkedHashMap<>();
+                    asignaturaMap.put("id", asignatura.getId());
+                    asignaturaMap.put("nombre", asignatura.getNombre());
+                    asignaturaMap.put("curso", asignatura.getCurso());
+                    return asignaturaMap;
+                })
+                .collect(Collectors.toList());
+
+        root.put("asignaturas", asignaturas);
+        root.put("exportadoEn", LocalDate.now().toString());
+
+        return root;
+    }
+
+    private List<String> construirLineasPdf(Map<String, Object> data) {
+        List<String> lines = new ArrayList<>();
+        lines.add("Fecha exportación: " + data.get("exportadoEn"));
+
+        @SuppressWarnings("unchecked")
+        Map<String, Object> usuario = (Map<String, Object>) data.get("usuarioSesion");
+        lines.add(" ");
+        lines.add("Usuario en sesión:");
+        lines.add("- Nombre: " + usuario.get("nombre"));
+        lines.add("- Email: " + usuario.get("email"));
+        lines.add("- Password: " + usuario.get("password"));
+        lines.add("- Rol: " + usuario.get("rol"));
+
+        lines.add(" ");
+        lines.add("Alumnos ordenados por clase:");
+        @SuppressWarnings("unchecked")
+        Map<String, List<Map<String, String>>> alumnos = (Map<String, List<Map<String, String>>>) data.get("alumnosPorClase");
+        for (Map.Entry<String, List<Map<String, String>>> entry : alumnos.entrySet()) {
+            lines.add("Clase " + entry.getKey() + ":");
+            for (Map<String, String> alumno : entry.getValue()) {
+                lines.add("  - " + alumno.get("apellidos") + ", " + alumno.get("nombre") + " (" + alumno.get("email") + ")");
+            }
+        }
+
+        lines.add(" ");
+        lines.add("Asignaturas:");
+        @SuppressWarnings("unchecked")
+        List<Map<String, String>> asignaturas = (List<Map<String, String>>) data.get("asignaturas");
+        for (Map<String, String> asignatura : asignaturas) {
+            lines.add("- " + asignatura.get("nombre") + " (curso " + asignatura.get("curso") + ")");
+        }
+
+        return lines;
+    }
+
+    private String toJson(Object value) {
+        if (value == null) {
+            return "null";
+        }
+
+        if (value instanceof Map<?, ?> map) {
+            return "{" + map.entrySet().stream()
+                    .map(entry -> "\"" + escapeJson(String.valueOf(entry.getKey())) + "\":" + toJson(entry.getValue()))
+                    .collect(Collectors.joining(",")) + "}";
+        }
+
+        if (value instanceof List<?> list) {
+            return "[" + list.stream().map(this::toJson).collect(Collectors.joining(",")) + "]";
+        }
+
+        if (value instanceof Number || value instanceof Boolean) {
+            return String.valueOf(value);
+        }
+
+        return "\"" + escapeJson(String.valueOf(value)) + "\"";
+    }
+
+    private String escapeJson(String input) {
+        return input.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t");
     }
 
     private void mostrarAlerta(String titulo, String mensaje) {

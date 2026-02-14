@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
@@ -54,18 +55,18 @@
                 <FontIcon iconLiteral="mdal-assessment" styleClass="sidebar-item-icon"/>
                 <Label text="Informes" styleClass="sidebar-item-text"/>
             </HBox>
+
+            <HBox fx:id="navConfiguracion" styleClass="sidebar-item" alignment="CENTER_LEFT" spacing="12" onMouseClicked="#mostrarSeccionConfiguracion">
+                <padding><Insets top="11" right="14" bottom="11" left="14"/></padding>
+                <FontIcon iconLiteral="mdmz-settings" styleClass="sidebar-item-icon"/>
+                <Label text="Configuración" styleClass="sidebar-item-text"/>
+            </HBox>
         </VBox>
 
         <Region VBox.vgrow="ALWAYS"/>
 
         <VBox spacing="4">
             <padding><Insets top="8" right="14" bottom="20" left="14"/></padding>
-            <HBox styleClass="sidebar-item" alignment="CENTER_LEFT" spacing="12">
-                <padding><Insets top="11" right="14" bottom="11" left="14"/></padding>
-                <FontIcon iconLiteral="mdmz-settings" styleClass="sidebar-item-icon"/>
-                <Label text="Configuraci&#xf3;n" styleClass="sidebar-item-text"/>
-            </HBox>
-
             <Button text="Salir" onAction="#onCerrarSesion"
                     mnemonicParsing="false"
                     styleClass="sidebar-btn-salir" maxWidth="Infinity"
@@ -269,6 +270,38 @@
                     <Button text="3" styleClass="btn-ghost, page-btn"/>
                     <Button text="&#187;" styleClass="btn-ghost, page-btn"/>
                 </HBox>
+            </VBox>
+
+            <VBox fx:id="vistaConfiguracion" styleClass="dashboard-card settings-view" visible="false" managed="false" spacing="22" VBox.vgrow="ALWAYS">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                <Label text="Configuración" styleClass="dashboard-section-title"/>
+
+                <HBox spacing="16">
+                    <VBox styleClass="settings-card" spacing="12" HBox.hgrow="ALWAYS">
+                        <Label text="Apariencia" styleClass="settings-card-title"/>
+                        <Label text="Tema" styleClass="settings-label"/>
+                        <HBox spacing="8" styleClass="theme-selector">
+                            <ToggleButton fx:id="btnTemaLight" text="Light" onAction="#onTemaLight" styleClass="theme-toggle"/>
+                            <ToggleButton fx:id="btnTemaDark" text="Dark" onAction="#onTemaDark" styleClass="theme-toggle"/>
+                            <ToggleButton fx:id="btnTemaSystem" text="System" onAction="#onTemaSystem" styleClass="theme-toggle"/>
+                        </HBox>
+                    </VBox>
+
+                    <VBox styleClass="settings-card" spacing="12" HBox.hgrow="ALWAYS">
+                        <Label text="Datos" styleClass="settings-card-title"/>
+                        <Label text="Exportar información actual" styleClass="settings-label"/>
+                        <HBox spacing="10">
+                            <Button text="Descargar JSON" onAction="#exportarDatosJson" styleClass="btn-outline-primary"/>
+                            <Button text="Descargar PDF" onAction="#exportarDatosPdf" styleClass="btn-outline-primary"/>
+                        </HBox>
+                    </VBox>
+                </HBox>
+
+                <VBox styleClass="settings-card" spacing="8" VBox.vgrow="ALWAYS">
+                    <Label text="Acerca de la aplicación" styleClass="settings-card-title"/>
+                    <Label wrapText="true" text="Gestor de Asistencia permite administrar la asistencia diaria, clases e informes. Desde esta sección puedes personalizar la apariencia y exportar una copia de los datos solicitados (usuario en sesión, alumnos ordenados por clase y asignaturas)." styleClass="settings-about-text"/>
+                </VBox>
             </VBox>
 
             <VBox fx:id="vistaInformes" styleClass="dashboard-card" visible="false" managed="false" spacing="16" VBox.vgrow="ALWAYS">
