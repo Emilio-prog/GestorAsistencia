@@ -72,6 +72,11 @@ public class LoginController {
         }
     }
 
+    @FXML
+    public void onForgotPassword() {
+        SceneManager.switchScene("forgot_password");
+    }
+
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);

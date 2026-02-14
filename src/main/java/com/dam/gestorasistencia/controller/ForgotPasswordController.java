@@ -1,0 +1,74 @@
+package com.dam.gestorasistencia.controller;
+
+import com.dam.gestorasistencia.service.PasswordRecoveryService;
+import com.dam.gestorasistencia.view.SceneManager;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ForgotPasswordController {
+
+    @Autowired
+    private PasswordRecoveryService passwordRecoveryService;
+
+    @FXML
+    private TextField txtRecoveryEmail;
+
+    @FXML
+    public void initialize() {
+        configurarFocusGroup(txtRecoveryEmail);
+    }
+
+    private void configurarFocusGroup(javafx.scene.control.Control campo) {
+        campo.focusedProperty().addListener((obs, oldVal, focused) -> {
+            if (campo.getParent() instanceof HBox grupo) {
+                if (focused) {
+                    grupo.getStyleClass().add("input-group-focused");
+                } else {
+                    grupo.getStyleClass().remove("input-group-focused");
+                }
+            }
+        });
+    }
+
+    @FXML
+    public void onSendInstructions() {
+        String email = txtRecoveryEmail.getText() == null ? "" : txtRecoveryEmail.getText().trim();
+
+        if (email.isEmpty()) {
+            mostrarAlerta("Error", "Introduce un correo electrónico para recuperar la contraseña.");
+            return;
+        }
+
+        String tempPassword = passwordRecoveryService.recoverPassword(email);
+        if (tempPassword == null) {
+            mostrarAlerta("No encontrado", "No existe ningún usuario registrado con ese correo.");
+            return;
+        }
+
+        mostrarAlerta(
+                "Instrucciones enviadas",
+                "Se ha generado una contraseña temporal para " + email + ":\n\n" + tempPassword +
+                        "\n\nInicia sesión con esa contraseña y cámbiala cuanto antes."
+        );
+
+        onBackToLogin();
+    }
+
+    @FXML
+    public void onBackToLogin() {
+        SceneManager.switchScene("login");
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+}

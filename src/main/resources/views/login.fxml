@@ -116,7 +116,7 @@
 
         <!-- Link decorativo -->
         <HBox alignment="CENTER">
-            <Hyperlink text="&#xbf;Olvidaste tu contrase&#xf1;a?" styleClass="login-link"/>
+            <Hyperlink text="&#xbf;Olvidaste tu contrase&#xf1;a?" styleClass="login-link" onAction="#onForgotPassword"/>
         </HBox>
 
     </VBox>
