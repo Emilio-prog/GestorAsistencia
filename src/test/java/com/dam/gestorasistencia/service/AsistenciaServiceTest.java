@@ -74,6 +74,21 @@ class AsistenciaServiceTest {
         assertEquals(riesgoEsperado, asistenciaService.esAlumnoEnRiesgo(registros));
     }
 
+    @Test
+    @DisplayName("Calcula correctamente fracciones no exactas (1/3)")
+    void calcularPorcentaje_fraccionNoExacta() {
+        List<RegistroAsistencia> registros = List.of(
+                crearRegistro(EstadoAsistencia.FALTA),
+                crearRegistro(EstadoAsistencia.PRESENTE),
+                crearRegistro(EstadoAsistencia.PRESENTE)
+        );
+
+        double resultado = asistenciaService.calcularPorcentajeFaltas(registros);
+
+        assertEquals(1.0 / 3.0, resultado, 1e-9);
+        assertFalse(asistenciaService.esAlumnoEnRiesgo(registros));
+    }
+
     private List<RegistroAsistencia> crearRegistros(int faltas, int totalClases) {
         List<RegistroAsistencia> registros = new ArrayList<>();
         for (int i = 0; i < totalClases; i++) {
