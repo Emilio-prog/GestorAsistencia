@@ -791,3 +791,93 @@
 .dashboard-card .table-view .table-row-cell:filled:selected:hover {
     -fx-background-color: #E0E7FF; /* Indigo-100 (Mantiene el azul de selección) */
 }
+/* ============================================================
+   11. CLASES DASHBOARD VIEW
+   ============================================================ */
+.classes-dashboard-card {
+    -fx-background-color: rgba(255, 255, 255, 0.88);
+}
+
+.classes-filter-bar {
+    -fx-background-color: rgba(255, 255, 255, 0.78);
+    -fx-min-height: 92;
+}
+
+.classes-filter-label {
+    -fx-text-fill: #475569;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.classes-grid {
+    -fx-background-color: transparent;
+}
+
+.class-card {
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: rgba(203, 213, 225, 0.8);
+    -fx-border-width: 1;
+    -fx-padding: 12;
+    -fx-pref-width: 255;
+    -fx-min-height: 158;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.08), 8, 0, 0, 2);
+}
+
+.class-card-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #0F172A;
+}
+
+.class-card-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #334155;
+}
+
+.class-card-btn {
+    -fx-padding: 5 10;
+    -fx-font-size: 11px;
+    -fx-background-color: #F1F5F9;
+    -fx-text-fill: #334155;
+    -fx-effect: none;
+}
+.class-card-btn:hover {
+    -fx-background-color: #E2E8F0;
+}
+
+.class-card-btn-danger {
+    -fx-padding: 5 10;
+    -fx-font-size: 11px;
+    -fx-background-color: #FEE2E2;
+    -fx-text-fill: #B91C1C;
+    -fx-effect: none;
+}
+.class-card-btn-danger:hover {
+    -fx-background-color: #FECACA;
+}
+
+.classes-pagination {
+    -fx-background-color: rgba(191, 219, 254, 0.2);
+}
+
+.page-btn {
+    -fx-min-width: 30;
+    -fx-pref-width: 30;
+    -fx-min-height: 26;
+    -fx-pref-height: 26;
+    -fx-padding: 0;
+    -fx-alignment: CENTER;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-effect: none;
+}
+
+.page-btn-active {
+    -fx-min-width: 30;
+    -fx-pref-width: 30;
+    -fx-min-height: 26;
+    -fx-pref-height: 26;
+    -fx-padding: 0;
+}

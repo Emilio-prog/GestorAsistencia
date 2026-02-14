@@ -14,6 +14,8 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.GridPane; // Nuevo
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -45,6 +47,13 @@ public class MainController {
     @FXML private Button btnAdmin;
     @FXML private Button btnAddAlumno; // Nuevo
     @FXML private Button btnDelAlumno; // Nuevo
+    @FXML private HBox navPanelControl;
+    @FXML private HBox navClases;
+
+    @FXML private VBox vistaAsistencia;
+    @FXML private VBox vistaClases;
+    @FXML private Label lblPageTitle;
+    @FXML private Label lblBreadcrumb;
 
     // Tabla
     @FXML private TableView<AlumnoAsistenciaRow> tblAlumnos;
@@ -98,8 +107,41 @@ public class MainController {
         btnAddAlumno.setVisible(esAdmin);     // Solo admin puede añadir
         btnDelAlumno.setVisible(esAdmin);     // Solo admin puede borrar
 
+        mostrarPanelControl();
+
         // 4. Cargar datos iniciales
         cargarAlumnos();
+    }
+
+    @FXML
+    public void mostrarPanelControl() {
+        activarVista(true);
+        lblPageTitle.setText("Panel de Control");
+        lblBreadcrumb.setText("Gestión de asistencia diaria");
+    }
+
+    @FXML
+    public void mostrarSeccionClases() {
+        activarVista(false);
+        lblPageTitle.setText("Clases");
+        lblBreadcrumb.setText("Gestión de clases");
+    }
+
+    private void activarVista(boolean panelControlActivo) {
+        vistaAsistencia.setVisible(panelControlActivo);
+        vistaAsistencia.setManaged(panelControlActivo);
+
+        vistaClases.setVisible(!panelControlActivo);
+        vistaClases.setManaged(!panelControlActivo);
+
+        navPanelControl.getStyleClass().remove("sidebar-item-active");
+        navClases.getStyleClass().remove("sidebar-item-active");
+
+        if (panelControlActivo) {
+            navPanelControl.getStyleClass().add("sidebar-item-active");
+        } else {
+            navClases.getStyleClass().add("sidebar-item-active");
+        }
     }
 
     private void configurarColoresTabla() {
