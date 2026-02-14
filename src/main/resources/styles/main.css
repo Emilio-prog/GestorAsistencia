@@ -80,6 +80,8 @@
 /* --- ESTADO: FALTA (ROSA SALMON PASTEL) --- */
 .table-row-cell.fila-falta {
     -fx-background-color: #F8B7B7;
+    -fx-border-color: transparent transparent #F1F5F9 #EF4444;
+    -fx-border-width: 1 0 1 6;
 }
 .table-row-cell.fila-falta .table-cell {
     -fx-text-fill: #334155;
@@ -712,7 +714,8 @@
 /* Fila FALTA en contexto dashboard - VIBRANTE */
 .dashboard-card .table-view .table-row-cell.fila-falta {
     -fx-background-color: rgba(254, 202, 202, 0.9);
-    -fx-border-color: transparent transparent rgba(248, 113, 113, 0.4) transparent;
+    -fx-border-color: transparent transparent rgba(248, 113, 113, 0.4) #EF4444;
+    -fx-border-width: 1 0 1 6;
 }
 .dashboard-card .table-view .table-row-cell.fila-falta:hover {
     -fx-background-color: rgba(252, 165, 165, 1.0);
