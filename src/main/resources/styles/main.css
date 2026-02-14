@@ -81,6 +81,9 @@
 /* --- ESTADO: FALTA (ROSA SALMON PASTEL) --- */
 .table-row-cell.fila-falta {
     -fx-background-color: #F8B7B7;
+    -fx-background-image: url("data:image/svg+xml;utf8,<svg width='6' height='100' xmlns='http://www.w3.org/2000/svg'><rect width='6' height='100' fill='%23EF4444'/></svg>");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;
 }
 .table-row-cell.fila-falta .table-cell {
     -fx-text-fill: #334155;
