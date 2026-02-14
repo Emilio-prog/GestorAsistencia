@@ -49,12 +49,6 @@
                 <Label text="Clases" styleClass="sidebar-item-text"/>
             </HBox>
 
-            <HBox styleClass="sidebar-item" alignment="CENTER_LEFT" spacing="12">
-                <padding><Insets top="11" right="14" bottom="11" left="14"/></padding>
-                <FontIcon iconLiteral="mdal-groups" styleClass="sidebar-item-icon"/>
-                <Label text="Alumnos" styleClass="sidebar-item-text"/>
-            </HBox>
-
             <HBox fx:id="navInformes" styleClass="sidebar-item" alignment="CENTER_LEFT" spacing="12" onMouseClicked="#mostrarSeccionInformes">
                 <padding><Insets top="11" right="14" bottom="11" left="14"/></padding>
                 <FontIcon iconLiteral="mdal-assessment" styleClass="sidebar-item-icon"/>
