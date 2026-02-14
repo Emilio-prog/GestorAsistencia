@@ -145,16 +145,20 @@
 .button[style*="28a745"] { -fx-background-color: #10B981; -fx-text-fill: white; }
 .button[style*="dc3545"] { -fx-background-color: #EF4444; -fx-text-fill: white; }
 
-/* Inputs limpios */
+/* Inputs limpios - Alto contraste */
 .text-field, .combo-box, .date-picker {
-    -fx-background-color: white;
-    -fx-border-color: #E2E8F0;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D1D5DB;
+    -fx-border-width: 1;
     -fx-border-radius: 6;
     -fx-background-radius: 6;
     -fx-padding: 8;
+    -fx-effect: dropshadow(one-pass-box, rgba(0, 0, 0, 0.05), 3, 0, 0, 1);
 }
 .text-field:focused, .combo-box:focused, .date-picker:focused {
-    -fx-border-color: #6366F1;
+    -fx-border-color: #206BC4;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(32, 107, 196, 0.15), 4, 0, 0, 0);
 }
 
 
@@ -248,15 +252,16 @@
 
 .btn-outline-primary {
     -fx-background-color: #FFFFFF;
-    -fx-text-fill: #2563EB;
-    -fx-border-color: #93C5FD;
-    -fx-border-width: 1.5;
-    -fx-border-radius: 20;
-    -fx-background-radius: 20;
+    -fx-text-fill: #206BC4;
+    -fx-border-color: #D1D5DB;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(one-pass-box, rgba(0, 0, 0, 0.04), 2, 0, 0, 1);
 }
 .btn-outline-primary:hover {
-    -fx-background-color: #EFF6FF;
-    -fx-border-color: #3B82F6;
+    -fx-background-color: rgba(224, 237, 249, 0.3);
+    -fx-border-color: #206BC4;
 }
 
 .btn-lg {
@@ -472,16 +477,22 @@
    10. DASHBOARD (Main Menu) + SIDEBAR
    ============================================================ */
 
-/* Root: sin padding, ocupa toda la ventana */
+/* Root: Mesh gradient VIBRANTE con efecto aurora */
 .dashboard-root {
-    -fx-background-color: #F3F4F6;
+    -fx-background-color:
+        radial-gradient(circle at 0% 0%, rgba(147, 197, 253, 0.6), transparent 70%),
+        radial-gradient(circle at 100% 0%, rgba(233, 213, 255, 0.5), transparent 70%),
+        radial-gradient(circle at 100% 100%, rgba(252, 231, 243, 0.4), transparent 65%),
+        radial-gradient(circle at 0% 100%, rgba(224, 242, 254, 0.5), transparent 70%),
+        linear-gradient(135deg, #BFDBFE 0%, #DDD6FE 50%, #FBCFE8 100%);
 }
 
 /* --- SIDEBAR --- */
 .sidebar {
-    -fx-background-color: linear-gradient(to bottom, #F1F6FC, #E4EDF8, #DCE9F9);
-    -fx-border-color: transparent #C8D9EC transparent transparent;
+    -fx-background-color: linear-gradient(to bottom, #DBEAFE 0%, #E0E7FF 35%, #FCE7F3 70%, #FFFFFF 100%);
+    -fx-border-color: transparent rgba(255, 255, 255, 0.7) transparent transparent;
     -fx-border-width: 0 1 0 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 10, 0, 2, 0);
 }
 
 .sidebar-logo-area {
@@ -535,10 +546,12 @@
 }
 
 .sidebar-item-active {
-    -fx-background-color: #CEDBEF;
+    -fx-background-color: rgba(32, 107, 196, 0.1);
+    -fx-border-color: transparent transparent transparent #206BC4;
+    -fx-border-width: 0 0 0 4;
 }
 .sidebar-item-active:hover {
-    -fx-background-color: #CEDBEF;
+    -fx-background-color: rgba(32, 107, 196, 0.15);
 }
 
 .sidebar-item-icon {
@@ -580,45 +593,45 @@
 
 /* --- AREA DE CONTENIDO PRINCIPAL --- */
 .dashboard-main {
-    -fx-background-color: #F3F4F6;
+    -fx-background-color: transparent;
 }
 
 .dashboard-page-title {
-    -fx-font-size: 24px;
+    -fx-font-size: 26px;
     -fx-font-weight: 700;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #111827;
 }
 
 /* Breadcrumbs */
 .breadcrumb-link {
-    -fx-text-fill: #206BC4;
+    -fx-text-fill: #2563EB;
     -fx-font-size: 13px;
-    -fx-font-weight: 400;
+    -fx-font-weight: 500;
 }
 .breadcrumb-separator {
-    -fx-text-fill: #999999;
+    -fx-text-fill: #9CA3AF;
     -fx-font-size: 13px;
 }
 .breadcrumb-current {
-    -fx-text-fill: #666666;
+    -fx-text-fill: #6B7280;
     -fx-font-size: 13px;
     -fx-font-weight: 400;
 }
 
 .dashboard-section-title {
-    -fx-font-size: 16px;
-    -fx-font-weight: 600;
-    -fx-text-fill: #333333;
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #1F2937;
 }
 
-/* Card del contenido principal */
+/* Card del contenido principal - Glassmorphism */
 .dashboard-card {
-    -fx-background-color: #FFFFFF;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-border-color: #E5E7EB;
-    -fx-border-width: 1;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 16, 0, 0, 4);
+    -fx-background-color: rgba(255, 255, 255, 0.85);
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: rgba(255, 255, 255, 0.9);
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 24, 0, 0, 8);
 }
 
 .dashboard-table-container {
@@ -634,11 +647,11 @@
     -fx-border-color: transparent;
 }
 
-/* Barra de filtros */
+/* Barra de filtros - Glassmorphism */
 .filter-bar {
-    -fx-background-color: #FFFFFF;
-    -fx-background-radius: 0;
-    -fx-border-color: transparent transparent #E5E7EB transparent;
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+    -fx-background-radius: 16 16 0 0;
+    -fx-border-color: transparent transparent rgba(191, 219, 254, 0.4) transparent;
     -fx-border-width: 0 0 1 0;
 }
 
@@ -647,66 +660,70 @@
     -fx-icon-size: 18;
 }
 
-/* Footer (azul claro como el header de tabla) */
+/* Footer - Glassmorphism VIBRANTE */
 .dashboard-footer {
-    -fx-background-color: #E0EDF9;
-    -fx-background-radius: 0 0 8 8;
-    -fx-border-color: #C8D9EC transparent transparent transparent;
+    -fx-background-color: rgba(191, 219, 254, 0.4);
+    -fx-background-radius: 0 0 16 16;
+    -fx-border-color: rgba(147, 197, 253, 0.5) transparent transparent transparent;
     -fx-border-width: 1 0 0 0;
 }
 
 .footer-info-text {
-    -fx-text-fill: #333333;
+    -fx-text-fill: #374151;
     -fx-font-size: 13px;
     -fx-font-weight: 500;
 }
 
-/* Table header azul claro */
+/* Table header - Glassmorphism VIBRANTE */
 .dashboard-card .table-view .column-header-background {
-    -fx-background-color: #E0EDF9;
-    -fx-border-color: transparent transparent #C8D9EC transparent;
+    -fx-background-color: rgba(191, 219, 254, 0.5);
+    -fx-border-color: transparent transparent rgba(147, 197, 253, 0.4) transparent;
     -fx-border-width: 0 0 2 0;
     -fx-background-radius: 0;
 }
 
 .dashboard-card .table-view .column-header .label {
-    -fx-text-fill: #206BC4;
+    -fx-text-fill: #374151;
     -fx-font-weight: 700;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
 }
 
 /* Bordes visibles entre columnas */
 .dashboard-card .table-view .table-cell {
-    -fx-border-color: transparent #E5E7EB #E5E7EB transparent;
+    -fx-border-color: transparent rgba(229, 231, 235, 0.5) rgba(229, 231, 235, 0.5) transparent;
     -fx-border-width: 0 1 1 0;
-    -fx-padding: 10 14;
+    -fx-padding: 12 16;
 }
 
-/* Fila FALTA en contexto dashboard */
+/* Fila FALTA en contexto dashboard - VIBRANTE */
 .dashboard-card .table-view .table-row-cell.fila-falta {
-    -fx-background-color: #F8B7B7;
+    -fx-background-color: rgba(254, 202, 202, 0.9);
+    -fx-border-color: transparent transparent rgba(248, 113, 113, 0.4) transparent;
 }
 .dashboard-card .table-view .table-row-cell.fila-falta:hover {
-    -fx-background-color: #F3A5A5;
+    -fx-background-color: rgba(252, 165, 165, 1.0);
 }
 
 /* Dashboard-specific btn-primary (azul #206BC4) */
 .dashboard-card .btn-primary {
-    -fx-background-color: #206BC4;
-    -fx-effect: dropshadow(gaussian, rgba(32, 107, 196, 0.35), 10, 0, 0, 3);
+    -fx-background-color: #2563EB;
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.4), 12, 0, 0, 4);
 }
 .dashboard-card .btn-primary:hover {
-    -fx-background-color: #1A5BA0;
-    -fx-effect: dropshadow(gaussian, rgba(32, 107, 196, 0.45), 12, 0, 0, 4);
+    -fx-background-color: #1D4ED8;
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.5), 14, 0, 0, 5);
 }
 
 /* Dashboard-specific outline buttons */
 .dashboard-footer .btn-outline-primary {
+    -fx-background-color: #FFFFFF;
     -fx-text-fill: #206BC4;
-    -fx-border-color: #A5C4E6;
+    -fx-border-color: #D1D5DB;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(one-pass-box, rgba(0, 0, 0, 0.04), 2, 0, 0, 1);
 }
 .dashboard-footer .btn-outline-primary:hover {
-    -fx-background-color: #E0EDF9;
+    -fx-background-color: rgba(224, 237, 249, 0.4);
     -fx-border-color: #206BC4;
 }
 
