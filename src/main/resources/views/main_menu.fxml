@@ -43,11 +43,7 @@
                 <Label text="Panel de Control" styleClass="sidebar-item-text"/>
             </HBox>
 
-            <HBox fx:id="navClases" styleClass="sidebar-item" alignment="CENTER_LEFT" spacing="12" onMouseClicked="#mostrarSeccionClases">
-                <padding><Insets top="11" right="14" bottom="11" left="14"/></padding>
-                <FontIcon iconLiteral="mdal-class" styleClass="sidebar-item-icon"/>
-                <Label text="Clases" styleClass="sidebar-item-text"/>
-            </HBox>
+            
 
             <HBox fx:id="navInformes" styleClass="sidebar-item" alignment="CENTER_LEFT" spacing="12" onMouseClicked="#mostrarSeccionInformes">
                 <padding><Insets top="11" right="14" bottom="11" left="14"/></padding>
@@ -181,93 +177,6 @@
                     <Button text="Guardar Asistencia" onAction="#onGuardar" defaultButton="true" mnemonicParsing="false" styleClass="btn-primary, btn-sm, btn-icon">
                         <graphic><FontIcon iconLiteral="mdmz-save" styleClass="icon-white, icon-sm"/></graphic>
                     </Button>
-                </HBox>
-            </VBox>
-
-            <VBox fx:id="vistaClases" styleClass="dashboard-card classes-dashboard-card" visible="false" managed="false" spacing="0" VBox.vgrow="ALWAYS">
-                <Label text="Gesti&#xf3;n de Clases" styleClass="dashboard-section-title">
-                    <padding><Insets top="16" right="20" bottom="0" left="20"/></padding>
-                </Label>
-
-                <HBox styleClass="filter-bar classes-filter-bar" alignment="CENTER_LEFT" spacing="10">
-                    <padding><Insets top="20" right="20" bottom="18" left="20"/></padding>
-                    <VBox spacing="6">
-                        <Label text="Año Académico" styleClass="classes-filter-label"/>
-                        <ComboBox prefWidth="180" value="2025-2026"/>
-                    </VBox>
-                    <VBox spacing="6">
-                        <Label text="Ciclo" styleClass="classes-filter-label"/>
-                        <ComboBox prefWidth="160" value="DAM"/>
-                    </VBox>
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text=""/>
-                        <TextField promptText="Buscar Clase..." HBox.hgrow="ALWAYS"/>
-                    </VBox>
-                    <VBox spacing="6">
-                        <Label text=""/>
-                        <Button text="Añadir Clase" styleClass="btn-primary" prefWidth="140"/>
-                    </VBox>
-                </HBox>
-
-                <FlowPane hgap="12" vgap="12" prefWrapLength="820" styleClass="classes-grid">
-                    <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
-
-                    <VBox styleClass="class-card" spacing="6">
-                        <Label text="2º DAM - Desarrollo de Aplicaciones Multiplataforma" wrapText="true" styleClass="class-card-title"/>
-                        <Label text="Tutor: María López" styleClass="class-card-text"/>
-                        <Label text="Aula: 102" styleClass="class-card-text"/>
-                        <Label text="Alumnos: 25" styleClass="class-card-text"/>
-                        <HBox spacing="6"><Button text="Editar" styleClass="btn-ghost, class-card-btn"/><Button text="Eliminar" styleClass="btn-ghost, class-card-btn-danger"/><Button text="Ver Horario" styleClass="btn-ghost, class-card-btn"/></HBox>
-                    </VBox>
-
-                    <VBox styleClass="class-card" spacing="6">
-                        <Label text="2º DAM - Desarrollo de Aplicaciones" wrapText="true" styleClass="class-card-title"/>
-                        <Label text="Tutor: María López" styleClass="class-card-text"/>
-                        <Label text="Aula: 102" styleClass="class-card-text"/>
-                        <Label text="Alumnos: 25" styleClass="class-card-text"/>
-                        <HBox spacing="6"><Button text="Editar" styleClass="btn-ghost, class-card-btn"/><Button text="Eliminar" styleClass="btn-ghost, class-card-btn-danger"/><Button text="Ver Horario" styleClass="btn-ghost, class-card-btn"/></HBox>
-                    </VBox>
-
-                    <VBox styleClass="class-card" spacing="6">
-                        <Label text="2º DAM - Desarrollo de Aplicaciones" wrapText="true" styleClass="class-card-title"/>
-                        <Label text="Tutor: María López" styleClass="class-card-text"/>
-                        <Label text="Aula: 102" styleClass="class-card-text"/>
-                        <Label text="Alumnos: 25" styleClass="class-card-text"/>
-                        <HBox spacing="6"><Button text="Editar" styleClass="btn-ghost, class-card-btn"/><Button text="Eliminar" styleClass="btn-ghost, class-card-btn-danger"/><Button text="Ver Horario" styleClass="btn-ghost, class-card-btn"/></HBox>
-                    </VBox>
-
-                    <VBox styleClass="class-card" spacing="6">
-                        <Label text="2º DAM - Desarrollo de Aplicaciones" wrapText="true" styleClass="class-card-title"/>
-                        <Label text="Tutor: María López" styleClass="class-card-text"/>
-                        <Label text="Aula: 102" styleClass="class-card-text"/>
-                        <Label text="Alumnos: 25" styleClass="class-card-text"/>
-                        <HBox spacing="6"><Button text="Editar" styleClass="btn-ghost, class-card-btn"/><Button text="Eliminar" styleClass="btn-ghost, class-card-btn-danger"/><Button text="Ver Horario" styleClass="btn-ghost, class-card-btn"/></HBox>
-                    </VBox>
-
-                    <VBox styleClass="class-card" spacing="6">
-                        <Label text="2º DAM - Desarrollo de Aplicaciones Multiplataforma" wrapText="true" styleClass="class-card-title"/>
-                        <Label text="Tutor: María López" styleClass="class-card-text"/>
-                        <Label text="Aula: 102" styleClass="class-card-text"/>
-                        <Label text="Alumnos: 25" styleClass="class-card-text"/>
-                        <HBox spacing="6"><Button text="Editar" styleClass="btn-ghost, class-card-btn"/><Button text="Eliminar" styleClass="btn-ghost, class-card-btn-danger"/><Button text="Ver Horario" styleClass="btn-ghost, class-card-btn"/></HBox>
-                    </VBox>
-
-                    <VBox styleClass="class-card" spacing="6">
-                        <Label text="2º DAM - Desarrollo de Aplicaciones" wrapText="true" styleClass="class-card-title"/>
-                        <Label text="Tutor: María López" styleClass="class-card-text"/>
-                        <Label text="Aula: 102" styleClass="class-card-text"/>
-                        <Label text="Alumnos: 25" styleClass="class-card-text"/>
-                        <HBox spacing="6"><Button text="Editar" styleClass="btn-ghost, class-card-btn"/><Button text="Eliminar" styleClass="btn-ghost, class-card-btn-danger"/><Button text="Ver Horario" styleClass="btn-ghost, class-card-btn"/></HBox>
-                    </VBox>
-                </FlowPane>
-
-                <HBox styleClass="dashboard-footer classes-pagination" alignment="CENTER" spacing="8">
-                    <padding><Insets top="10" right="20" bottom="12" left="20"/></padding>
-                    <Button text="&#171;" styleClass="btn-ghost, page-btn"/>
-                    <Button text="1" styleClass="btn-primary, btn-sm, page-btn-active"/>
-                    <Button text="2" styleClass="btn-ghost, page-btn"/>
-                    <Button text="3" styleClass="btn-ghost, page-btn"/>
-                    <Button text="&#187;" styleClass="btn-ghost, page-btn"/>
                 </HBox>
             </VBox>
 

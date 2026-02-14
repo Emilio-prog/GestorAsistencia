@@ -45,11 +45,9 @@ public class MainController {
     @FXML private Button btnAddAlumno; // Nuevo
     @FXML private Button btnDelAlumno; // Nuevo
     @FXML private HBox navPanelControl;
-    @FXML private HBox navClases;
     @FXML private HBox navInformes;
 
     @FXML private VBox vistaAsistencia;
-    @FXML private VBox vistaClases;
     @FXML private VBox vistaInformes;
     @FXML private Label lblPageTitle;
     @FXML private Label lblBreadcrumb;
@@ -126,13 +124,6 @@ public class MainController {
     }
 
     @FXML
-    public void mostrarSeccionClases() {
-        activarVista("clases");
-        lblPageTitle.setText("Clases");
-        lblBreadcrumb.setText("Gestión de clases");
-    }
-
-    @FXML
     public void mostrarSeccionInformes() {
         activarVista("informes");
         lblPageTitle.setText("Informes");
@@ -142,26 +133,19 @@ public class MainController {
 
     private void activarVista(String seccionActiva) {
         boolean panelControlActivo = "panel".equals(seccionActiva);
-        boolean clasesActiva = "clases".equals(seccionActiva);
         boolean informesActiva = "informes".equals(seccionActiva);
 
         vistaAsistencia.setVisible(panelControlActivo);
         vistaAsistencia.setManaged(panelControlActivo);
 
-        vistaClases.setVisible(clasesActiva);
-        vistaClases.setManaged(clasesActiva);
-
         vistaInformes.setVisible(informesActiva);
         vistaInformes.setManaged(informesActiva);
 
         navPanelControl.getStyleClass().remove("sidebar-item-active");
-        navClases.getStyleClass().remove("sidebar-item-active");
         navInformes.getStyleClass().remove("sidebar-item-active");
 
         if (panelControlActivo) {
             navPanelControl.getStyleClass().add("sidebar-item-active");
-        } else if (clasesActiva) {
-            navClases.getStyleClass().add("sidebar-item-active");
         } else if (informesActiva) {
             navInformes.getStyleClass().add("sidebar-item-active");
         }
