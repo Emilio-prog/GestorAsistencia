@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,25 @@ public class LoginController {
 
     @FXML
     private PasswordField txtPassword;
+
+    @FXML
+    public void initialize() {
+        // Efecto focus-within: resaltar el input-group cuando el campo tiene foco
+        configurarFocusGroup(txtEmail);
+        configurarFocusGroup(txtPassword);
+    }
+
+    private void configurarFocusGroup(javafx.scene.control.Control campo) {
+        campo.focusedProperty().addListener((obs, oldVal, focused) -> {
+            if (campo.getParent() instanceof HBox grupo) {
+                if (focused) {
+                    grupo.getStyleClass().add("input-group-focused");
+                } else {
+                    grupo.getStyleClass().remove("input-group-focused");
+                }
+            }
+        });
+    }
 
     @FXML
     public void onLogin() {
