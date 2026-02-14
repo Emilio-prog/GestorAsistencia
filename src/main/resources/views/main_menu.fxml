@@ -122,55 +122,62 @@
             </Label>
 
             <!-- BARRA DE FILTROS -->
-            <HBox styleClass="filter-bar" alignment="CENTER_LEFT" spacing="10">
-                <padding><Insets top="14" right="20" bottom="14" left="20"/></padding>
+            <HBox styleClass="filter-bar" alignment="CENTER_LEFT" spacing="15">
+                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
 
-                <!-- Fecha -->
-                <FontIcon iconLiteral="mdal-calendar_today" styleClass="filter-icon"/>
-                <DatePicker fx:id="dpFecha" onAction="#cargarAlumnos" prefWidth="148"/>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <FontIcon iconLiteral="mdal-calendar_today" styleClass="filter-icon"/>
+                    <DatePicker fx:id="dpFecha" onAction="#cargarAlumnos"
+                                promptText="DD/MM/YYYY"
+                                prefWidth="170" minWidth="170"/>
+                </HBox>
 
-                <!-- Asignatura -->
-                <ComboBox fx:id="cbAsignatura" onAction="#cargarAlumnos" prefWidth="200"/>
+                <ComboBox fx:id="cbAsignatura" onAction="#cargarAlumnos"
+                          promptText="Selecciona Asignatura"
+                          prefWidth="250" minWidth="250"/>
 
-                <!-- Grupo -->
-                <ComboBox fx:id="cbGrupo" onAction="#cargarAlumnos" prefWidth="100"/>
+                <ComboBox fx:id="cbGrupo" onAction="#cargarAlumnos"
+                          prefWidth="110" minWidth="110"/>
 
-                <!-- Refrescar -->
                 <Button text="Refrescar" onAction="#cargarAlumnos"
                         mnemonicParsing="false"
+                        minWidth="-Infinity"
                         styleClass="btn-primary, btn-sm, btn-icon">
                     <graphic>
                         <FontIcon iconLiteral="mdmz-refresh" styleClass="icon-white, icon-sm"/>
                     </graphic>
                 </Button>
 
-                <!-- Spacer -->
                 <Region HBox.hgrow="ALWAYS"/>
 
-                <!-- Botones admin (ocultos por defecto) -->
-                <Button fx:id="btnAdmin" text="Registrar Profesor"
-                        onAction="#irAdmin" visible="false"
-                        styleClass="btn-warning, btn-sm, btn-icon">
-                    <graphic>
-                        <FontIcon iconLiteral="mdal-admin_panel_settings" styleClass="icon-white, icon-sm"/>
-                    </graphic>
-                </Button>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button fx:id="btnAdmin" text="Registrar Profesor"
+                            onAction="#irAdmin" visible="false"
+                            minWidth="-Infinity"
+                            styleClass="btn-warning, btn-sm, btn-icon">
+                        <graphic>
+                            <FontIcon iconLiteral="mdal-admin_panel_settings" styleClass="icon-white, icon-sm"/>
+                        </graphic>
+                    </Button>
 
-                <Button fx:id="btnAddAlumno" text="Alumno"
-                        onAction="#onAddAlumno" visible="false"
-                        styleClass="btn-success, btn-sm, btn-icon">
-                    <graphic>
-                        <FontIcon iconLiteral="mdmz-person_add" styleClass="icon-white, icon-sm"/>
-                    </graphic>
-                </Button>
+                    <Button fx:id="btnAddAlumno" text="Alumno"
+                            onAction="#onAddAlumno" visible="false"
+                            minWidth="-Infinity"
+                            styleClass="btn-success, btn-sm, btn-icon">
+                        <graphic>
+                            <FontIcon iconLiteral="mdmz-person_add" styleClass="icon-white, icon-sm"/>
+                        </graphic>
+                    </Button>
 
-                <Button fx:id="btnDelAlumno" text="Eliminar"
-                        onAction="#onDeleteAlumno" visible="false"
-                        styleClass="btn-danger, btn-sm, btn-icon">
-                    <graphic>
-                        <FontIcon iconLiteral="mdal-delete_outline" styleClass="icon-white, icon-sm"/>
-                    </graphic>
-                </Button>
+                    <Button fx:id="btnDelAlumno" text="Eliminar"
+                            onAction="#onDeleteAlumno" visible="false"
+                            minWidth="-Infinity"
+                            styleClass="btn-danger, btn-sm, btn-icon">
+                        <graphic>
+                            <FontIcon iconLiteral="mdal-delete_outline" styleClass="icon-white, icon-sm"/>
+                        </graphic>
+                    </Button>
+                </HBox>
             </HBox>
 
             <!-- TABLA DE ALUMNOS -->
