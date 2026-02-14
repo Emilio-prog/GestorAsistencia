@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -54,7 +55,7 @@
                 <Label text="Alumnos" styleClass="sidebar-item-text"/>
             </HBox>
 
-            <HBox styleClass="sidebar-item" alignment="CENTER_LEFT" spacing="12">
+            <HBox fx:id="navInformes" styleClass="sidebar-item" alignment="CENTER_LEFT" spacing="12" onMouseClicked="#mostrarSeccionInformes">
                 <padding><Insets top="11" right="14" bottom="11" left="14"/></padding>
                 <FontIcon iconLiteral="mdal-assessment" styleClass="sidebar-item-icon"/>
                 <Label text="Informes" styleClass="sidebar-item-text"/>
@@ -180,9 +181,6 @@
                     <padding><Insets top="14" right="20" bottom="14" left="20"/></padding>
                     <Label fx:id="lblInfo" text="Listo" styleClass="footer-info-text"/>
                     <Region HBox.hgrow="ALWAYS"/>
-                    <Button text="Estad&#xed;sticas" onAction="#verEstadisticas" styleClass="btn-outline-primary, btn-sm, btn-icon">
-                        <graphic><FontIcon iconLiteral="mdmz-pie_chart" styleClass="icon-primary, icon-sm"/></graphic>
-                    </Button>
                     <Button text="Todos Presentes" onAction="#onMarcarTodosPresentes" styleClass="btn-outline-primary, btn-sm, btn-icon">
                         <graphic><FontIcon iconLiteral="mdal-check_circle_outline" styleClass="icon-primary, icon-sm"/></graphic>
                     </Button>
@@ -277,6 +275,24 @@
                     <Button text="3" styleClass="btn-ghost, page-btn"/>
                     <Button text="&#187;" styleClass="btn-ghost, page-btn"/>
                 </HBox>
+            </VBox>
+
+            <VBox fx:id="vistaInformes" styleClass="dashboard-card" visible="false" managed="false" spacing="16" VBox.vgrow="ALWAYS">
+                <Label text="Informes y Estad&#xed;sticas" styleClass="dashboard-section-title">
+                    <padding><Insets top="16" right="20" bottom="0" left="20"/></padding>
+                </Label>
+
+                <HBox spacing="20" alignment="CENTER_LEFT">
+                    <padding><Insets top="0" right="20" bottom="0" left="20"/></padding>
+                    <Label fx:id="lblTotalPresentes" text="Presentes: 0"/>
+                    <Label fx:id="lblTotalFaltas" text="Faltas: 0"/>
+                    <Label fx:id="lblTotalRetrasos" text="Retrasos: 0"/>
+                    <Label fx:id="lblTotalJustificadas" text="Justificadas: 0"/>
+                </HBox>
+
+                <PieChart fx:id="chartEstadisticas" title="Resumen de Asistencia" VBox.vgrow="ALWAYS">
+                    <padding><Insets top="0" right="20" bottom="20" left="20"/></padding>
+                </PieChart>
             </VBox>
         </StackPane>
     </VBox>

@@ -9,15 +9,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets; // Nuevo
-import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.GridPane; // Nuevo
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,11 +46,19 @@ public class MainController {
     @FXML private Button btnDelAlumno; // Nuevo
     @FXML private HBox navPanelControl;
     @FXML private HBox navClases;
+    @FXML private HBox navInformes;
 
     @FXML private VBox vistaAsistencia;
     @FXML private VBox vistaClases;
+    @FXML private VBox vistaInformes;
     @FXML private Label lblPageTitle;
     @FXML private Label lblBreadcrumb;
+
+    @FXML private PieChart chartEstadisticas;
+    @FXML private Label lblTotalPresentes;
+    @FXML private Label lblTotalFaltas;
+    @FXML private Label lblTotalRetrasos;
+    @FXML private Label lblTotalJustificadas;
 
     // Tabla
     @FXML private TableView<AlumnoAsistenciaRow> tblAlumnos;
@@ -115,32 +120,50 @@ public class MainController {
 
     @FXML
     public void mostrarPanelControl() {
-        activarVista(true);
+        activarVista("panel");
         lblPageTitle.setText("Panel de Control");
         lblBreadcrumb.setText("Gestión de asistencia diaria");
     }
 
     @FXML
     public void mostrarSeccionClases() {
-        activarVista(false);
+        activarVista("clases");
         lblPageTitle.setText("Clases");
         lblBreadcrumb.setText("Gestión de clases");
     }
 
-    private void activarVista(boolean panelControlActivo) {
+    @FXML
+    public void mostrarSeccionInformes() {
+        activarVista("informes");
+        lblPageTitle.setText("Informes");
+        lblBreadcrumb.setText("Estadísticas de asistencia");
+        actualizarEstadisticas();
+    }
+
+    private void activarVista(String seccionActiva) {
+        boolean panelControlActivo = "panel".equals(seccionActiva);
+        boolean clasesActiva = "clases".equals(seccionActiva);
+        boolean informesActiva = "informes".equals(seccionActiva);
+
         vistaAsistencia.setVisible(panelControlActivo);
         vistaAsistencia.setManaged(panelControlActivo);
 
-        vistaClases.setVisible(!panelControlActivo);
-        vistaClases.setManaged(!panelControlActivo);
+        vistaClases.setVisible(clasesActiva);
+        vistaClases.setManaged(clasesActiva);
+
+        vistaInformes.setVisible(informesActiva);
+        vistaInformes.setManaged(informesActiva);
 
         navPanelControl.getStyleClass().remove("sidebar-item-active");
         navClases.getStyleClass().remove("sidebar-item-active");
+        navInformes.getStyleClass().remove("sidebar-item-active");
 
         if (panelControlActivo) {
             navPanelControl.getStyleClass().add("sidebar-item-active");
-        } else {
+        } else if (clasesActiva) {
             navClases.getStyleClass().add("sidebar-item-active");
+        } else if (informesActiva) {
+            navInformes.getStyleClass().add("sidebar-item-active");
         }
     }
 
@@ -154,7 +177,10 @@ public class MainController {
             // Repintar al cambiar el estado (combobox)
             row.itemProperty().addListener((obs, oldRow, newRow) -> {
                 if (newRow != null) {
-                    newRow.estadoProperty().addListener((o, oldEstado, newEstado) -> actualizarEstiloFila(row));
+                    newRow.estadoProperty().addListener((o, oldEstado, newEstado) -> {
+                        actualizarEstiloFila(row);
+                        actualizarEstadisticas();
+                    });
                 }
             });
 
@@ -200,6 +226,7 @@ public class MainController {
         }
 
         lblInfo.setText("Alumnos: " + alumnos.size() + " | Asignatura: " + asignatura.getNombre());
+        actualizarEstadisticas();
     }
 
     // --- NUEVO: AÑADIR ALUMNO (SOLO ADMIN) ---
@@ -304,10 +331,10 @@ public class MainController {
             row.setEstado(EstadoAsistencia.PRESENTE);
         }
         tblAlumnos.refresh();
+        actualizarEstadisticas();
     }
 
-    @FXML
-    public void verEstadisticas() {
+    private void actualizarEstadisticas() {
         int presentes = 0, faltas = 0, retrasos = 0, justificados = 0;
         for (AlumnoAsistenciaRow row : listaAlumnosUI) {
             switch (row.getEstado()) {
@@ -324,15 +351,11 @@ public class MainController {
                 new PieChart.Data("Retrasos", retrasos),
                 new PieChart.Data("Justificadas", justificados));
 
-        PieChart chart = new PieChart(pieChartData);
-        chart.setTitle("Resumen de Asistencia");
-
-        Stage popup = new Stage();
-        popup.initModality(Modality.APPLICATION_MODAL);
-        popup.setTitle("Estadísticas");
-        Scene scene = new Scene(chart, 500, 400);
-        popup.setScene(scene);
-        popup.show();
+        chartEstadisticas.setData(pieChartData);
+        lblTotalPresentes.setText("Presentes: " + presentes);
+        lblTotalFaltas.setText("Faltas: " + faltas);
+        lblTotalRetrasos.setText("Retrasos: " + retrasos);
+        lblTotalJustificadas.setText("Justificadas: " + justificados);
     }
 
     @FXML
