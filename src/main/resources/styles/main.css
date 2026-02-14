@@ -78,16 +78,13 @@
     -fx-background-position: left center;
 }
 
-/* --- ESTADO: FALTA (ROJO) --- */
+/* --- ESTADO: FALTA (ROSA SALMON PASTEL) --- */
 .table-row-cell.fila-falta {
-    -fx-background-color: #FEF2F2; /* Fondo rojo muy suave */
-    -fx-background-image: url("data:image/svg+xml;utf8,<svg width='6' height='100' xmlns='http://www.w3.org/2000/svg'><rect width='6' height='100' fill='%23EF4444'/></svg>");
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: left center;
+    -fx-background-color: #F8B7B7;
 }
 .table-row-cell.fila-falta .table-cell {
-    -fx-text-fill: #DC2626;
-    -fx-font-weight: bold;
+    -fx-text-fill: #334155;
+    -fx-font-weight: normal;
 }
 
 /* --- ESTADO: RETRASO (AMARILLO) --- */
@@ -250,12 +247,17 @@
 }
 
 .btn-outline-primary {
-    -fx-background-color: transparent;
-    -fx-text-fill: #6366F1;
-    -fx-border-color: #6366F1;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #2563EB;
+    -fx-border-color: #93C5FD;
     -fx-border-width: 1.5;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
 }
-.btn-outline-primary:hover { -fx-background-color: #EEF2FF; }
+.btn-outline-primary:hover {
+    -fx-background-color: #EFF6FF;
+    -fx-border-color: #3B82F6;
+}
 
 .btn-lg {
     -fx-font-size: 15px;
@@ -467,55 +469,216 @@
 
 
 /* ============================================================
-   10. DASHBOARD (Main Menu)
+   10. DASHBOARD (Main Menu) + SIDEBAR
    ============================================================ */
 
+/* Root: sin padding, ocupa toda la ventana */
 .dashboard-root {
-    -fx-background-color: linear-gradient(to bottom right, #EEF2FF, #F8FAFC, #F1F5F9);
-    -fx-padding: 20;
+    -fx-background-color: #F1F5F9;
 }
 
+/* --- SIDEBAR --- */
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom, #F1F6FC, #E4EDF8, #DCE9F9);
+    -fx-border-color: transparent #D0DCE8 transparent transparent;
+    -fx-border-width: 0 1 0 0;
+}
+
+.sidebar-logo-area {
+    -fx-background-color: transparent;
+}
+
+/* Engranaje grande con G centrada */
+.sidebar-logo-gear {
+    -fx-pref-width: 76;
+    -fx-pref-height: 76;
+    -fx-min-width: 76;
+    -fx-min-height: 76;
+    -fx-max-width: 76;
+    -fx-max-height: 76;
+}
+
+.sidebar-gear-icon {
+    -fx-icon-color: #206BC4;
+    -fx-icon-size: 72;
+}
+
+.sidebar-logo-letter {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 2, 0, 0, 1);
+}
+
+/* Separador bajo logo */
+.sidebar-separator .line {
+    -fx-border-color: #C4D5E8;
+    -fx-border-width: 1 0 0 0;
+}
+.sidebar-separator {
+    -fx-padding: 0 20;
+}
+
+/* Contenedor de navegacion */
+.sidebar-nav {
+    -fx-background-color: transparent;
+}
+
+/* Items de navegacion */
+.sidebar-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+.sidebar-item:hover {
+    -fx-background-color: rgba(59, 130, 246, 0.06);
+}
+
+.sidebar-item-active {
+    -fx-background-color: #CEDBEF;
+}
+.sidebar-item-active:hover {
+    -fx-background-color: #CEDBEF;
+}
+
+.sidebar-item-icon {
+    -fx-icon-color: #64748B;
+    -fx-icon-size: 20;
+}
+.sidebar-item-active .sidebar-item-icon {
+    -fx-icon-color: #206BC4;
+}
+
+.sidebar-item-text {
+    -fx-text-fill: #475569;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+}
+.sidebar-item-active .sidebar-item-text {
+    -fx-text-fill: #206BC4;
+    -fx-font-weight: 600;
+}
+
+/* Boton Salir del sidebar */
+.sidebar-btn-salir {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-text-fill: #475569;
+    -fx-effect: none;
+}
+.sidebar-btn-salir:hover {
+    -fx-background-color: rgba(239, 68, 68, 0.08);
+    -fx-text-fill: #DC2626;
+}
+.sidebar-btn-salir:hover .sidebar-item-icon {
+    -fx-icon-color: #DC2626;
+}
+
+/* --- AREA DE CONTENIDO PRINCIPAL --- */
+.dashboard-main {
+    -fx-background-color: #F1F5F9;
+}
+
+.dashboard-page-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #0F172A;
+}
+
+/* Breadcrumbs */
+.breadcrumb-link {
+    -fx-text-fill: #3B82F6;
+    -fx-font-size: 13px;
+    -fx-font-weight: 400;
+}
+.breadcrumb-separator {
+    -fx-text-fill: #94A3B8;
+    -fx-font-size: 13px;
+}
+.breadcrumb-current {
+    -fx-text-fill: #64748B;
+    -fx-font-size: 13px;
+    -fx-font-weight: 400;
+}
+
+.dashboard-section-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #1E293B;
+}
+
+/* Card del contenido principal */
 .dashboard-card {
     -fx-background-color: #FFFFFF;
-    -fx-background-radius: 16;
-    -fx-border-radius: 16;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
     -fx-border-color: #E2E8F0;
     -fx-border-width: 1;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 24, 0, 0, 6);
-}
-
-.dashboard-header {
-    -fx-background-color: #FFFFFF;
-    -fx-background-radius: 16 16 0 0;
-}
-
-.dashboard-header-icon-bg {
-    -fx-background-color: #EEF2FF;
-    -fx-background-radius: 10;
-    -fx-pref-width: 40;
-    -fx-pref-height: 40;
-    -fx-min-width: 40;
-    -fx-min-height: 40;
-    -fx-max-width: 40;
-    -fx-max-height: 40;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 16, 0, 0, 4);
 }
 
 .dashboard-table-container {
     -fx-background-color: transparent;
 }
 
+/* Barra de filtros */
+.filter-bar {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 14 14 0 0;
+    -fx-border-color: transparent transparent #E2E8F0 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.filter-icon {
+    -fx-icon-color: #94A3B8;
+    -fx-icon-size: 18;
+}
+
+/* Footer (azul claro como el header de tabla) */
 .dashboard-footer {
-    -fx-background-color: #FAFBFC;
-    -fx-background-radius: 0 0 16 16;
-    -fx-border-color: #E2E8F0 transparent transparent transparent;
+    -fx-background-color: #EFF6FF;
+    -fx-background-radius: 0 0 14 14;
+    -fx-border-color: #DBEAFE transparent transparent transparent;
     -fx-border-width: 1 0 0 0;
 }
 
-/* Barra de filtros */
-.filter-bar {
-    -fx-background-color: #F8FAFC;
-    -fx-border-color: transparent transparent #E2E8F0 transparent;
-    -fx-border-width: 0 0 1 0;
+.footer-info-text {
+    -fx-text-fill: #475569;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+}
+
+/* Table header azul claro */
+.dashboard-card .table-view .column-header-background {
+    -fx-background-color: #EFF6FF;
+    -fx-border-color: transparent transparent #DBEAFE transparent;
+    -fx-border-width: 0 0 2 0;
+    -fx-background-radius: 0;
+}
+
+.dashboard-card .table-view .column-header .label {
+    -fx-text-fill: #1E40AF;
+    -fx-font-weight: 700;
+    -fx-font-size: 12px;
+}
+
+/* Bordes visibles entre columnas */
+.dashboard-card .table-view .table-cell {
+    -fx-border-color: transparent #E8ECF0 #EDF0F4 transparent;
+    -fx-border-width: 0 1 1 0;
+    -fx-padding: 10 14;
+}
+
+/* Fila FALTA en contexto dashboard */
+.dashboard-card .table-view .table-row-cell.fila-falta {
+    -fx-background-color: #F8B7B7;
+}
+.dashboard-card .table-view .table-row-cell.fila-falta:hover {
+    -fx-background-color: #F3A5A5;
 }
 
 /* Scrollbar minimalista */
