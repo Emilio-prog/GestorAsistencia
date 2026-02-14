@@ -188,6 +188,17 @@ public class MainController {
         grupo.getItems().addAll("2DAM", "1DAW");
         grupo.setValue(cbGrupo.getValue()); // Preseleccionar el grupo actual
 
+        ComboBox<Asignatura> asignaturaAlumno = new ComboBox<>();
+        asignaturaAlumno.setItems(FXCollections.observableArrayList(asignaturaRepository.findAll()));
+        asignaturaAlumno.setConverter(new StringConverter<Asignatura>() {
+            @Override
+            public String toString(Asignatura a) { return a != null ? a.getNombre() : ""; }
+
+            @Override
+            public Asignatura fromString(String s) { return null; }
+        });
+        asignaturaAlumno.setValue(cbAsignatura.getValue()); // Preseleccionar asignatura actual
+
         grid.add(new Label("Nombre:"), 0, 0);
         grid.add(nombre, 1, 0);
         grid.add(new Label("Apellidos:"), 0, 1);
@@ -196,13 +207,16 @@ public class MainController {
         grid.add(email, 1, 2);
         grid.add(new Label("Grupo:"), 0, 3);
         grid.add(grupo, 1, 3);
+        grid.add(new Label("Asignatura:"), 0, 4);
+        grid.add(asignaturaAlumno, 1, 4);
 
         dialog.getDialogPane().setContent(grid);
 
         // Convertir resultado
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == loginButtonType) {
-                return new Alumno(null, nombre.getText(), apellidos.getText(), email.getText(), grupo.getValue());
+                String idAsignatura = asignaturaAlumno.getValue() != null ? asignaturaAlumno.getValue().getId() : null;
+                return new Alumno(null, nombre.getText(), apellidos.getText(), email.getText(), grupo.getValue(), idAsignatura);
             }
             return null;
         });
@@ -210,8 +224,8 @@ public class MainController {
         // Procesar respuesta
         Optional<Alumno> result = dialog.showAndWait();
         result.ifPresent(nuevoAlumno -> {
-            if (nuevoAlumno.getNombre().isEmpty() || nuevoAlumno.getEmail().isEmpty()) {
-                mostrarAlerta("Error", "Nombre y Email son obligatorios");
+            if (nuevoAlumno.getNombre().isEmpty() || nuevoAlumno.getEmail().isEmpty() || nuevoAlumno.getIdAsignatura() == null) {
+                mostrarAlerta("Error", "Nombre, Email y Asignatura son obligatorios");
                 return;
             }
             alumnoRepository.save(nuevoAlumno);

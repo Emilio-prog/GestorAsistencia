@@ -37,9 +37,9 @@ public class DataInitializer implements CommandLineRunner {
 
         // 2. Crear Alumnos si no existen
         if (alumnoRepository.count() == 0) {
-            alumnoRepository.save(new Alumno(null, "Juan", "Pérez", "juan@email.com", "2DAM"));
-            alumnoRepository.save(new Alumno(null, "Ana", "García", "ana@email.com", "2DAM"));
-            alumnoRepository.save(new Alumno(null, "Luis", "Rodríguez", "luis@email.com", "1DAW"));
+            alumnoRepository.save(new Alumno(null, "Juan", "Pérez", "juan@email.com", "2DAM", null));
+            alumnoRepository.save(new Alumno(null, "Ana", "García", "ana@email.com", "2DAM", null));
+            alumnoRepository.save(new Alumno(null, "Luis", "Rodríguez", "luis@email.com", "1DAW", null));
             System.out.println("-> Alumnos de prueba creados (2DAM y 1DAW).");
         } else {
             System.out.println("-> Alumnos ya existen. Saltando creación.");

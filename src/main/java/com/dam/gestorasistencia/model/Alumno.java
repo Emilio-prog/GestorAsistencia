@@ -18,4 +18,5 @@ public class Alumno {
     private String apellidos;
     private String email;
     private String grupo; // Ejemplo: "2DAM", "1DAW" - Crucial para el filtro
+    private String idAsignatura; // Asignatura principal del alumno
 }
