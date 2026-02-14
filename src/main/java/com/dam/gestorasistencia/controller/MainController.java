@@ -589,6 +589,7 @@ public class MainController {
     private float escribirTitulo(PDDocument document, PDPage page, String text, float y) throws IOException {
         try (PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
             cs.beginText();
+            cs.setNonStrokingColor(0, 0, 0);
             cs.setFont(PDType1Font.HELVETICA_BOLD, 16);
             cs.newLineAtOffset(40, y);
             cs.showText(text);
@@ -600,7 +601,8 @@ public class MainController {
     private float escribirTexto(PDDocument document, PDPage page, String text, float y) throws IOException {
         try (PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
             cs.beginText();
-            cs.setFont(PDType1Font.HELVETICA, 10);
+            cs.setNonStrokingColor(0, 0, 0);
+            cs.setFont(PDType1Font.HELVETICA, 11);
             cs.newLineAtOffset(40, y);
             cs.showText(text);
             cs.endText();
@@ -625,7 +627,7 @@ public class MainController {
 
             try (PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
                 if (rowIndex == 0) {
-                    cs.setNonStrokingColor(225, 235, 252);
+                    cs.setNonStrokingColor(210, 224, 244);
                     cs.addRect(marginX, y - rowHeight + 4, tableWidth, rowHeight);
                     cs.fill();
                 }
@@ -649,8 +651,9 @@ public class MainController {
 
                 try (PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
                     cs.beginText();
-                    cs.setFont(rowIndex == 0 ? PDType1Font.HELVETICA_BOLD : PDType1Font.HELVETICA, 9);
-                    cs.newLineAtOffset(x + 4, y - 11);
+                    cs.setNonStrokingColor(15, 23, 42);
+                    cs.setFont(rowIndex == 0 ? PDType1Font.HELVETICA_BOLD : PDType1Font.HELVETICA, 11);
+                    cs.newLineAtOffset(x + 4, y - 13);
                     cs.showText(safe);
                     cs.endText();
                 }
