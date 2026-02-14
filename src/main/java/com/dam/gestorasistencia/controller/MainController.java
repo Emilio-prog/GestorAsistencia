@@ -22,6 +22,7 @@ import javafx.util.StringConverter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -56,13 +57,11 @@ public class MainController {
     @FXML private Button btnAddAlumno; // Nuevo
     @FXML private Button btnDelAlumno; // Nuevo
     @FXML private HBox navPanelControl;
-    @FXML private HBox navClases;
     @FXML private HBox navInformes;
     @FXML private HBox navConfiguracion;
 
     @FXML private VBox vistaAsistencia;
     @FXML private VBox vistaConfiguracion;
-    @FXML private VBox vistaClases;
     @FXML private VBox vistaInformes;
     @FXML private Label lblPageTitle;
     @FXML private Label lblBreadcrumb;
@@ -143,12 +142,6 @@ public class MainController {
         lblBreadcrumb.setText("Gestión de asistencia diaria");
     }
 
-    @FXML
-    public void mostrarSeccionClases() {
-        activarVista("clases");
-        lblPageTitle.setText("Clases");
-        lblBreadcrumb.setText("Gestión de clases");
-    }
 
     @FXML
     public void mostrarSeccionInformes() {
@@ -167,15 +160,11 @@ public class MainController {
 
     private void activarVista(String seccionActiva) {
         boolean panelControlActivo = "panel".equals(seccionActiva);
-        boolean clasesActiva = "clases".equals(seccionActiva);
         boolean informesActiva = "informes".equals(seccionActiva);
         boolean configuracionActiva = "configuracion".equals(seccionActiva);
 
         vistaAsistencia.setVisible(panelControlActivo);
         vistaAsistencia.setManaged(panelControlActivo);
-
-        vistaClases.setVisible(clasesActiva);
-        vistaClases.setManaged(clasesActiva);
 
         vistaInformes.setVisible(informesActiva);
         vistaInformes.setManaged(informesActiva);
@@ -184,14 +173,11 @@ public class MainController {
         vistaConfiguracion.setManaged(configuracionActiva);
 
         navPanelControl.getStyleClass().remove("sidebar-item-active");
-        navClases.getStyleClass().remove("sidebar-item-active");
         navInformes.getStyleClass().remove("sidebar-item-active");
         navConfiguracion.getStyleClass().remove("sidebar-item-active");
 
         if (panelControlActivo) {
             navPanelControl.getStyleClass().add("sidebar-item-active");
-        } else if (clasesActiva) {
-            navClases.getStyleClass().add("sidebar-item-active");
         } else if (informesActiva) {
             navInformes.getStyleClass().add("sidebar-item-active");
         } else if (configuracionActiva) {
@@ -502,24 +488,48 @@ public class MainController {
         }
 
         try (PDDocument document = new PDDocument()) {
-            PDPage page = new PDPage();
+            PDPage page = new PDPage(PDRectangle.A4);
             document.addPage(page);
+            float[] cursorY = new float[]{780f};
 
-            try (PDPageContentStream content = new PDPageContentStream(document, page)) {
-                content.beginText();
-                content.setFont(PDType1Font.HELVETICA_BOLD, 14);
-                content.newLineAtOffset(50, 760);
-                content.showText("Exportación de Configuración");
-                content.newLineAtOffset(0, -24);
-                content.setFont(PDType1Font.HELVETICA, 11);
+            cursorY[0] = escribirTitulo(document, page, "Exportación de Configuración", cursorY[0]);
+            cursorY[0] = escribirTexto(document, page, "Fecha de exportación: " + data.get("exportadoEn"), cursorY[0] - 10);
 
-                for (String line : construirLineasPdf(data)) {
-                    content.showText(line.length() > 110 ? line.substring(0, 110) : line);
-                    content.newLineAtOffset(0, -16);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> usuario = (Map<String, Object>) data.get("usuarioSesion");
+            List<List<String>> filasUsuario = List.of(
+                    List.of("Campo", "Valor"),
+                    List.of("Nombre", String.valueOf(usuario.get("nombre"))),
+                    List.of("Email", String.valueOf(usuario.get("email"))),
+                    List.of("Password", String.valueOf(usuario.get("password"))),
+                    List.of("Rol", String.valueOf(usuario.get("rol")))
+            );
+            cursorY[0] = dibujarTabla(document, page, cursorY[0] - 18, "Usuario en sesión", new float[]{180f, 330f}, filasUsuario);
+
+            @SuppressWarnings("unchecked")
+            Map<String, List<Map<String, String>>> alumnos = (Map<String, List<Map<String, String>>>) data.get("alumnosPorClase");
+            for (Map.Entry<String, List<Map<String, String>>> entry : alumnos.entrySet()) {
+                List<List<String>> filasAlumnos = new ArrayList<>();
+                filasAlumnos.add(List.of("Nombre", "Apellidos", "Email", "Asignatura"));
+                for (Map<String, String> alumno : entry.getValue()) {
+                    filasAlumnos.add(List.of(
+                            valor(alumno.get("nombre")),
+                            valor(alumno.get("apellidos")),
+                            valor(alumno.get("email")),
+                            valor(alumno.get("idAsignatura"))
+                    ));
                 }
-
-                content.endText();
+                cursorY[0] = dibujarTabla(document, page, cursorY[0] - 18, "Alumnos - Clase " + entry.getKey(), new float[]{100f, 120f, 190f, 100f}, filasAlumnos);
             }
+
+            @SuppressWarnings("unchecked")
+            List<Map<String, String>> asignaturas = (List<Map<String, String>>) data.get("asignaturas");
+            List<List<String>> filasAsignaturas = new ArrayList<>();
+            filasAsignaturas.add(List.of("Nombre", "Curso"));
+            for (Map<String, String> asignatura : asignaturas) {
+                filasAsignaturas.add(List.of(valor(asignatura.get("nombre")), valor(asignatura.get("curso"))));
+            }
+            dibujarTabla(document, page, cursorY[0] - 18, "Asignaturas", new float[]{350f, 160f}, filasAsignaturas);
 
             document.save(file);
             mostrarAlerta("Exportación completada", "Se guardó el archivo PDF correctamente.");
@@ -576,39 +586,85 @@ public class MainController {
         return root;
     }
 
-    private List<String> construirLineasPdf(Map<String, Object> data) {
-        List<String> lines = new ArrayList<>();
-        lines.add("Fecha exportación: " + data.get("exportadoEn"));
+    private float escribirTitulo(PDDocument document, PDPage page, String text, float y) throws IOException {
+        try (PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
+            cs.beginText();
+            cs.setFont(PDType1Font.HELVETICA_BOLD, 16);
+            cs.newLineAtOffset(40, y);
+            cs.showText(text);
+            cs.endText();
+        }
+        return y - 18;
+    }
 
-        @SuppressWarnings("unchecked")
-        Map<String, Object> usuario = (Map<String, Object>) data.get("usuarioSesion");
-        lines.add(" ");
-        lines.add("Usuario en sesión:");
-        lines.add("- Nombre: " + usuario.get("nombre"));
-        lines.add("- Email: " + usuario.get("email"));
-        lines.add("- Password: " + usuario.get("password"));
-        lines.add("- Rol: " + usuario.get("rol"));
+    private float escribirTexto(PDDocument document, PDPage page, String text, float y) throws IOException {
+        try (PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
+            cs.beginText();
+            cs.setFont(PDType1Font.HELVETICA, 10);
+            cs.newLineAtOffset(40, y);
+            cs.showText(text);
+            cs.endText();
+        }
+        return y - 12;
+    }
 
-        lines.add(" ");
-        lines.add("Alumnos ordenados por clase:");
-        @SuppressWarnings("unchecked")
-        Map<String, List<Map<String, String>>> alumnos = (Map<String, List<Map<String, String>>>) data.get("alumnosPorClase");
-        for (Map.Entry<String, List<Map<String, String>>> entry : alumnos.entrySet()) {
-            lines.add("Clase " + entry.getKey() + ":");
-            for (Map<String, String> alumno : entry.getValue()) {
-                lines.add("  - " + alumno.get("apellidos") + ", " + alumno.get("nombre") + " (" + alumno.get("email") + ")");
+    private float dibujarTabla(PDDocument document, PDPage page, float yStart, String titulo, float[] colWidths, List<List<String>> rows) throws IOException {
+        float marginX = 40f;
+        float rowHeight = 20f;
+        float y = yStart;
+        float tableWidth = 0f;
+        for (float width : colWidths) {
+            tableWidth += width;
+        }
+
+        y = escribirTexto(document, page, titulo, y);
+
+        for (int rowIndex = 0; rowIndex < rows.size(); rowIndex++) {
+            List<String> row = rows.get(rowIndex);
+            float x = marginX;
+
+            try (PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
+                if (rowIndex == 0) {
+                    cs.setNonStrokingColor(225, 235, 252);
+                    cs.addRect(marginX, y - rowHeight + 4, tableWidth, rowHeight);
+                    cs.fill();
+                }
+
+                cs.setStrokingColor(120, 120, 120);
+                cs.addRect(marginX, y - rowHeight + 4, tableWidth, rowHeight);
+                cs.stroke();
+
+                for (float colWidth : colWidths) {
+                    x += colWidth;
+                    cs.moveTo(x, y - rowHeight + 4);
+                    cs.lineTo(x, y + 4);
+                    cs.stroke();
+                }
             }
+
+            x = marginX;
+            for (int col = 0; col < colWidths.length; col++) {
+                String text = col < row.size() ? valor(row.get(col)) : "";
+                String safe = text.length() > 34 ? text.substring(0, 34) + "..." : text;
+
+                try (PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
+                    cs.beginText();
+                    cs.setFont(rowIndex == 0 ? PDType1Font.HELVETICA_BOLD : PDType1Font.HELVETICA, 9);
+                    cs.newLineAtOffset(x + 4, y - 11);
+                    cs.showText(safe);
+                    cs.endText();
+                }
+                x += colWidths[col];
+            }
+
+            y -= rowHeight;
         }
 
-        lines.add(" ");
-        lines.add("Asignaturas:");
-        @SuppressWarnings("unchecked")
-        List<Map<String, String>> asignaturas = (List<Map<String, String>>) data.get("asignaturas");
-        for (Map<String, String> asignatura : asignaturas) {
-            lines.add("- " + asignatura.get("nombre") + " (curso " + asignatura.get("curso") + ")");
-        }
+        return y - 8;
+    }
 
-        return lines;
+    private String valor(String value) {
+        return value == null || value.isBlank() ? "N/A" : value;
     }
 
     private String toJson(Object value) {

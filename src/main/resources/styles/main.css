@@ -930,6 +930,15 @@
     -fx-line-spacing: 3;
 }
 
+
+.theme-light {
+    -fx-background-color: linear-gradient(to bottom right, #dbeafe, #93c5fd);
+}
+
+.theme-light .dashboard-main {
+    -fx-background-color: linear-gradient(to bottom right, #e0f2fe, #bfdbfe);
+}
+
 .theme-dark {
     -fx-background-color: #0F172A;
 }
