@@ -48,7 +48,7 @@
                 <Label text="Clases" styleClass="sidebar-item-text"/>
             </HBox>
 
-            <HBox styleClass="sidebar-item" alignment="CENTER_LEFT" spacing="12">
+            <HBox fx:id="navAlumnos" styleClass="sidebar-item" alignment="CENTER_LEFT" spacing="12" onMouseClicked="#mostrarSeccionAlumnos">
                 <padding><Insets top="11" right="14" bottom="11" left="14"/></padding>
                 <FontIcon iconLiteral="mdal-groups" styleClass="sidebar-item-icon"/>
                 <Label text="Alumnos" styleClass="sidebar-item-text"/>
@@ -275,6 +275,113 @@
                     <Button text="1" styleClass="btn-primary, btn-sm, page-btn-active"/>
                     <Button text="2" styleClass="btn-ghost, page-btn"/>
                     <Button text="3" styleClass="btn-ghost, page-btn"/>
+                    <Button text="&#187;" styleClass="btn-ghost, page-btn"/>
+                </HBox>
+            </VBox>
+
+            <VBox fx:id="vistaAlumnos" styleClass="dashboard-card students-dashboard-card" visible="false" managed="false" spacing="0" VBox.vgrow="ALWAYS">
+                <Label text="¡Gestión de Alumnos" styleClass="dashboard-section-title">
+                    <padding><Insets top="16" right="20" bottom="0" left="20"/></padding>
+                </Label>
+
+                <HBox styleClass="filter-bar students-filter-bar" alignment="CENTER_LEFT" spacing="10">
+                    <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
+
+                    <VBox spacing="6">
+                        <Label text="Clase" styleClass="students-filter-label"/>
+                        <ComboBox prefWidth="170" value="2º DAM"/>
+                    </VBox>
+
+                    <VBox spacing="6">
+                        <Label text="Estado" styleClass="students-filter-label"/>
+                        <ComboBox prefWidth="150" value="Todos"/>
+                    </VBox>
+
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text=""/>
+                        <TextField promptText="Buscar Alumno..." HBox.hgrow="ALWAYS"/>
+                    </VBox>
+
+                    <VBox spacing="6">
+                        <Label text=""/>
+                        <Button text="Añadir Alumno" styleClass="btn-primary" prefWidth="145"/>
+                    </VBox>
+                </HBox>
+
+                <VBox styleClass="students-table" spacing="0" VBox.vgrow="ALWAYS">
+                    <HBox styleClass="students-header-row" spacing="0">
+                        <Label text="Foto" styleClass="students-header-cell students-col-photo"/>
+                        <Label text="NIA" styleClass="students-header-cell students-col-nia"/>
+                        <Label text="Nombre" styleClass="students-header-cell students-col-name"/>
+                        <Label text="Apellidos" styleClass="students-header-cell students-col-surname"/>
+                        <Label text="Clase" styleClass="students-header-cell students-col-class"/>
+                        <Label text="Tutor(es)" styleClass="students-header-cell students-col-tutor"/>
+                        <Label text="Estado" styleClass="students-header-cell students-col-status"/>
+                        <Label text="Acciones" styleClass="students-header-cell students-col-actions"/>
+                    </HBox>
+
+                    <HBox styleClass="students-data-row" spacing="0">
+                        <Label text="👤" styleClass="students-cell students-col-photo"/>
+                        <Label text="123456" styleClass="students-cell students-col-nia"/>
+                        <Label text="Ana" styleClass="students-cell students-col-name"/>
+                        <Label text="García Pérez" styleClass="students-cell students-col-surname"/>
+                        <Label text="2º DAM" styleClass="students-cell students-col-class"/>
+                        <Label text="María López" styleClass="students-cell students-col-tutor"/>
+                        <Label text="Activo" styleClass="students-cell students-col-status students-status-active"/>
+                        <HBox alignment="CENTER" spacing="6" styleClass="students-cell students-col-actions">
+                            <Button text="✎" styleClass="students-action-btn"/>
+                            <Button text="🗑" styleClass="students-action-btn students-action-danger"/>
+                        </HBox>
+                    </HBox>
+
+                    <HBox styleClass="students-data-row" spacing="0">
+                        <Label text="👤" styleClass="students-cell students-col-photo"/>
+                        <Label text="123457" styleClass="students-cell students-col-nia"/>
+                        <Label text="Alona" styleClass="students-cell students-col-name"/>
+                        <Label text="García" styleClass="students-cell students-col-surname"/>
+                        <Label text="2º DAM" styleClass="students-cell students-col-class"/>
+                        <Label text="María López" styleClass="students-cell students-col-tutor"/>
+                        <Label text="Inactivo" styleClass="students-cell students-col-status students-status-inactive"/>
+                        <HBox alignment="CENTER" spacing="6" styleClass="students-cell students-col-actions">
+                            <Button text="✎" styleClass="students-action-btn"/>
+                            <Button text="🗑" styleClass="students-action-btn students-action-danger"/>
+                        </HBox>
+                    </HBox>
+
+                    <HBox styleClass="students-data-row" spacing="0">
+                        <Label text="👤" styleClass="students-cell students-col-photo"/>
+                        <Label text="123458" styleClass="students-cell students-col-nia"/>
+                        <Label text="Mariy" styleClass="students-cell students-col-name"/>
+                        <Label text="López" styleClass="students-cell students-col-surname"/>
+                        <Label text="2º DAM" styleClass="students-cell students-col-class"/>
+                        <Label text="María López" styleClass="students-cell students-col-tutor"/>
+                        <Label text="Activo" styleClass="students-cell students-col-status students-status-active"/>
+                        <HBox alignment="CENTER" spacing="6" styleClass="students-cell students-col-actions">
+                            <Button text="✎" styleClass="students-action-btn"/>
+                            <Button text="🗑" styleClass="students-action-btn students-action-danger"/>
+                        </HBox>
+                    </HBox>
+
+                    <HBox styleClass="students-data-row" spacing="0">
+                        <Label text="👤" styleClass="students-cell students-col-photo"/>
+                        <Label text="123459" styleClass="students-cell students-col-nia"/>
+                        <Label text="Diaria" styleClass="students-cell students-col-name"/>
+                        <Label text="García Pérez" styleClass="students-cell students-col-surname"/>
+                        <Label text="2º DAM" styleClass="students-cell students-col-class"/>
+                        <Label text="María López" styleClass="students-cell students-col-tutor"/>
+                        <Label text="Activo" styleClass="students-cell students-col-status students-status-active"/>
+                        <HBox alignment="CENTER" spacing="6" styleClass="students-cell students-col-actions">
+                            <Button text="✎" styleClass="students-action-btn"/>
+                            <Button text="🗑" styleClass="students-action-btn students-action-danger"/>
+                        </HBox>
+                    </HBox>
+                </VBox>
+
+                <HBox styleClass="dashboard-footer classes-pagination" alignment="CENTER" spacing="8">
+                    <padding><Insets top="10" right="20" bottom="12" left="20"/></padding>
+                    <Button text="&#171;" styleClass="btn-ghost, page-btn"/>
+                    <Button text="1" styleClass="btn-primary, btn-sm, page-btn-active"/>
+                    <Button text="2" styleClass="btn-ghost, page-btn"/>
                     <Button text="&#187;" styleClass="btn-ghost, page-btn"/>
                 </HBox>
             </VBox>

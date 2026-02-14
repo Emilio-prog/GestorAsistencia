@@ -881,3 +881,114 @@
     -fx-pref-height: 26;
     -fx-padding: 0;
 }
+
+/* ============================================================
+   12. ALUMNOS DASHBOARD VIEW
+   ============================================================ */
+.students-dashboard-card {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+}
+
+.students-filter-bar {
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-min-height: 90;
+}
+
+.students-filter-label {
+    -fx-text-fill: #475569;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.students-table {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-padding: 12 16 10 16;
+    -fx-spacing: 0;
+}
+
+.students-header-row,
+.students-data-row {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.students-header-row {
+    -fx-background-color: rgba(226, 232, 240, 0.65);
+    -fx-border-color: rgba(203, 213, 225, 0.9);
+    -fx-border-width: 1;
+    -fx-border-radius: 10 10 0 0;
+    -fx-background-radius: 10 10 0 0;
+}
+
+.students-data-row {
+    -fx-border-color: transparent rgba(226, 232, 240, 0.8) rgba(226, 232, 240, 0.8) rgba(226, 232, 240, 0.8);
+    -fx-border-width: 0 1 1 1;
+    -fx-background-color: rgba(255, 255, 255, 0.88);
+}
+
+.students-data-row:last-child {
+    -fx-border-radius: 0 0 10 10;
+    -fx-background-radius: 0 0 10 10;
+}
+
+.students-header-cell {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #334155;
+    -fx-padding: 10 10;
+}
+
+.students-cell {
+    -fx-font-size: 13px;
+    -fx-text-fill: #1E293B;
+    -fx-padding: 10 10;
+}
+
+.students-col-photo { -fx-min-width: 62; -fx-pref-width: 62; -fx-alignment: CENTER; }
+.students-col-nia { -fx-min-width: 90; -fx-pref-width: 90; }
+.students-col-name { -fx-min-width: 95; -fx-pref-width: 95; }
+.students-col-surname { -fx-min-width: 150; -fx-pref-width: 150; }
+.students-col-class { -fx-min-width: 82; -fx-pref-width: 82; }
+.students-col-tutor { -fx-min-width: 130; -fx-pref-width: 130; }
+.students-col-status { -fx-min-width: 95; -fx-pref-width: 95; -fx-alignment: CENTER; }
+.students-col-actions { -fx-min-width: 105; -fx-pref-width: 105; -fx-alignment: CENTER; }
+
+.students-status-active {
+    -fx-background-color: #DCFCE7;
+    -fx-background-radius: 999;
+    -fx-text-fill: #15803D;
+    -fx-font-weight: 600;
+    -fx-padding: 6 10;
+}
+
+.students-status-inactive {
+    -fx-background-color: #FEE2E2;
+    -fx-background-radius: 999;
+    -fx-text-fill: #B91C1C;
+    -fx-font-weight: 600;
+    -fx-padding: 6 10;
+}
+
+.students-action-btn {
+    -fx-min-width: 28;
+    -fx-pref-width: 28;
+    -fx-min-height: 26;
+    -fx-pref-height: 26;
+    -fx-background-color: #E2E8F0;
+    -fx-text-fill: #334155;
+    -fx-background-radius: 7;
+    -fx-padding: 0;
+    -fx-effect: none;
+}
+
+.students-action-btn:hover {
+    -fx-background-color: #CBD5E1;
+}
+
+.students-action-danger {
+    -fx-background-color: #FEE2E2;
+    -fx-text-fill: #B91C1C;
+}
+
+.students-action-danger:hover {
+    -fx-background-color: #FECACA;
+}
