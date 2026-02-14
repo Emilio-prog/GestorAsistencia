@@ -9,6 +9,9 @@ import java.util.List;
 @Repository
 public interface AlumnoRepository extends MongoRepository<Alumno, String> {
 
-    // Devuelve todos los alumnos que pertenezcan a un grupo (ej: "2DAM")
     List<Alumno> findByGrupo(String grupo);
+
+    long countByIdAsignatura(String idAsignatura);
+
+    List<Alumno> findByIdAsignatura(String idAsignatura);
 }

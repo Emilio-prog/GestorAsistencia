@@ -115,73 +115,26 @@
                     <ComboBox fx:id="cbGrupo" onAction="#cargarAlumnos"
                               prefWidth="110" minWidth="110"/>
 
-                    <Button text="Refrescar" onAction="#cargarAlumnos"
-                            mnemonicParsing="false"
-                            minWidth="-Infinity"
-                            styleClass="btn-primary, btn-sm, btn-icon">
-                        <graphic>
-                            <FontIcon iconLiteral="mdmz-refresh" styleClass="icon-white, icon-sm"/>
-                        </graphic>
-                    </Button>
-
+                    <Button text="Refrescar" onAction="#cargarAlumnos" styleClass="btn-ghost"/>
                     <Region HBox.hgrow="ALWAYS"/>
-
-                    <HBox spacing="10" alignment="CENTER_RIGHT">
-                        <Button fx:id="btnAdmin" text="Registrar Profesor"
-                                onAction="#irAdmin" visible="false"
-                                minWidth="-Infinity"
-                                styleClass="btn-warning, btn-sm, btn-icon">
-                            <graphic>
-                                <FontIcon iconLiteral="mdal-admin_panel_settings" styleClass="icon-white, icon-sm"/>
-                            </graphic>
-                        </Button>
-
-                        <Button fx:id="btnAddAlumno" text="Alumno"
-                                onAction="#onAddAlumno" visible="false"
-                                minWidth="-Infinity"
-                                styleClass="btn-success, btn-sm, btn-icon">
-                            <graphic>
-                                <FontIcon iconLiteral="mdmz-person_add" styleClass="icon-white, icon-sm"/>
-                            </graphic>
-                        </Button>
-
-                        <Button fx:id="btnDelAlumno" text="Eliminar"
-                                onAction="#onDeleteAlumno" visible="false"
-                                minWidth="-Infinity"
-                                styleClass="btn-danger, btn-sm, btn-icon">
-                            <graphic>
-                                <FontIcon iconLiteral="mdal-delete_outline" styleClass="icon-white, icon-sm"/>
-                            </graphic>
-                        </Button>
-                    </HBox>
+                    <Button fx:id="btnAdmin" text="Admin" styleClass="btn-ghost" onAction="#irAdmin"/>
+                    <Button fx:id="btnAddAlumno" text="Añadir Alumno" styleClass="btn-primary" onAction="#onAddAlumno"/>
+                    <Button fx:id="btnDelAlumno" text="Eliminar Alumno" styleClass="btn-ghost" onAction="#onDeleteAlumno"/>
+                    <Button text="Marcar Todos Presentes" styleClass="btn-ghost" onAction="#onMarcarTodosPresentes"/>
+                    <Button text="Guardar" styleClass="btn-primary" onAction="#onGuardar"/>
                 </HBox>
 
-                <VBox VBox.vgrow="ALWAYS" styleClass="dashboard-table-container">
-                    <padding><Insets top="0" right="0" bottom="0" left="0"/></padding>
+                <TableView fx:id="tblAlumnos" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colNombre" text="Nombre" prefWidth="180"/>
+                        <TableColumn fx:id="colApellidos" text="Apellidos" prefWidth="220"/>
+                        <TableColumn fx:id="colEstado" text="Estado" prefWidth="160"/>
+                    </columns>
+                </TableView>
 
-                    <TableView fx:id="tblAlumnos" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn fx:id="colNombre" prefWidth="220" text="Nombre"/>
-                            <TableColumn fx:id="colApellidos" prefWidth="280" text="Apellidos"/>
-                            <TableColumn fx:id="colEstado" prefWidth="200" text="Estado"/>
-                        </columns>
-                        <columnResizePolicy>
-                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                        </columnResizePolicy>
-                    </TableView>
-                </VBox>
-
-                <HBox styleClass="dashboard-footer" alignment="CENTER_LEFT" spacing="10">
-                    <padding><Insets top="14" right="20" bottom="14" left="20"/></padding>
-                    <Label fx:id="lblInfo" text="Listo" styleClass="footer-info-text"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Button text="Todos Presentes" onAction="#onMarcarTodosPresentes" styleClass="btn-outline-primary, btn-sm, btn-icon">
-                        <graphic><FontIcon iconLiteral="mdal-check_circle_outline" styleClass="icon-primary, icon-sm"/></graphic>
-                    </Button>
-                    <Button text="Guardar Asistencia" onAction="#onGuardar" defaultButton="true" mnemonicParsing="false" styleClass="btn-primary, btn-sm, btn-icon">
-                        <graphic><FontIcon iconLiteral="mdmz-save" styleClass="icon-white, icon-sm"/></graphic>
-                    </Button>
-                </HBox>
+                <Label fx:id="lblInfo" styleClass="table-footer-text">
+                    <padding><Insets top="10" right="20" bottom="12" left="20"/></padding>
+                </Label>
             </VBox>
 
             <VBox fx:id="vistaClases" styleClass="dashboard-card classes-dashboard-card" visible="false" managed="false" spacing="0" VBox.vgrow="ALWAYS">
@@ -193,100 +146,44 @@
                     <padding><Insets top="20" right="20" bottom="18" left="20"/></padding>
                     <VBox spacing="6">
                         <Label text="Año Académico" styleClass="classes-filter-label"/>
-                        <ComboBox prefWidth="180" value="2025-2026"/>
+                        <ComboBox fx:id="cbCursoClases" prefWidth="180" onAction="#onFiltroClasesChanged"/>
                     </VBox>
                     <VBox spacing="6">
                         <Label text="Ciclo" styleClass="classes-filter-label"/>
-                        <ComboBox prefWidth="160" value="DAM"/>
+                        <ComboBox fx:id="cbCicloClases" prefWidth="160" onAction="#onFiltroClasesChanged"/>
                     </VBox>
                     <VBox spacing="6" HBox.hgrow="ALWAYS">
                         <Label text=""/>
-                        <TextField promptText="Buscar Clase..." HBox.hgrow="ALWAYS"/>
+                        <TextField fx:id="txtBuscarClase" promptText="Buscar Clase..." HBox.hgrow="ALWAYS" onKeyReleased="#onFiltroClasesChanged"/>
                     </VBox>
                     <VBox spacing="6">
                         <Label text=""/>
-                        <Button text="Añadir Clase" styleClass="btn-primary" prefWidth="140"/>
+                        <Button fx:id="btnAddClase" text="Añadir Clase" styleClass="btn-primary" prefWidth="140" onAction="#onAddClase"/>
                     </VBox>
                 </HBox>
 
-                <FlowPane hgap="12" vgap="12" prefWrapLength="820" styleClass="classes-grid">
+                <FlowPane fx:id="classesGrid" hgap="12" vgap="12" prefWrapLength="820" styleClass="classes-grid">
                     <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
-
-                    <VBox styleClass="class-card" spacing="6">
-                        <Label text="2º DAM - Desarrollo de Aplicaciones Multiplataforma" wrapText="true" styleClass="class-card-title"/>
-                        <Label text="Tutor: María López" styleClass="class-card-text"/>
-                        <Label text="Aula: 102" styleClass="class-card-text"/>
-                        <Label text="Alumnos: 25" styleClass="class-card-text"/>
-                        <HBox spacing="6"><Button text="Editar" styleClass="btn-ghost, class-card-btn"/><Button text="Eliminar" styleClass="btn-ghost, class-card-btn-danger"/><Button text="Ver Horario" styleClass="btn-ghost, class-card-btn"/></HBox>
-                    </VBox>
-
-                    <VBox styleClass="class-card" spacing="6">
-                        <Label text="2º DAM - Desarrollo de Aplicaciones" wrapText="true" styleClass="class-card-title"/>
-                        <Label text="Tutor: María López" styleClass="class-card-text"/>
-                        <Label text="Aula: 102" styleClass="class-card-text"/>
-                        <Label text="Alumnos: 25" styleClass="class-card-text"/>
-                        <HBox spacing="6"><Button text="Editar" styleClass="btn-ghost, class-card-btn"/><Button text="Eliminar" styleClass="btn-ghost, class-card-btn-danger"/><Button text="Ver Horario" styleClass="btn-ghost, class-card-btn"/></HBox>
-                    </VBox>
-
-                    <VBox styleClass="class-card" spacing="6">
-                        <Label text="2º DAM - Desarrollo de Aplicaciones" wrapText="true" styleClass="class-card-title"/>
-                        <Label text="Tutor: María López" styleClass="class-card-text"/>
-                        <Label text="Aula: 102" styleClass="class-card-text"/>
-                        <Label text="Alumnos: 25" styleClass="class-card-text"/>
-                        <HBox spacing="6"><Button text="Editar" styleClass="btn-ghost, class-card-btn"/><Button text="Eliminar" styleClass="btn-ghost, class-card-btn-danger"/><Button text="Ver Horario" styleClass="btn-ghost, class-card-btn"/></HBox>
-                    </VBox>
-
-                    <VBox styleClass="class-card" spacing="6">
-                        <Label text="2º DAM - Desarrollo de Aplicaciones" wrapText="true" styleClass="class-card-title"/>
-                        <Label text="Tutor: María López" styleClass="class-card-text"/>
-                        <Label text="Aula: 102" styleClass="class-card-text"/>
-                        <Label text="Alumnos: 25" styleClass="class-card-text"/>
-                        <HBox spacing="6"><Button text="Editar" styleClass="btn-ghost, class-card-btn"/><Button text="Eliminar" styleClass="btn-ghost, class-card-btn-danger"/><Button text="Ver Horario" styleClass="btn-ghost, class-card-btn"/></HBox>
-                    </VBox>
-
-                    <VBox styleClass="class-card" spacing="6">
-                        <Label text="2º DAM - Desarrollo de Aplicaciones Multiplataforma" wrapText="true" styleClass="class-card-title"/>
-                        <Label text="Tutor: María López" styleClass="class-card-text"/>
-                        <Label text="Aula: 102" styleClass="class-card-text"/>
-                        <Label text="Alumnos: 25" styleClass="class-card-text"/>
-                        <HBox spacing="6"><Button text="Editar" styleClass="btn-ghost, class-card-btn"/><Button text="Eliminar" styleClass="btn-ghost, class-card-btn-danger"/><Button text="Ver Horario" styleClass="btn-ghost, class-card-btn"/></HBox>
-                    </VBox>
-
-                    <VBox styleClass="class-card" spacing="6">
-                        <Label text="2º DAM - Desarrollo de Aplicaciones" wrapText="true" styleClass="class-card-title"/>
-                        <Label text="Tutor: María López" styleClass="class-card-text"/>
-                        <Label text="Aula: 102" styleClass="class-card-text"/>
-                        <Label text="Alumnos: 25" styleClass="class-card-text"/>
-                        <HBox spacing="6"><Button text="Editar" styleClass="btn-ghost, class-card-btn"/><Button text="Eliminar" styleClass="btn-ghost, class-card-btn-danger"/><Button text="Ver Horario" styleClass="btn-ghost, class-card-btn"/></HBox>
-                    </VBox>
                 </FlowPane>
-
-                <HBox styleClass="dashboard-footer classes-pagination" alignment="CENTER" spacing="8">
-                    <padding><Insets top="10" right="20" bottom="12" left="20"/></padding>
-                    <Button text="&#171;" styleClass="btn-ghost, page-btn"/>
-                    <Button text="1" styleClass="btn-primary, btn-sm, page-btn-active"/>
-                    <Button text="2" styleClass="btn-ghost, page-btn"/>
-                    <Button text="3" styleClass="btn-ghost, page-btn"/>
-                    <Button text="&#187;" styleClass="btn-ghost, page-btn"/>
-                </HBox>
             </VBox>
 
-            <VBox fx:id="vistaInformes" styleClass="dashboard-card" visible="false" managed="false" spacing="16" VBox.vgrow="ALWAYS">
-                <Label text="Informes y Estad&#xed;sticas" styleClass="dashboard-section-title">
+            <VBox fx:id="vistaInformes" styleClass="dashboard-card" visible="false" managed="false" spacing="0" VBox.vgrow="ALWAYS">
+                <Label text="Estadísticas de asistencia" styleClass="dashboard-section-title">
                     <padding><Insets top="16" right="20" bottom="0" left="20"/></padding>
                 </Label>
 
-                <HBox spacing="20" alignment="CENTER_LEFT">
-                    <padding><Insets top="0" right="20" bottom="0" left="20"/></padding>
-                    <Label fx:id="lblTotalPresentes" text="Presentes: 0"/>
-                    <Label fx:id="lblTotalFaltas" text="Faltas: 0"/>
-                    <Label fx:id="lblTotalRetrasos" text="Retrasos: 0"/>
-                    <Label fx:id="lblTotalJustificadas" text="Justificadas: 0"/>
-                </HBox>
+                <HBox spacing="16" alignment="TOP_LEFT" VBox.vgrow="ALWAYS" styleClass="report-body">
+                    <padding><Insets top="18" right="20" bottom="20" left="20"/></padding>
 
-                <PieChart fx:id="chartEstadisticas" title="Resumen de Asistencia" VBox.vgrow="ALWAYS">
-                    <padding><Insets top="0" right="20" bottom="20" left="20"/></padding>
-                </PieChart>
+                    <PieChart fx:id="chartEstadisticas" prefWidth="420" prefHeight="320"/>
+
+                    <VBox spacing="10" styleClass="report-metrics" prefWidth="320">
+                        <Label fx:id="lblTotalPresentes" text="Presentes: 0" styleClass="report-metric"/>
+                        <Label fx:id="lblTotalFaltas" text="Faltas: 0" styleClass="report-metric"/>
+                        <Label fx:id="lblTotalRetrasos" text="Retrasos: 0" styleClass="report-metric"/>
+                        <Label fx:id="lblTotalJustificadas" text="Justificadas: 0" styleClass="report-metric"/>
+                    </VBox>
+                </HBox>
             </VBox>
         </StackPane>
     </VBox>
