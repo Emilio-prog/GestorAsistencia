@@ -23,10 +23,9 @@ public class DataInitializer implements CommandLineRunner {
     private AsignaturaRepository asignaturaRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         System.out.println("---- INICIANDO CARGA DE DATOS DE PRUEBA ----");
 
-        // 1. Crear Usuarios si no existen
         if (usuarioRepository.count() == 0) {
             usuarioRepository.save(new Usuario(null, "admin@email.com", "admin123", "Administrador", "ADMIN"));
             usuarioRepository.save(new Usuario(null, "profe@email.com", "profe123", "Profesor Ejemplo", "PROFESOR"));
@@ -35,21 +34,33 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println("-> Usuarios ya existen. Saltando creación.");
         }
 
-        // 2. Crear Alumnos si no existen
-        if (alumnoRepository.count() == 0) {
-            alumnoRepository.save(new Alumno(null, "Juan", "Pérez", "juan@email.com", "2DAM", null));
-            alumnoRepository.save(new Alumno(null, "Ana", "García", "ana@email.com", "2DAM", null));
-            alumnoRepository.save(new Alumno(null, "Luis", "Rodríguez", "luis@email.com", "1DAW", null));
-            System.out.println("-> Alumnos de prueba creados (2DAM y 1DAW).");
+        Asignatura ad = null;
+        Asignatura di = null;
+
+        if (asignaturaRepository.count() == 0) {
+            ad = asignaturaRepository.save(new Asignatura(null, "Acceso a Datos", "2025-2026", "DAM"));
+            di = asignaturaRepository.save(new Asignatura(null, "Desarrollo de Interfaces", "2025-2026", "DAW"));
+            System.out.println("-> Asignaturas de prueba creadas.");
         } else {
-            System.out.println("-> Alumnos ya existen. Saltando creación.");
+            System.out.println("-> Asignaturas ya existen. Saltando creación.");
         }
 
-        // 3. Crear Asignaturas si no existen
-        if (asignaturaRepository.count() == 0) {
-            asignaturaRepository.save(new Asignatura(null, "Acceso a Datos", "2025-2026"));
-            asignaturaRepository.save(new Asignatura(null, "Desarrollo de Interfaces", "2025-2026"));
-            System.out.println("-> Asignaturas de prueba creadas.");
+        if (alumnoRepository.count() == 0) {
+            if (ad == null || di == null) {
+                ad = asignaturaRepository.findAll().stream()
+                        .filter(a -> "Acceso a Datos".equalsIgnoreCase(a.getNombre()))
+                        .findFirst().orElse(null);
+                di = asignaturaRepository.findAll().stream()
+                        .filter(a -> "Desarrollo de Interfaces".equalsIgnoreCase(a.getNombre()))
+                        .findFirst().orElse(null);
+            }
+
+            alumnoRepository.save(new Alumno(null, "Juan", "Pérez", "juan@email.com", "2DAM", ad != null ? ad.getId() : null));
+            alumnoRepository.save(new Alumno(null, "Ana", "García", "ana@email.com", "2DAM", ad != null ? ad.getId() : null));
+            alumnoRepository.save(new Alumno(null, "Luis", "Rodríguez", "luis@email.com", "1DAW", di != null ? di.getId() : null));
+            System.out.println("-> Alumnos de prueba creados y vinculados a asignaturas.");
+        } else {
+            System.out.println("-> Alumnos ya existen. Saltando creación.");
         }
 
         System.out.println("---- CARGA DE DATOS COMPLETADA ----");

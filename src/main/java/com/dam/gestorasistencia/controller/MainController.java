@@ -22,7 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -37,18 +40,15 @@ public class MainController {
     @Autowired
     private AsignaturaRepository asignaturaRepository;
 
-    // Filtros
     @FXML private DatePicker dpFecha;
     @FXML private ComboBox<String> cbGrupo;
     @FXML private ComboBox<Asignatura> cbAsignatura;
 
-    // Botones de Administración
     @FXML private Button btnAdmin;
     @FXML private Button btnAddAlumno;
     @FXML private Button btnDelAlumno;
     @FXML private Button btnAddClase;
 
-    // Sección clases
     @FXML private ComboBox<String> cbCursoClases;
     @FXML private ComboBox<String> cbCicloClases;
     @FXML private TextField txtBuscarClase;
@@ -70,14 +70,13 @@ public class MainController {
     @FXML private Label lblTotalRetrasos;
     @FXML private Label lblTotalJustificadas;
 
-    // Tabla
     @FXML private TableView<AlumnoAsistenciaRow> tblAlumnos;
     @FXML private TableColumn<AlumnoAsistenciaRow, String> colNombre;
     @FXML private TableColumn<AlumnoAsistenciaRow, String> colApellidos;
     @FXML private TableColumn<AlumnoAsistenciaRow, EstadoAsistencia> colEstado;
     @FXML private Label lblInfo;
 
-    private ObservableList<AlumnoAsistenciaRow> listaAlumnosUI = FXCollections.observableArrayList();
+    private final ObservableList<AlumnoAsistenciaRow> listaAlumnosUI = FXCollections.observableArrayList();
     private boolean esAdmin;
 
     @FXML
@@ -86,20 +85,18 @@ public class MainController {
         cbGrupo.setItems(FXCollections.observableArrayList("2DAM", "1DAW"));
         cbGrupo.getSelectionModel().selectFirst();
 
-        cargarAsignaturasEnSelector();
-
         cbAsignatura.setConverter(new StringConverter<>() {
             @Override
             public String toString(Asignatura a) { return a != null ? a.getNombre() : ""; }
             @Override
             public Asignatura fromString(String s) { return null; }
         });
+        cargarAsignaturasEnSelector();
 
         colNombre.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getAlumno().getNombre()));
         colApellidos.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getAlumno().getApellidos()));
-
         colEstado.setCellValueFactory(cellData -> cellData.getValue().estadoProperty());
         colEstado.setCellFactory(ComboBoxTableCell.forTableColumn(EstadoAsistencia.values()));
         colEstado.setEditable(true);
@@ -131,8 +128,16 @@ public class MainController {
 
     private void inicializarSeccionClases() {
         List<Asignatura> asignaturas = asignaturaRepository.findAll();
+
         List<String> cursos = asignaturas.stream()
                 .map(Asignatura::getCurso)
+                .filter(Objects::nonNull)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+
+        List<String> ciclos = asignaturas.stream()
+                .map(Asignatura::getCiclo)
                 .filter(Objects::nonNull)
                 .distinct()
                 .sorted()
@@ -143,7 +148,9 @@ public class MainController {
         cbCursoClases.getItems().addAll(cursos);
         cbCursoClases.getSelectionModel().selectFirst();
 
-        cbCicloClases.setItems(FXCollections.observableArrayList("Todos", "DAM", "DAW", "MIXTO", "Sin ciclo"));
+        cbCicloClases.setItems(FXCollections.observableArrayList());
+        cbCicloClases.getItems().add("Todos");
+        cbCicloClases.getItems().addAll(ciclos);
         cbCicloClases.getSelectionModel().selectFirst();
 
         renderizarClases();
@@ -238,7 +245,7 @@ public class MainController {
 
         listaAlumnosUI.clear();
 
-        List<Alumno> alumnos = alumnoRepository.findByGrupo(grupo);
+        List<Alumno> alumnos = alumnoRepository.findByGrupoAndIdAsignatura(grupo, asignatura.getId());
 
         for (Alumno a : alumnos) {
             RegistroAsistencia registro = registroRepository
@@ -308,12 +315,20 @@ public class MainController {
             return null;
         });
 
-        Optional<Alumno> result = dialog.showAndWait();
-        result.ifPresent(nuevoAlumno -> {
-            if (nuevoAlumno.getNombre().isBlank() || nuevoAlumno.getEmail().isBlank() || nuevoAlumno.getIdAsignatura() == null) {
+        dialog.showAndWait().ifPresent(nuevoAlumno -> {
+            Asignatura asigSeleccionada = asignaturaAlumno.getValue();
+            if (nuevoAlumno.getNombre().isBlank() || nuevoAlumno.getEmail().isBlank() || asigSeleccionada == null) {
                 mostrarAlerta("Error", "Nombre, Email y Asignatura son obligatorios");
                 return;
             }
+
+            String cicloGrupo = extraerCicloDeGrupo(nuevoAlumno.getGrupo());
+            if (asigSeleccionada.getCiclo() != null && !asigSeleccionada.getCiclo().isBlank()
+                    && !asigSeleccionada.getCiclo().equalsIgnoreCase(cicloGrupo)) {
+                mostrarAlerta("Error", "El grupo del alumno no coincide con el ciclo de la clase.");
+                return;
+            }
+
             alumnoRepository.save(nuevoAlumno);
             cargarAlumnos();
             renderizarClases();
@@ -432,17 +447,22 @@ public class MainController {
         nombre.setPromptText("Nombre de asignatura");
         TextField curso = new TextField();
         curso.setPromptText("2025-2026");
+        ComboBox<String> ciclo = new ComboBox<>();
+        ciclo.getItems().addAll("DAM", "DAW");
+        ciclo.setValue("DAM");
 
         grid.add(new Label("Asignatura:"), 0, 0);
         grid.add(nombre, 1, 0);
         grid.add(new Label("Curso:"), 0, 1);
         grid.add(curso, 1, 1);
+        grid.add(new Label("Ciclo:"), 0, 2);
+        grid.add(ciclo, 1, 2);
 
         dialog.getDialogPane().setContent(grid);
 
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
-                return new Asignatura(null, nombre.getText(), curso.getText());
+                return new Asignatura(null, nombre.getText(), curso.getText(), ciclo.getValue());
             }
             return null;
         });
@@ -453,7 +473,12 @@ public class MainController {
                 return;
             }
             if (nuevaClase.getCurso() == null || nuevaClase.getCurso().isBlank()) {
-                nuevaClase.setCurso("Sin curso");
+                mostrarAlerta("Error", "El curso es obligatorio.");
+                return;
+            }
+            if (nuevaClase.getCiclo() == null || nuevaClase.getCiclo().isBlank()) {
+                mostrarAlerta("Error", "El ciclo es obligatorio.");
+                return;
             }
 
             asignaturaRepository.save(nuevaClase);
@@ -472,11 +497,8 @@ public class MainController {
 
         List<Asignatura> asignaturasFiltradas = asignaturaRepository.findAll().stream()
                 .filter(a -> cursoFiltro == null || "Todos".equals(cursoFiltro) || cursoFiltro.equals(a.getCurso()))
+                .filter(a -> cicloFiltro == null || "Todos".equals(cicloFiltro) || cicloFiltro.equalsIgnoreCase(a.getCiclo()))
                 .filter(a -> textoBusqueda.isBlank() || a.getNombre().toLowerCase().contains(textoBusqueda))
-                .filter(a -> {
-                    if (cicloFiltro == null || "Todos".equals(cicloFiltro)) return true;
-                    return cicloAsignatura(a.getId()).equalsIgnoreCase(cicloFiltro);
-                })
                 .sorted(Comparator.comparing(Asignatura::getNombre))
                 .toList();
 
@@ -490,22 +512,21 @@ public class MainController {
         card.getStyleClass().add("class-card");
 
         long totalAlumnos = alumnoRepository.countByIdAsignatura(asignatura.getId());
-        String ciclo = cicloAsignatura(asignatura.getId());
 
         Label titulo = new Label(asignatura.getNombre());
         titulo.setWrapText(true);
         titulo.getStyleClass().add("class-card-title");
 
-        Label tutor = new Label("Tutor: Profesor asignado");
-        tutor.getStyleClass().add("class-card-text");
+        Label curso = new Label("Curso: " + asignatura.getCurso());
+        curso.getStyleClass().add("class-card-text");
 
-        Label aula = new Label("Ciclo: " + ciclo);
-        aula.getStyleClass().add("class-card-text");
+        Label ciclo = new Label("Ciclo: " + asignatura.getCiclo());
+        ciclo.getStyleClass().add("class-card-text");
 
         Label alumnos = new Label("Alumnos: " + totalAlumnos);
         alumnos.getStyleClass().add("class-card-text");
 
-        card.getChildren().addAll(titulo, tutor, aula, alumnos);
+        card.getChildren().addAll(titulo, curso, ciclo, alumnos);
 
         if (esAdmin) {
             HBox acciones = new HBox(6);
@@ -525,23 +546,6 @@ public class MainController {
         return card;
     }
 
-    private String cicloAsignatura(String idAsignatura) {
-        List<Alumno> alumnos = alumnoRepository.findByIdAsignatura(idAsignatura);
-        if (alumnos.isEmpty()) {
-            return "Sin ciclo";
-        }
-
-        Set<String> ciclos = alumnos.stream()
-                .map(Alumno::getGrupo)
-                .filter(Objects::nonNull)
-                .map(grupo -> grupo.replaceAll("\\d", ""))
-                .collect(Collectors.toSet());
-
-        if (ciclos.isEmpty()) return "Sin ciclo";
-        if (ciclos.size() > 1) return "MIXTO";
-        return ciclos.iterator().next();
-    }
-
     private void onEditarClase(Asignatura asignatura) {
         Dialog<Asignatura> dialog = new Dialog<>();
         dialog.setTitle("Editar Clase");
@@ -557,22 +561,39 @@ public class MainController {
 
         TextField nombre = new TextField(asignatura.getNombre());
         TextField curso = new TextField(asignatura.getCurso());
+        ComboBox<String> ciclo = new ComboBox<>();
+        ciclo.getItems().addAll("DAM", "DAW");
+        ciclo.setValue(asignatura.getCiclo());
 
         grid.add(new Label("Asignatura:"), 0, 0);
         grid.add(nombre, 1, 0);
         grid.add(new Label("Curso:"), 0, 1);
         grid.add(curso, 1, 1);
+        grid.add(new Label("Ciclo:"), 0, 2);
+        grid.add(ciclo, 1, 2);
 
         dialog.getDialogPane().setContent(grid);
         dialog.setResultConverter(dialogButton -> dialogButton == saveButtonType
-                ? new Asignatura(asignatura.getId(), nombre.getText(), curso.getText())
+                ? new Asignatura(asignatura.getId(), nombre.getText(), curso.getText(), ciclo.getValue())
                 : null);
 
         dialog.showAndWait().ifPresent(actualizada -> {
-            if (actualizada.getNombre() == null || actualizada.getNombre().isBlank()) {
-                mostrarAlerta("Error", "El nombre de la clase es obligatorio.");
+            if (actualizada.getNombre() == null || actualizada.getNombre().isBlank()
+                    || actualizada.getCurso() == null || actualizada.getCurso().isBlank()
+                    || actualizada.getCiclo() == null || actualizada.getCiclo().isBlank()) {
+                mostrarAlerta("Error", "Nombre, curso y ciclo son obligatorios.");
                 return;
             }
+
+            List<Alumno> alumnosVinculados = alumnoRepository.findByIdAsignatura(asignatura.getId());
+            for (Alumno alumno : alumnosVinculados) {
+                String cicloAlumno = extraerCicloDeGrupo(alumno.getGrupo());
+                if (!actualizada.getCiclo().equalsIgnoreCase(cicloAlumno)) {
+                    mostrarAlerta("Error", "No se puede cambiar el ciclo: hay alumnos vinculados de otro ciclo.");
+                    return;
+                }
+            }
+
             asignaturaRepository.save(actualizada);
             cargarAsignaturasEnSelector();
             inicializarSeccionClases();
@@ -598,6 +619,11 @@ public class MainController {
             inicializarSeccionClases();
             mostrarAlerta("Éxito", "Clase eliminada correctamente.");
         }
+    }
+
+    private String extraerCicloDeGrupo(String grupo) {
+        if (grupo == null || grupo.isBlank()) return "";
+        return grupo.replaceAll("\\d", "").toUpperCase();
     }
 
     @FXML

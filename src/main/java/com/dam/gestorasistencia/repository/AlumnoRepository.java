@@ -11,6 +11,8 @@ public interface AlumnoRepository extends MongoRepository<Alumno, String> {
 
     List<Alumno> findByGrupo(String grupo);
 
+    List<Alumno> findByGrupoAndIdAsignatura(String grupo, String idAsignatura);
+
     long countByIdAsignatura(String idAsignatura);
 
     List<Alumno> findByIdAsignatura(String idAsignatura);
