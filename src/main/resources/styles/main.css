@@ -761,3 +761,27 @@
     -fx-shape: "";
     -fx-padding: 0;
 }
+/* ============================================================
+   CORRECCIÓN DE HOVER PARA TODOS LOS ESTADOS
+   (Añadir al final del archivo main.css)
+   ============================================================ */
+
+/* 1. Hover para RETRASO (Amarillo) - Se oscurece a Amber-100 */
+.dashboard-card .table-view .table-row-cell.fila-retraso:hover {
+    -fx-background-color: #FEF3C7; /* Amarillo pastel más intenso */
+}
+
+/* 2. Hover para JUSTIFICADA (Gris) - Se oscurece a Slate-200 */
+.dashboard-card .table-view .table-row-cell.fila-justificada:hover {
+    -fx-background-color: #E2E8F0; /* Gris azulado suave */
+}
+
+/* 3. Hover para PRESENTE (Verde/Normal) - Se tiñe muy sutilmente de verde */
+.dashboard-card .table-view .table-row-cell.fila-presente:hover {
+    -fx-background-color: #F0FDF4; /* Emerald-50 muy suave */
+}
+
+/* 4. Asegurar que la selección (fila azul al hacer clic) siga ganando al hover */
+.dashboard-card .table-view .table-row-cell:filled:selected:hover {
+    -fx-background-color: #E0E7FF; /* Indigo-100 (Mantiene el azul de selección) */
+}
