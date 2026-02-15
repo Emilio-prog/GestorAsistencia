@@ -1,6 +1,7 @@
 package com.dam.gestorasistencia.controller;
 
 import com.dam.gestorasistencia.model.Usuario;
+import com.dam.gestorasistencia.repository.AlumnoRepository;
 import com.dam.gestorasistencia.repository.UsuarioRepository;
 import com.dam.gestorasistencia.view.SceneManager;
 import javafx.fxml.FXML;
@@ -25,6 +26,9 @@ public class RegisterController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private AlumnoRepository alumnoRepository;
+
     @FXML private TextField txtNombre;
     @FXML private TextField txtEmail;
     @FXML private PasswordField txtPassword;
@@ -36,7 +40,7 @@ public class RegisterController {
      */
     @FXML
     public void initialize() {
-        cbRol.getItems().addAll("PROFESOR", "ADMIN");
+        cbRol.getItems().addAll("PROFESOR", "ADMIN", "ALUMNO");
         cbRol.setValue("PROFESOR");
     }
 
@@ -61,8 +65,8 @@ public class RegisterController {
             return;
         }
 
-        if (usuarioRepository.findByEmail(email).isPresent()) {
-            mostrarAlerta("Error", "El usuario ya existe con ese email.");
+        if (usuarioRepository.findByEmail(email).isPresent() || alumnoRepository.findByEmail(email).isPresent()) {
+            mostrarAlerta("Error", "Ya existe un usuario o alumno con ese email.");
             return;
         }
 

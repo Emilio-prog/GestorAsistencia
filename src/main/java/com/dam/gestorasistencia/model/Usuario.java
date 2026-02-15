@@ -23,5 +23,5 @@ public class Usuario {
     private String email;      // Usaremos el email como username
     private String password;   // En un caso real iría encriptada
     private String nombre;
-    private String rol;        // "ADMIN" o "PROFESOR"
+    private String rol;        // "ADMIN", "PROFESOR" o "ALUMNO"
 }

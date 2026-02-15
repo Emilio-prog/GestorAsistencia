@@ -4,6 +4,7 @@ import com.dam.gestorasistencia.model.*;
 import com.dam.gestorasistencia.repository.AlumnoRepository;
 import com.dam.gestorasistencia.repository.AsignaturaRepository;
 import com.dam.gestorasistencia.repository.RegistroAsistenciaRepository;
+import com.dam.gestorasistencia.repository.UsuarioRepository;
 import com.dam.gestorasistencia.view.SceneManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,6 +53,9 @@ public class MainController {
 
     @Autowired
     private AsignaturaRepository asignaturaRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     // Filtros
     @FXML private DatePicker dpFecha;
@@ -357,8 +361,8 @@ public class MainController {
                 return;
             }
 
-            if (alumnoRepository.findByEmail(emailAlumno).isPresent()) {
-                mostrarAlerta("Error", "El alumno ya existe con ese email.");
+            if (alumnoRepository.findByEmail(emailAlumno).isPresent() || usuarioRepository.findByEmail(emailAlumno).isPresent()) {
+                mostrarAlerta("Error", "Ya existe un usuario o alumno con ese email.");
                 return;
             }
 
