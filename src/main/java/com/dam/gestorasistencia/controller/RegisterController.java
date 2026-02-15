@@ -65,7 +65,7 @@ public class RegisterController {
             return;
         }
 
-        if (usuarioRepository.findByEmail(email).isPresent() || alumnoRepository.findByEmail(email).isPresent()) {
+        if (usuarioRepository.findByEmailIgnoreCase(email).isPresent() || alumnoRepository.findByEmailIgnoreCase(email).isPresent()) {
             mostrarAlerta("Error", "Ya existe un usuario o alumno con ese email.");
             return;
         }

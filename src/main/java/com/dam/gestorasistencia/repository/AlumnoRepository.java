@@ -32,5 +32,13 @@ public interface AlumnoRepository extends MongoRepository<Alumno, String> {
      * @return alumno encontrado si existe.
      */
     Optional<Alumno> findByEmail(String email);
+
+    /**
+     * Busca un alumno por su correo ignorando mayúsculas/minúsculas.
+     *
+     * @param email correo del alumno.
+     * @return alumno encontrado si existe.
+     */
+    Optional<Alumno> findByEmailIgnoreCase(String email);
 }
 

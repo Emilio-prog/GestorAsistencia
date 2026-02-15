@@ -361,7 +361,7 @@ public class MainController {
                 return;
             }
 
-            if (alumnoRepository.findByEmail(emailAlumno).isPresent() || usuarioRepository.findByEmail(emailAlumno).isPresent()) {
+            if (alumnoRepository.findByEmailIgnoreCase(emailAlumno).isPresent() || usuarioRepository.findByEmailIgnoreCase(emailAlumno).isPresent()) {
                 mostrarAlerta("Error", "Ya existe un usuario o alumno con ese email.");
                 return;
             }
