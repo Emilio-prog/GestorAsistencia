@@ -7,8 +7,10 @@ import com.dam.gestorasistencia.view.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import org.kordamp.ikonli.javafx.FontIcon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,15 +27,27 @@ public class LoginController {
     private PasswordField txtPassword;
 
     @FXML
+    private TextField txtPasswordVisible;
+
+    @FXML
+    private FontIcon iconTogglePassword;
+
+    private boolean isPasswordVisible = false;
+
+    @FXML
     public void initialize() {
         // Efecto focus-within: resaltar el input-group cuando el campo tiene foco
         configurarFocusGroup(txtEmail);
         configurarFocusGroup(txtPassword);
+        configurarFocusGroup(txtPasswordVisible);
+
+        txtPasswordVisible.textProperty().bindBidirectional(txtPassword.textProperty());
     }
 
     private void configurarFocusGroup(javafx.scene.control.Control campo) {
         campo.focusedProperty().addListener((obs, oldVal, focused) -> {
-            if (campo.getParent() instanceof HBox grupo) {
+            HBox grupo = buscarInputGroup(campo);
+            if (grupo != null) {
                 if (focused) {
                     grupo.getStyleClass().add("input-group-focused");
                 } else {
@@ -41,6 +55,35 @@ public class LoginController {
                 }
             }
         });
+    }
+
+    private HBox buscarInputGroup(Node nodo) {
+        Node actual = nodo;
+        while (actual != null && !(actual instanceof HBox)) {
+            actual = actual.getParent();
+        }
+        return (HBox) actual;
+    }
+
+    @FXML
+    public void onTogglePasswordVisibility() {
+        isPasswordVisible = !isPasswordVisible;
+
+        txtPassword.setVisible(!isPasswordVisible);
+        txtPassword.setManaged(!isPasswordVisible);
+
+        txtPasswordVisible.setVisible(isPasswordVisible);
+        txtPasswordVisible.setManaged(isPasswordVisible);
+
+        iconTogglePassword.setIconLiteral(isPasswordVisible ? "mdmz-visibility" : "mdmz-visibility_off");
+
+        if (isPasswordVisible) {
+            txtPasswordVisible.requestFocus();
+            txtPasswordVisible.positionCaret(txtPasswordVisible.getText().length());
+        } else {
+            txtPassword.requestFocus();
+            txtPassword.positionCaret(txtPassword.getText().length());
+        }
     }
 
     @FXML
