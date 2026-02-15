@@ -40,7 +40,7 @@ public class RegisterController {
      */
     @FXML
     public void initialize() {
-        cbRol.getItems().addAll("PROFESOR", "ADMIN", "ALUMNO");
+        cbRol.getItems().addAll("PROFESOR", "ADMIN");
         cbRol.setValue("PROFESOR");
     }
 
