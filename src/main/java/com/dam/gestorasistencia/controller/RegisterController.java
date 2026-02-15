@@ -1,6 +1,7 @@
 package com.dam.gestorasistencia.controller;
 
 import com.dam.gestorasistencia.model.Usuario;
+import com.dam.gestorasistencia.repository.AlumnoRepository;
 import com.dam.gestorasistencia.repository.UsuarioRepository;
 import com.dam.gestorasistencia.view.SceneManager;
 import javafx.fxml.FXML;
@@ -25,9 +26,13 @@ public class RegisterController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private AlumnoRepository alumnoRepository;
+
     @FXML private TextField txtNombre;
     @FXML private TextField txtEmail;
     @FXML private PasswordField txtPassword;
+    @FXML private PasswordField txtConfirmPassword;
     @FXML private ComboBox<String> cbRol;
 
     /**
@@ -45,20 +50,30 @@ public class RegisterController {
      */
     @FXML
     public void onRegistrar() {
-        if (txtNombre.getText().isEmpty() || txtEmail.getText().isEmpty() || txtPassword.getText().isEmpty()) {
+        String nombre = txtNombre.getText().trim();
+        String email = txtEmail.getText().trim().toLowerCase();
+        String password = txtPassword.getText();
+        String confirmPassword = txtConfirmPassword.getText();
+
+        if (nombre.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             mostrarAlerta("Error", "Todos los campos son obligatorios.");
             return;
         }
 
-        if (usuarioRepository.findByEmail(txtEmail.getText()).isPresent()) {
-            mostrarAlerta("Error", "El email ya está registrado.");
+        if (!password.equals(confirmPassword)) {
+            mostrarAlerta("Error", "Las contraseñas no coinciden.");
+            return;
+        }
+
+        if (usuarioRepository.findByEmailIgnoreCase(email).isPresent() || alumnoRepository.findByEmailIgnoreCase(email).isPresent()) {
+            mostrarAlerta("Error", "Ya existe un usuario o alumno con ese email.");
             return;
         }
 
         Usuario nuevoUsuario = new Usuario();
-        nuevoUsuario.setNombre(txtNombre.getText());
-        nuevoUsuario.setEmail(txtEmail.getText());
-        nuevoUsuario.setPassword(txtPassword.getText());
+        nuevoUsuario.setNombre(nombre);
+        nuevoUsuario.setEmail(email);
+        nuevoUsuario.setPassword(password);
         nuevoUsuario.setRol(cbRol.getValue());
 
         usuarioRepository.save(nuevoUsuario);

@@ -4,6 +4,7 @@ import com.dam.gestorasistencia.model.*;
 import com.dam.gestorasistencia.repository.AlumnoRepository;
 import com.dam.gestorasistencia.repository.AsignaturaRepository;
 import com.dam.gestorasistencia.repository.RegistroAsistenciaRepository;
+import com.dam.gestorasistencia.repository.UsuarioRepository;
 import com.dam.gestorasistencia.view.SceneManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,6 +53,9 @@ public class MainController {
 
     @Autowired
     private AsignaturaRepository asignaturaRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     // Filtros
     @FXML private DatePicker dpFecha;
@@ -348,10 +352,24 @@ public class MainController {
         // Procesar respuesta
         Optional<Alumno> result = dialog.showAndWait();
         result.ifPresent(nuevoAlumno -> {
-            if (nuevoAlumno.getNombre().isEmpty() || nuevoAlumno.getEmail().isEmpty() || nuevoAlumno.getIdAsignatura() == null) {
+            String nombreAlumno = nuevoAlumno.getNombre() != null ? nuevoAlumno.getNombre().trim() : "";
+            String apellidosAlumno = nuevoAlumno.getApellidos() != null ? nuevoAlumno.getApellidos().trim() : "";
+            String emailAlumno = nuevoAlumno.getEmail() != null ? nuevoAlumno.getEmail().trim().toLowerCase() : "";
+
+            if (nombreAlumno.isEmpty() || emailAlumno.isEmpty() || nuevoAlumno.getIdAsignatura() == null) {
                 mostrarAlerta("Error", "Nombre, Email y Asignatura son obligatorios");
                 return;
             }
+
+            if (alumnoRepository.findByEmailIgnoreCase(emailAlumno).isPresent() || usuarioRepository.findByEmailIgnoreCase(emailAlumno).isPresent()) {
+                mostrarAlerta("Error", "Ya existe un usuario o alumno con ese email.");
+                return;
+            }
+
+            nuevoAlumno.setNombre(nombreAlumno);
+            nuevoAlumno.setApellidos(apellidosAlumno);
+            nuevoAlumno.setEmail(emailAlumno);
+
             alumnoRepository.save(nuevoAlumno);
             cargarAlumnos(); // Refrescar tabla
             mostrarAlerta("Éxito", "Alumno añadido correctamente.");

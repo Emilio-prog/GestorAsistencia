@@ -22,4 +22,12 @@ public interface UsuarioRepository extends MongoRepository<Usuario, String> {
      * @return {@code Optional} con el usuario si existe; {@code Optional.empty()} si no existe.
      */
     Optional<Usuario> findByEmail(String email);
+
+    /**
+     * Busca un usuario por su correo ignorando mayúsculas/minúsculas.
+     *
+     * @param email correo electrónico del usuario a localizar.
+     * @return {@code Optional} con el usuario si existe.
+     */
+    Optional<Usuario> findByEmailIgnoreCase(String email);
 }
