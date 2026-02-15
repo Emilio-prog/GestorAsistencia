@@ -7,6 +7,12 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 
+/**
+ * Gestiona el proceso de recuperación de contraseña para usuarios registrados.
+ * Genera una contraseña temporal y la guarda en la base de datos.
+ *
+ * @author Equipo de Desarrollo
+ */
 @Service
 public class PasswordRecoveryService {
 
@@ -18,6 +24,12 @@ public class PasswordRecoveryService {
 
     private final SecureRandom secureRandom = new SecureRandom();
 
+    /**
+     * Recupera la cuenta por email y asigna una contraseña temporal nueva.
+     *
+     * @param email correo del usuario que solicita recuperar acceso.
+     * @return contraseña temporal generada, o {@code null} si no existe un usuario con ese correo.
+     */
     public String recoverPassword(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
         if (usuario == null) {
@@ -31,6 +43,11 @@ public class PasswordRecoveryService {
         return tempPassword;
     }
 
+    /**
+     * Genera una contraseña temporal aleatoria con caracteres seguros para uso inmediato.
+     *
+     * @return contraseña temporal de longitud fija.
+     */
     private String generarPasswordTemporal() {
         StringBuilder sb = new StringBuilder(TEMP_PASSWORD_LENGTH);
         for (int i = 0; i < TEMP_PASSWORD_LENGTH; i++) {

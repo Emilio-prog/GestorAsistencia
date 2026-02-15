@@ -7,36 +7,53 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+/**
+ * Clase principal de la aplicación.
+ * Arranca Spring Boot y JavaFX para mostrar la interfaz de gestión de asistencia.
+ *
+ * @author Equipo de Desarrollo
+ */
 @SpringBootApplication
 public class GestorAsistenciaApplication extends Application {
 
     private ConfigurableApplicationContext springContext;
 
+    /**
+     * Punto de entrada estándar para iniciar la aplicación JavaFX.
+     *
+     * @param args argumentos de arranque de la aplicación.
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Inicializa el contexto de Spring antes de abrir la ventana principal.
+     */
     @Override
     public void init() {
-        // ESTA LÍNEA ES LA CLAVE: Arranca Spring Boot y la conexión a BD antes de mostrar la ventana
         springContext = SpringApplication.run(GestorAsistenciaApplication.class);
     }
 
+    /**
+     * Configura la ventana principal y carga la vista de inicio de sesión.
+     *
+     * @param stage escenario principal de JavaFX donde se mostrarán las vistas.
+     * @throws Exception si ocurre un error al cargar la primera escena.
+     */
     @Override
     public void start(Stage stage) throws Exception {
-        // Configuramos el SceneManager con el Stage y el contexto de Spring
         SceneManager.setInitialStage(stage, springContext);
 
         stage.setTitle("Gestor de Asistencia - IES");
-
-        // Intentamos cargar la pantalla de Login (que crearemos en el siguiente paso)
-        // Por ahora esto dará error si ejecutamos, pero es correcto dejarlo listo.
         SceneManager.switchScene("login");
     }
 
+    /**
+     * Cierra el contexto de Spring al finalizar la aplicación.
+     */
     @Override
     public void stop() {
-        // Cierra la conexión con Spring y la base de datos al cerrar la ventana
         springContext.close();
     }
 }

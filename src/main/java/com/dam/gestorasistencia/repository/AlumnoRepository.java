@@ -6,9 +6,21 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repositorio para acceder y consultar alumnos en MongoDB.
+ * Permite operaciones CRUD y búsquedas por grupo académico.
+ *
+ * @author Equipo de Desarrollo
+ */
 @Repository
 public interface AlumnoRepository extends MongoRepository<Alumno, String> {
 
-    // Devuelve todos los alumnos que pertenezcan a un grupo (ej: "2DAM")
+    /**
+     * Busca todos los alumnos que pertenecen a un grupo concreto.
+     * Se usa para cargar la tabla de asistencia por clase.
+     *
+     * @param grupo código del grupo que se quiere consultar, por ejemplo "2DAM".
+     * @return lista de alumnos del grupo indicado; devuelve una lista vacía si no hay resultados.
+     */
     List<Alumno> findByGrupo(String grupo);
 }

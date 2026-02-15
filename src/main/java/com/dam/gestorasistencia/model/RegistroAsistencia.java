@@ -8,6 +8,12 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 
+/**
+ * Guarda el registro diario de asistencia de un alumno en una asignatura.
+ * Incluye fecha, estado y datos básicos para consultar informes rápidamente.
+ *
+ * @author Equipo de Desarrollo
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -13,15 +13,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Pruebas unitarias del servicio de asistencia.
+ * Verifica cálculos de porcentaje de faltas y detección de riesgo académico.
+ *
+ * @author Equipo de Desarrollo
+ */
 class AsistenciaServiceTest {
 
     private AsistenciaService asistenciaService;
 
+    /**
+     * Prepara una instancia limpia del servicio antes de cada prueba.
+     */
     @BeforeEach
     void setUp() {
         asistenciaService = new AsistenciaService();
     }
 
+    /**
+     * Comprueba que el porcentaje de faltas sea cero cuando la entrada es nula.
+     */
     @Test
     @DisplayName("calcularPorcentajeFaltas devuelve 0.0 cuando la lista es null")
     void calcularPorcentajeFaltasConListaNullDevuelveCero() {
@@ -30,6 +42,9 @@ class AsistenciaServiceTest {
         assertEquals(0.0, porcentaje);
     }
 
+    /**
+     * Comprueba que el porcentaje de faltas sea cero cuando no hay registros.
+     */
     @Test
     @DisplayName("calcularPorcentajeFaltas devuelve 0.0 cuando la lista está vacía")
     void calcularPorcentajeFaltasConListaVaciaDevuelveCero() {
@@ -38,6 +53,9 @@ class AsistenciaServiceTest {
         assertEquals(0.0, porcentaje);
     }
 
+    /**
+     * Comprueba que el porcentaje de faltas sea cero cuando no existe ninguna falta injustificada.
+     */
     @Test
     @DisplayName("calcularPorcentajeFaltas devuelve 0.0 cuando no hay faltas")
     void calcularPorcentajeFaltasSinFaltasDevuelveCero() {
@@ -52,6 +70,9 @@ class AsistenciaServiceTest {
         assertEquals(0.0, porcentaje);
     }
 
+    /**
+     * Comprueba que el porcentaje de faltas sea uno cuando todos los registros son falta.
+     */
     @Test
     @DisplayName("calcularPorcentajeFaltas devuelve 1.0 cuando todas son faltas")
     void calcularPorcentajeFaltasConTodasFaltasDevuelveUno() {
@@ -66,6 +87,9 @@ class AsistenciaServiceTest {
         assertEquals(1.0, porcentaje);
     }
 
+    /**
+     * Comprueba el cálculo de un porcentaje intermedio con mezcla de estados.
+     */
     @Test
     @DisplayName("calcularPorcentajeFaltas calcula correctamente un valor intermedio")
     void calcularPorcentajeFaltasConValorIntermedio() {
@@ -82,6 +106,9 @@ class AsistenciaServiceTest {
         assertEquals(0.4, porcentaje, 1e-9);
     }
 
+    /**
+     * Comprueba que no se marque riesgo cuando el porcentaje está por debajo del límite.
+     */
     @Test
     @DisplayName("esAlumnoEnRiesgo devuelve false por debajo del límite del 20%")
     void esAlumnoEnRiesgoPorDebajoDelLimite() {
@@ -97,6 +124,9 @@ class AsistenciaServiceTest {
         assertFalse(asistenciaService.esAlumnoEnRiesgo(registros));
     }
 
+    /**
+     * Comprueba que se marque riesgo cuando el porcentaje coincide exactamente con el límite.
+     */
     @Test
     @DisplayName("esAlumnoEnRiesgo devuelve true cuando el porcentaje es exactamente 20%")
     void esAlumnoEnRiesgoEnElLimite() {
@@ -111,6 +141,9 @@ class AsistenciaServiceTest {
         assertTrue(asistenciaService.esAlumnoEnRiesgo(registros));
     }
 
+    /**
+     * Comprueba que se marque riesgo cuando el porcentaje supera el límite.
+     */
     @Test
     @DisplayName("esAlumnoEnRiesgo devuelve true por encima del límite del 20%")
     void esAlumnoEnRiesgoPorEncimaDelLimite() {
@@ -125,6 +158,12 @@ class AsistenciaServiceTest {
         assertTrue(asistenciaService.esAlumnoEnRiesgo(registros));
     }
 
+    /**
+     * Crea un registro base para simplificar la creación de datos de prueba.
+     *
+     * @param estado estado de asistencia que tendrá el registro de prueba.
+     * @return registro de asistencia construido con datos de ejemplo para test.
+     */
     private RegistroAsistencia registro(EstadoAsistencia estado) {
         return new RegistroAsistencia(
                 null,

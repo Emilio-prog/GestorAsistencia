@@ -6,6 +6,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Representa una asignatura que se imparte en un curso concreto.
+ * Se usa para filtrar asistencia y organizar alumnos por materia.
+ *
+ * @author Equipo de Desarrollo
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

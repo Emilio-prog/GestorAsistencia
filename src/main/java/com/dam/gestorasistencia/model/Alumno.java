@@ -6,6 +6,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Representa a un alumno registrado en el sistema de control de asistencia.
+ * Incluye sus datos personales, grupo y asignatura principal.
+ *
+ * @author Equipo de Desarrollo
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

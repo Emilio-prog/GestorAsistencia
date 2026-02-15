@@ -10,6 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+/**
+ * Carga datos de prueba al iniciar la aplicación cuando la base de datos está vacía.
+ * Permite tener usuarios, alumnos y asignaturas listas para probar el sistema.
+ *
+ * @author Equipo de Desarrollo
+ */
 @Component
 public class DataInitializer implements CommandLineRunner {
 
@@ -22,6 +28,13 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private AsignaturaRepository asignaturaRepository;
 
+    /**
+     * Ejecuta la carga inicial de datos de prueba para usuarios, alumnos y asignaturas.
+     * Solo crea registros cuando no existen datos previos en cada colección.
+     *
+     * @param args argumentos recibidos al arrancar la aplicación.
+     * @throws Exception si ocurre un error inesperado durante la inicialización.
+     */
     @Override
     public void run(String... args) throws Exception {
         System.out.println("---- INICIANDO CARGA DE DATOS DE PRUEBA ----");

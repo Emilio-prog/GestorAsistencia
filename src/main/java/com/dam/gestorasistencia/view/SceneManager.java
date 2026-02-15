@@ -8,16 +8,34 @@ import org.springframework.context.ApplicationContext;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Gestiona la navegación entre pantallas JavaFX y la carga de estilos globales.
+ * Integra el ciclo de vistas con el contenedor de Spring para inyectar controladores.
+ *
+ * @author Equipo de Desarrollo
+ */
 public class SceneManager {
 
     private static Stage stage;
     private static ApplicationContext springContext;
 
+    /**
+     * Guarda el escenario principal y el contexto de Spring para futuras navegaciones.
+     *
+     * @param stage escenario principal de la aplicación.
+     * @param context contexto de Spring usado para crear controladores.
+     */
     public static void setInitialStage(Stage stage, ApplicationContext context) {
         SceneManager.stage = stage;
         SceneManager.springContext = context;
     }
 
+    /**
+     * Cambia la vista actual cargando un archivo FXML desde la carpeta de vistas.
+     *
+     * @param fxml nombre del archivo FXML sin extensión.
+     * @throws RuntimeException si ocurre un error al cargar la vista solicitada.
+     */
     public static void switchScene(String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource("/views/" + fxml + ".fxml"));
@@ -27,11 +45,9 @@ public class SceneManager {
 
             if (stage.getScene() == null) {
                 Scene scene = new Scene(root);
-                // --- CAMBIO: CARGAR CSS ---
                 cargarEstilos(scene);
                 stage.setScene(scene);
             } else {
-                // Si cambiamos el root, nos aseguramos de que la escena mantenga los estilos
                 stage.getScene().setRoot(root);
                 cargarEstilos(stage.getScene());
             }
@@ -46,7 +62,11 @@ public class SceneManager {
         }
     }
 
-    // Método auxiliar para evitar errores si el CSS no existe aún
+    /**
+     * Carga la hoja de estilos principal si está disponible en recursos.
+     *
+     * @param scene escena a la que se le aplicarán los estilos.
+     */
     private static void cargarEstilos(Scene scene) {
         String cssPath = "/styles/main.css";
         if (SceneManager.class.getResource(cssPath) != null) {

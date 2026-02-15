@@ -6,9 +6,20 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repositorio para consultar y mantener usuarios del sistema.
+ * Se usa en login, administración y recuperación de contraseña.
+ *
+ * @author Equipo de Desarrollo
+ */
 @Repository
 public interface UsuarioRepository extends MongoRepository<Usuario, String> {
 
-    // Método mágico: Spring crea la consulta automáticamente basándose en el nombre
+    /**
+     * Busca un usuario por su correo electrónico.
+     *
+     * @param email correo electrónico del usuario a localizar.
+     * @return {@code Optional} con el usuario si existe; {@code Optional.empty()} si no existe.
+     */
     Optional<Usuario> findByEmail(String email);
 }

@@ -35,6 +35,12 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Gestiona la pantalla principal de asistencia diaria, informes y configuración.
+ * Coordina la carga de alumnos, el guardado de estados y la exportación de datos.
+ *
+ * @author Equipo de Desarrollo
+ */
 @Component
 public class MainController {
 
@@ -85,6 +91,9 @@ public class MainController {
 
     private ObservableList<AlumnoAsistenciaRow> listaAlumnosUI = FXCollections.observableArrayList();
 
+    /**
+     * Configura filtros, tabla, permisos según rol y estado inicial de la vista principal.
+     */
     @FXML
     public void initialize() {
         // 1. Configurar filtros
@@ -135,6 +144,9 @@ public class MainController {
         aplicarTema("system");
     }
 
+    /**
+     * Muestra la vista de panel de control para registrar asistencia diaria.
+     */
     @FXML
     public void mostrarPanelControl() {
         activarVista("panel");
@@ -143,6 +155,9 @@ public class MainController {
     }
 
 
+    /**
+     * Muestra la sección de informes y actualiza los datos del gráfico.
+     */
     @FXML
     public void mostrarSeccionInformes() {
         activarVista("informes");
@@ -151,6 +166,9 @@ public class MainController {
         actualizarEstadisticas();
     }
 
+    /**
+     * Muestra la sección de configuración con opciones de tema y exportación.
+     */
     @FXML
     public void mostrarSeccionConfiguracion() {
         activarVista("configuracion");
@@ -158,6 +176,11 @@ public class MainController {
         lblBreadcrumb.setText("Preferencias y exportación de datos");
     }
 
+    /**
+     * Activa una sección de la interfaz y desactiva las demás para mostrar solo una vista.
+     *
+     * @param seccionActiva nombre interno de la sección a mostrar.
+     */
     private void activarVista(String seccionActiva) {
         boolean panelControlActivo = "panel".equals(seccionActiva);
         boolean informesActiva = "informes".equals(seccionActiva);
@@ -185,6 +208,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Configura el color de cada fila según el estado de asistencia del alumno.
+     */
     private void configurarColoresTabla() {
         tblAlumnos.setRowFactory(tv -> {
             TableRow<AlumnoAsistenciaRow> row = new TableRow<>();
@@ -206,6 +232,11 @@ public class MainController {
         });
     }
 
+    /**
+     * Aplica el estilo visual de una fila en función del estado seleccionado.
+     *
+     * @param row fila de la tabla que se va a pintar.
+     */
     private void actualizarEstiloFila(TableRow<AlumnoAsistenciaRow> row) {
         row.getStyleClass().removeAll("fila-falta", "fila-retraso", "fila-presente", "fila-justificada");
 
@@ -219,6 +250,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Carga en la tabla los alumnos del grupo y asignatura seleccionados para la fecha elegida.
+     */
     @FXML
     public void cargarAlumnos() {
         String grupo = cbGrupo.getValue();
@@ -248,6 +282,9 @@ public class MainController {
     }
 
     // --- NUEVO: AÑADIR ALUMNO (SOLO ADMIN) ---
+    /**
+     * Abre un formulario para crear un alumno nuevo y lo guarda si los datos son válidos.
+     */
     @FXML
     public void onAddAlumno() {
         // Crear diálogo
@@ -322,6 +359,9 @@ public class MainController {
     }
 
     // --- NUEVO: ELIMINAR ALUMNO (SOLO ADMIN) ---
+    /**
+     * Elimina el alumno seleccionado en la tabla tras confirmación del usuario.
+     */
     @FXML
     public void onDeleteAlumno() {
         AlumnoAsistenciaRow seleccion = tblAlumnos.getSelectionModel().getSelectedItem();
@@ -343,6 +383,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Marca como presente a todos los alumnos mostrados en la tabla actual.
+     */
     @FXML
     public void onMarcarTodosPresentes() {
         for (AlumnoAsistenciaRow row : listaAlumnosUI) {
@@ -352,6 +395,9 @@ public class MainController {
         actualizarEstadisticas();
     }
 
+    /**
+     * Recalcula y muestra los totales de asistencia en etiquetas y gráfico circular.
+     */
     private void actualizarEstadisticas() {
         int presentes = 0, faltas = 0, retrasos = 0, justificados = 0;
         for (AlumnoAsistenciaRow row : listaAlumnosUI) {
@@ -376,6 +422,9 @@ public class MainController {
         lblTotalJustificadas.setText("Justificadas: " + justificados);
     }
 
+    /**
+     * Guarda en la base de datos el estado de asistencia de cada alumno para la fecha y asignatura activas.
+     */
     @FXML
     public void onGuardar() {
         LocalDate fecha = dpFecha.getValue();
@@ -407,32 +456,52 @@ public class MainController {
         mostrarAlerta("Guardado", "Datos guardados correctamente.");
     }
 
+    /**
+     * Navega a la vista de registro de usuarios para tareas de administración.
+     */
     @FXML
     public void irAdmin() {
         SceneManager.switchScene("register_view");
     }
 
+    /**
+     * Cierra la sesión actual y regresa a la pantalla de inicio de sesión.
+     */
     @FXML
     public void onCerrarSesion() {
         UserSession.getInstance().logOut();
         SceneManager.switchScene("login");
     }
 
+    /**
+     * Cambia el tema visual de la aplicación al modo claro.
+     */
     @FXML
     public void onTemaLight() {
         aplicarTema("light");
     }
 
+    /**
+     * Cambia el tema visual de la aplicación al modo oscuro.
+     */
     @FXML
     public void onTemaDark() {
         aplicarTema("dark");
     }
 
+    /**
+     * Aplica el tema visual configurado por el sistema operativo.
+     */
     @FXML
     public void onTemaSystem() {
         aplicarTema("system");
     }
 
+    /**
+     * Aplica clases de estilo al contenedor raíz según el tema solicitado.
+     *
+     * @param tema nombre del tema a aplicar: light, dark o system.
+     */
     private void aplicarTema(String tema) {
         if (vistaAsistencia == null || vistaAsistencia.getScene() == null) {
             return;
@@ -453,6 +522,9 @@ public class MainController {
         btnTemaSystem.setSelected("system".equals(tema));
     }
 
+    /**
+     * Exporta la configuración y datos principales a un archivo JSON elegido por el usuario.
+     */
     @FXML
     public void exportarDatosJson() {
         Map<String, Object> data = construirDatosExportacion();
@@ -474,6 +546,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Exporta la configuración y datos principales a un documento PDF con tablas.
+     */
     @FXML
     public void exportarDatosPdf() {
         Map<String, Object> data = construirDatosExportacion();
@@ -538,6 +613,11 @@ public class MainController {
         }
     }
 
+    /**
+     * Construye la estructura de datos que se usa para exportar en JSON y PDF.
+     *
+     * @return mapa con datos de sesión, alumnos por clase, asignaturas y fecha de exportación.
+     */
     private Map<String, Object> construirDatosExportacion() {
         Usuario usuario = UserSession.getInstance().getUsuarioLogueado();
         Map<String, Object> root = new LinkedHashMap<>();
@@ -586,6 +666,16 @@ public class MainController {
         return root;
     }
 
+    /**
+     * Escribe un título en el PDF en la posición vertical indicada.
+     *
+     * @param document documento PDF destino.
+     * @param page página donde se escribirá el texto.
+     * @param text contenido del título.
+     * @param y coordenada vertical inicial.
+     * @return nueva coordenada vertical para continuar escribiendo contenido.
+     * @throws IOException si ocurre un error al escribir en el PDF.
+     */
     private float escribirTitulo(PDDocument document, PDPage page, String text, float y) throws IOException {
         try (PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
             cs.beginText();
@@ -598,6 +688,16 @@ public class MainController {
         return y - 18;
     }
 
+    /**
+     * Escribe una línea de texto normal en el PDF en la posición indicada.
+     *
+     * @param document documento PDF destino.
+     * @param page página donde se dibujará el texto.
+     * @param text contenido de la línea.
+     * @param y coordenada vertical inicial.
+     * @return nueva coordenada vertical para el siguiente bloque de texto.
+     * @throws IOException si falla la escritura en el PDF.
+     */
     private float escribirTexto(PDDocument document, PDPage page, String text, float y) throws IOException {
         try (PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
             cs.beginText();
@@ -610,6 +710,18 @@ public class MainController {
         return y - 12;
     }
 
+    /**
+     * Dibuja una tabla en el PDF con cabecera, bordes y filas de datos.
+     *
+     * @param document documento PDF donde se pintará la tabla.
+     * @param page página actual del documento.
+     * @param yStart coordenada vertical inicial para empezar la tabla.
+     * @param titulo texto que se mostrará encima de la tabla.
+     * @param colWidths anchos de cada columna en puntos.
+     * @param rows filas y columnas con los datos a mostrar.
+     * @return coordenada vertical final para continuar dibujando más bloques.
+     * @throws IOException si ocurre un error durante el dibujo en el PDF.
+     */
     private float dibujarTabla(PDDocument document, PDPage page, float yStart, String titulo, float[] colWidths, List<List<String>> rows) throws IOException {
         float marginX = 40f;
         float rowHeight = 20f;
@@ -666,10 +778,22 @@ public class MainController {
         return y - 8;
     }
 
+    /**
+     * Devuelve un valor seguro para mostrar cuando el dato original viene vacío.
+     *
+     * @param value texto original a validar.
+     * @return el texto recibido o "N/A" si es nulo o está en blanco.
+     */
     private String valor(String value) {
         return value == null || value.isBlank() ? "N/A" : value;
     }
 
+    /**
+     * Convierte un objeto Java simple en su representación JSON en texto.
+     *
+     * @param value valor a convertir, como mapa, lista, número, booleano o texto.
+     * @return cadena JSON generada a partir del valor recibido.
+     */
     private String toJson(Object value) {
         if (value == null) {
             return "null";
@@ -692,6 +816,12 @@ public class MainController {
         return "\"" + escapeJson(String.valueOf(value)) + "\"";
     }
 
+    /**
+     * Escapa caracteres especiales para que un texto pueda incluirse de forma segura en JSON.
+     *
+     * @param input texto original que puede contener caracteres especiales.
+     * @return texto escapado listo para usarse en una cadena JSON.
+     */
     private String escapeJson(String input) {
         return input.replace("\\", "\\\\")
                 .replace("\"", "\\\"")
@@ -700,6 +830,12 @@ public class MainController {
                 .replace("\t", "\\t");
     }
 
+    /**
+     * Muestra una alerta informativa reutilizable para mensajes de la interfaz.
+     *
+     * @param titulo título principal de la alerta.
+     * @param mensaje detalle del mensaje que se quiere mostrar.
+     */
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);

@@ -12,8 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+/**
+ * Controla el registro de nuevos usuarios desde la interfaz de administración.
+ * Valida datos básicos, evita correos duplicados y guarda el nuevo usuario.
+ *
+ * @author Equipo de Desarrollo
+ */
 @Component
-@Scope("prototype") // Importante: Crea una instancia nueva cada vez que entramos
+@Scope("prototype")
 public class RegisterController {
 
     @Autowired
@@ -24,12 +30,19 @@ public class RegisterController {
     @FXML private PasswordField txtPassword;
     @FXML private ComboBox<String> cbRol;
 
+    /**
+     * Carga los roles disponibles y define un rol por defecto al abrir la pantalla.
+     */
     @FXML
     public void initialize() {
         cbRol.getItems().addAll("PROFESOR", "ADMIN");
         cbRol.setValue("PROFESOR");
     }
 
+    /**
+     * Valida el formulario, crea un usuario nuevo y lo guarda en la base de datos.
+     * Si falta información o el correo ya existe, muestra un mensaje de error.
+     */
     @FXML
     public void onRegistrar() {
         if (txtNombre.getText().isEmpty() || txtEmail.getText().isEmpty() || txtPassword.getText().isEmpty()) {
@@ -37,7 +50,6 @@ public class RegisterController {
             return;
         }
 
-        // Comprobar si ya existe el email
         if (usuarioRepository.findByEmail(txtEmail.getText()).isPresent()) {
             mostrarAlerta("Error", "El email ya está registrado.");
             return;
@@ -55,11 +67,20 @@ public class RegisterController {
         onVolver();
     }
 
+    /**
+     * Regresa al menú principal después del proceso de registro.
+     */
     @FXML
     public void onVolver() {
         SceneManager.switchScene("main_menu");
     }
 
+    /**
+     * Muestra una alerta informativa para feedback de validación o éxito.
+     *
+     * @param titulo título principal de la alerta.
+     * @param mensaje descripción del resultado a mostrar al usuario.
+     */
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
