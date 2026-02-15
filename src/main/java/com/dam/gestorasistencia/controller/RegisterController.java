@@ -46,25 +46,30 @@ public class RegisterController {
      */
     @FXML
     public void onRegistrar() {
-        if (txtNombre.getText().isEmpty() || txtEmail.getText().isEmpty() || txtPassword.getText().isEmpty() || txtConfirmPassword.getText().isEmpty()) {
+        String nombre = txtNombre.getText().trim();
+        String email = txtEmail.getText().trim().toLowerCase();
+        String password = txtPassword.getText();
+        String confirmPassword = txtConfirmPassword.getText();
+
+        if (nombre.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             mostrarAlerta("Error", "Todos los campos son obligatorios.");
             return;
         }
 
-        if (!txtPassword.getText().equals(txtConfirmPassword.getText())) {
+        if (!password.equals(confirmPassword)) {
             mostrarAlerta("Error", "Las contraseñas no coinciden.");
             return;
         }
 
-        if (usuarioRepository.findByEmail(txtEmail.getText()).isPresent()) {
-            mostrarAlerta("Error", "El email ya está registrado.");
+        if (usuarioRepository.findByEmail(email).isPresent()) {
+            mostrarAlerta("Error", "El usuario ya existe con ese email.");
             return;
         }
 
         Usuario nuevoUsuario = new Usuario();
-        nuevoUsuario.setNombre(txtNombre.getText());
-        nuevoUsuario.setEmail(txtEmail.getText());
-        nuevoUsuario.setPassword(txtPassword.getText());
+        nuevoUsuario.setNombre(nombre);
+        nuevoUsuario.setEmail(email);
+        nuevoUsuario.setPassword(password);
         nuevoUsuario.setRol(cbRol.getValue());
 
         usuarioRepository.save(nuevoUsuario);

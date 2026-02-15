@@ -348,10 +348,24 @@ public class MainController {
         // Procesar respuesta
         Optional<Alumno> result = dialog.showAndWait();
         result.ifPresent(nuevoAlumno -> {
-            if (nuevoAlumno.getNombre().isEmpty() || nuevoAlumno.getEmail().isEmpty() || nuevoAlumno.getIdAsignatura() == null) {
+            String nombreAlumno = nuevoAlumno.getNombre() != null ? nuevoAlumno.getNombre().trim() : "";
+            String apellidosAlumno = nuevoAlumno.getApellidos() != null ? nuevoAlumno.getApellidos().trim() : "";
+            String emailAlumno = nuevoAlumno.getEmail() != null ? nuevoAlumno.getEmail().trim().toLowerCase() : "";
+
+            if (nombreAlumno.isEmpty() || emailAlumno.isEmpty() || nuevoAlumno.getIdAsignatura() == null) {
                 mostrarAlerta("Error", "Nombre, Email y Asignatura son obligatorios");
                 return;
             }
+
+            if (alumnoRepository.findByEmail(emailAlumno).isPresent()) {
+                mostrarAlerta("Error", "El alumno ya existe con ese email.");
+                return;
+            }
+
+            nuevoAlumno.setNombre(nombreAlumno);
+            nuevoAlumno.setApellidos(apellidosAlumno);
+            nuevoAlumno.setEmail(emailAlumno);
+
             alumnoRepository.save(nuevoAlumno);
             cargarAlumnos(); // Refrescar tabla
             mostrarAlerta("Éxito", "Alumno añadido correctamente.");

@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repositorio para acceder y consultar alumnos en MongoDB.
@@ -23,4 +24,13 @@ public interface AlumnoRepository extends MongoRepository<Alumno, String> {
      * @return lista de alumnos del grupo indicado; devuelve una lista vacía si no hay resultados.
      */
     List<Alumno> findByGrupo(String grupo);
+
+    /**
+     * Busca un alumno por su correo electrónico.
+     *
+     * @param email correo del alumno.
+     * @return alumno encontrado si existe.
+     */
+    Optional<Alumno> findByEmail(String email);
 }
+
