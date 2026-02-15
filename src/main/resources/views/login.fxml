@@ -95,12 +95,22 @@
         <!-- Campo Contrasena: solo placeholder, sin label separado -->
         <HBox styleClass="input-group" alignment="CENTER_LEFT">
             <FontIcon iconLiteral="mdal-lock" styleClass="input-group-icon"/>
-            <PasswordField fx:id="txtPassword"
+            <StackPane HBox.hgrow="ALWAYS">
+                <PasswordField fx:id="txtPassword"
+                               promptText="Contrase&#xf1;a"
+                               styleClass="input-group-field"
+                               onAction="#onLogin"/>
+                <TextField fx:id="txtPasswordVisible"
                            promptText="Contrase&#xf1;a"
-                           HBox.hgrow="ALWAYS"
                            styleClass="input-group-field"
+                           visible="false"
+                           managed="false"
                            onAction="#onLogin"/>
-            <FontIcon iconLiteral="mdmz-visibility_off" styleClass="input-group-icon-right"/>
+            </StackPane>
+            <FontIcon fx:id="iconTogglePassword"
+                      iconLiteral="mdmz-visibility_off"
+                      styleClass="input-group-icon-right"
+                      onMouseClicked="#onTogglePasswordVisibility"/>
         </HBox>
 
         <Region prefHeight="22"/>
