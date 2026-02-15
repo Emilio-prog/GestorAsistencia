@@ -42,9 +42,9 @@ class AsistenciaServiceTest {
     @DisplayName("calcularPorcentajeFaltas devuelve 0.0 cuando no hay faltas")
     void calcularPorcentajeFaltasSinFaltasDevuelveCero() {
         List<RegistroAsistencia> registros = List.of(
-                registro(EstadoAsistencia.ASISTENCIA),
+                registro(EstadoAsistencia.PRESENTE),
                 registro(EstadoAsistencia.JUSTIFICADA),
-                registro(EstadoAsistencia.ASISTENCIA)
+                registro(EstadoAsistencia.PRESENTE)
         );
 
         double porcentaje = asistenciaService.calcularPorcentajeFaltas(registros);
@@ -72,9 +72,9 @@ class AsistenciaServiceTest {
         List<RegistroAsistencia> registros = List.of(
                 registro(EstadoAsistencia.FALTA),
                 registro(EstadoAsistencia.FALTA),
-                registro(EstadoAsistencia.ASISTENCIA),
+                registro(EstadoAsistencia.PRESENTE),
                 registro(EstadoAsistencia.JUSTIFICADA),
-                registro(EstadoAsistencia.ASISTENCIA)
+                registro(EstadoAsistencia.PRESENTE)
         );
 
         double porcentaje = asistenciaService.calcularPorcentajeFaltas(registros);
@@ -87,11 +87,11 @@ class AsistenciaServiceTest {
     void esAlumnoEnRiesgoPorDebajoDelLimite() {
         List<RegistroAsistencia> registros = List.of(
                 registro(EstadoAsistencia.FALTA),
-                registro(EstadoAsistencia.ASISTENCIA),
-                registro(EstadoAsistencia.ASISTENCIA),
-                registro(EstadoAsistencia.ASISTENCIA),
-                registro(EstadoAsistencia.ASISTENCIA),
-                registro(EstadoAsistencia.ASISTENCIA)
+                registro(EstadoAsistencia.PRESENTE),
+                registro(EstadoAsistencia.PRESENTE),
+                registro(EstadoAsistencia.PRESENTE),
+                registro(EstadoAsistencia.PRESENTE),
+                registro(EstadoAsistencia.PRESENTE)
         );
 
         assertFalse(asistenciaService.esAlumnoEnRiesgo(registros));
@@ -102,10 +102,10 @@ class AsistenciaServiceTest {
     void esAlumnoEnRiesgoEnElLimite() {
         List<RegistroAsistencia> registros = List.of(
                 registro(EstadoAsistencia.FALTA),
-                registro(EstadoAsistencia.ASISTENCIA),
-                registro(EstadoAsistencia.ASISTENCIA),
-                registro(EstadoAsistencia.ASISTENCIA),
-                registro(EstadoAsistencia.ASISTENCIA)
+                registro(EstadoAsistencia.PRESENTE),
+                registro(EstadoAsistencia.PRESENTE),
+                registro(EstadoAsistencia.PRESENTE),
+                registro(EstadoAsistencia.PRESENTE)
         );
 
         assertTrue(asistenciaService.esAlumnoEnRiesgo(registros));
@@ -117,9 +117,9 @@ class AsistenciaServiceTest {
         List<RegistroAsistencia> registros = List.of(
                 registro(EstadoAsistencia.FALTA),
                 registro(EstadoAsistencia.FALTA),
-                registro(EstadoAsistencia.ASISTENCIA),
-                registro(EstadoAsistencia.ASISTENCIA),
-                registro(EstadoAsistencia.ASISTENCIA)
+                registro(EstadoAsistencia.PRESENTE),
+                registro(EstadoAsistencia.PRESENTE),
+                registro(EstadoAsistencia.PRESENTE)
         );
 
         assertTrue(asistenciaService.esAlumnoEnRiesgo(registros));
