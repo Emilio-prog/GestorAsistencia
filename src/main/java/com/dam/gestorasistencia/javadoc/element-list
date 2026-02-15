@@ -1,0 +1,7 @@
+com.dam.gestorasistencia
+com.dam.gestorasistencia.config
+com.dam.gestorasistencia.controller
+com.dam.gestorasistencia.model
+com.dam.gestorasistencia.repository
+com.dam.gestorasistencia.service
+com.dam.gestorasistencia.view
