@@ -28,6 +28,7 @@ public class RegisterController {
     @FXML private TextField txtNombre;
     @FXML private TextField txtEmail;
     @FXML private PasswordField txtPassword;
+    @FXML private PasswordField txtConfirmPassword;
     @FXML private ComboBox<String> cbRol;
 
     /**
@@ -45,8 +46,13 @@ public class RegisterController {
      */
     @FXML
     public void onRegistrar() {
-        if (txtNombre.getText().isEmpty() || txtEmail.getText().isEmpty() || txtPassword.getText().isEmpty()) {
+        if (txtNombre.getText().isEmpty() || txtEmail.getText().isEmpty() || txtPassword.getText().isEmpty() || txtConfirmPassword.getText().isEmpty()) {
             mostrarAlerta("Error", "Todos los campos son obligatorios.");
+            return;
+        }
+
+        if (!txtPassword.getText().equals(txtConfirmPassword.getText())) {
+            mostrarAlerta("Error", "Las contraseñas no coinciden.");
             return;
         }
 

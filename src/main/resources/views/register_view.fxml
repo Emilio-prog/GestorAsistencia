@@ -28,6 +28,7 @@
     <TextField fx:id="txtNombre" promptText="Nombre completo" maxWidth="300" />
     <TextField fx:id="txtEmail" promptText="Correo electrónico" maxWidth="300" />
     <PasswordField fx:id="txtPassword" promptText="Contraseña" maxWidth="300" />
+    <PasswordField fx:id="txtConfirmPassword" promptText="Confirmar contraseña" maxWidth="300" />
 
     <Label text="Rol:" />
     <ComboBox fx:id="cbRol" prefWidth="300.0" />
