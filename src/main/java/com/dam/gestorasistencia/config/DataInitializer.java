@@ -52,17 +52,30 @@ public class DataInitializer implements CommandLineRunner {
         if (alumnoRepository.count() == 0) {
             alumnoRepository.save(new Alumno(null, "Juan", "Pérez", "juan@email.com", "2DAM", null));
             alumnoRepository.save(new Alumno(null, "Ana", "García", "ana@email.com", "2DAM", null));
-            alumnoRepository.save(new Alumno(null, "Luis", "Rodríguez", "luis@email.com", "1DAW", null));
-            System.out.println("-> Alumnos de prueba creados (2DAM y 1DAW).");
+            alumnoRepository.save(new Alumno(null, "Luis", "Rodríguez", "luis@email.com", "2DAM", null));
+            alumnoRepository.save(new Alumno(null, "Marta", "López", "marta@email.com", "2DAM", null));
+            alumnoRepository.save(new Alumno(null, "Sergio", "Navarro", "sergio@email.com", "2DAM", null));
+
+            alumnoRepository.save(new Alumno(null, "Carla", "Moreno", "carla@email.com", "1DAW", null));
+            alumnoRepository.save(new Alumno(null, "Pablo", "Santos", "pablo@email.com", "1DAW", null));
+            alumnoRepository.save(new Alumno(null, "Lucía", "Ramírez", "lucia@email.com", "1DAW", null));
+            alumnoRepository.save(new Alumno(null, "Hugo", "Torres", "hugo@email.com", "1DAW", null));
+            alumnoRepository.save(new Alumno(null, "Elena", "Vega", "elena@email.com", "1DAW", null));
+
+            System.out.println("-> Alumnos de prueba creados (10 alumnos en 2DAM y 1DAW).");
         } else {
             System.out.println("-> Alumnos ya existen. Saltando creación.");
         }
 
         // 3. Crear Asignaturas si no existen
         if (asignaturaRepository.count() == 0) {
-            asignaturaRepository.save(new Asignatura(null, "Acceso a Datos", "2025-2026"));
-            asignaturaRepository.save(new Asignatura(null, "Desarrollo de Interfaces", "2025-2026"));
+            asignaturaRepository.save(new Asignatura(null, "DESARROLLO DE INTERFACES", "2025-2026"));
+            asignaturaRepository.save(new Asignatura(null, "Servicios y Procesos", "2025-2026"));
+            asignaturaRepository.save(new Asignatura(null, "ACCESO A DATOS", "2025-2026"));
+            asignaturaRepository.save(new Asignatura(null, "SOSTENIBILIDAD", "2025-2026"));
             System.out.println("-> Asignaturas de prueba creadas.");
+        } else {
+            System.out.println("-> Asignaturas ya existen. Saltando creación.");
         }
 
         System.out.println("---- CARGA DE DATOS COMPLETADA ----");
