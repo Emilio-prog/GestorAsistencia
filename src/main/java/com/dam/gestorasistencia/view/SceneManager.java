@@ -69,11 +69,25 @@ public class SceneManager {
      */
     private static void cargarEstilos(Scene scene) {
         String cssPath = "/styles/main.css";
-        if (SceneManager.class.getResource(cssPath) != null) {
+        var resource = SceneManager.class.getResource(cssPath);
+        if (resource != null) {
+            String cssUri = resource.toExternalForm();
+            // Fix para Spring Boot Fat JAR: convertir rutas jar:nested a rutas legibles
+            if (cssUri.contains("!") && !cssUri.startsWith("jar:file:")) {
+                try (var is = SceneManager.class.getResourceAsStream(cssPath)) {
+                    if (is != null) {
+                        var tempFile = java.io.File.createTempFile("main", ".css");
+                        tempFile.deleteOnExit();
+                        java.nio.file.Files.copy(is, tempFile.toPath(),
+                                java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                        cssUri = tempFile.toURI().toString();
+                    }
+                } catch (Exception e) {
+                    System.err.println("ADVERTENCIA: Error al extraer CSS temporal: " + e.getMessage());
+                }
+            }
             scene.getStylesheets().clear();
-            scene.getStylesheets().add(
-                    Objects.requireNonNull(SceneManager.class.getResource(cssPath)).toExternalForm()
-            );
+            scene.getStylesheets().add(cssUri);
         } else {
             System.err.println("ADVERTENCIA: No se encontró el archivo CSS en " + cssPath);
         }
