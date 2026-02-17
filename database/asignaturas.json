@@ -1,27 +1,26 @@
 [
   {
-    "_id": {"$oid": "65a1b2c3d4e5f6g7h8i9j0k1"},
-    "nombre": "Acceso a Datos",
-    "curso": "2025-2026"
+    "_id": {"$oid": "69920693ac6a221eaa2d75cf"},
+    "_class": "com.dam.gestorasistencia.model.Asignatura",
+    "curso": "2025-2026",
+    "nombre": "DESARROLLO DE INTERFACES"
   },
   {
-    "_id": {"$oid": "65a1b2c3d4e5f6g7h8i9j0k2"},
-    "nombre": "Desarrollo de Interfaces",
-    "curso": "2025-2026"
+    "_id": {"$oid": "69920693ac6a221eaa2d75d0"},
+    "_class": "com.dam.gestorasistencia.model.Asignatura",
+    "curso": "2025-2026",
+    "nombre": "Servicios y Procesos"
   },
   {
-    "_id": {"$oid": "65a1b2c3d4e5f6g7h8i9j0k3"},
-    "nombre": "Programación de Servicios y Procesos",
-    "curso": "2025-2026"
+    "_id": {"$oid": "69920693ac6a221eaa2d75d1"},
+    "_class": "com.dam.gestorasistencia.model.Asignatura",
+    "curso": "2025-2026",
+    "nombre": "ACCESO A DATOS"
   },
   {
-    "_id": {"$oid": "65a1b2c3d4e5f6g7h8i9j0k4"},
-    "nombre": "Sistemas de Gestión Empresarial",
-    "curso": "2025-2026"
-  },
-  {
-    "_id": {"$oid": "65a1b2c3d4e5f6g7h8i9j0k5"},
-    "nombre": "Inglés Técnico",
-    "curso": "2025-2026"
+    "_id": {"$oid": "69920693ac6a221eaa2d75d2"},
+    "_class": "com.dam.gestorasistencia.model.Asignatura",
+    "curso": "2025-2026",
+    "nombre": "SOSTENIBILIDAD"
   }
 ]
