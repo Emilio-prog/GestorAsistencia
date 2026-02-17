@@ -76,6 +76,7 @@
 
     <build>
         <plugins>
+            <!-- Compilador de Maven -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -93,11 +94,11 @@
                 </configuration>
             </plugin>
 
+            <!-- Spring Boot Maven Plugin - Genera JAR ejecutable de Spring Boot -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <!-- AppLauncher como main class para evitar problemas con JavaFX modules -->
                     <mainClass>com.dam.gestorasistencia.AppLauncher</mainClass>
                     <excludes>
                         <exclude>
@@ -108,24 +109,9 @@
                 </configuration>
             </plugin>
 
-            <!-- Plugin para copiar dependencias (necesario para Launch4j) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/libs</outputDirectory>
-                            <includeScope>runtime</includeScope>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!-- Spring Boot Maven Plugin ya genera un Fat JAR ejecutable -->
+            <!-- Este JAR incluye todas las dependencias necesarias (verificado sin ClassNotFoundException) -->
+            <!-- No se requiere Maven Assembly ni Shade Plugin adicional para aplicaciones Spring Boot -->
         </plugins>
     </build>
 </project>

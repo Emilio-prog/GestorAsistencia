@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>gestionasistencia-0.0.1-SNAPSHOT.jar</jar>
+  <outfile>C:\Users\Usuario\OneDrive\2º DAM\Proyecto-AD-DI-2ºEval\GestorAsistencia\target\GestorAsistencia.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl></downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>C:\Users\Usuario\OneDrive\2º DAM\Proyecto-AD-DI-2ºEval\GestorAsistencia\deploy\icon.ico</icon>
+  <jre>
+    <path>custom-jre</path>
+    <requiresJdk>false</requiresJdk>
+    <requires64Bit>false</requires64Bit>
+    <minVersion>21</minVersion>
+    <maxVersion></maxVersion>
+  </jre>
+</launch4jConfig>
