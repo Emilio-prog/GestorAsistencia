@@ -24,4 +24,25 @@ public class Usuario {
     private String password;   // En un caso real iría encriptada
     private String nombre;
     private String rol;        // "ADMIN" o "PROFESOR"
+
+    // Nuevos campos para la verificación del email (Nivel Junior)
+    private boolean verificado;
+    private String codigoVerificacion;
+
+    // Getters y Setters manuales para entender cómo funcionan
+    public boolean isVerificado() {
+        return verificado;
+    }
+
+    public void setVerificado(boolean verificado) {
+        this.verificado = verificado;
+    }
+
+    public String getCodigoVerificacion() {
+        return codigoVerificacion;
+    }
+
+    public void setCodigoVerificacion(String codigoVerificacion) {
+        this.codigoVerificacion = codigoVerificacion;
+    }
 }

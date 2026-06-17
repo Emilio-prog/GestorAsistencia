@@ -41,8 +41,8 @@ public class DataInitializer implements CommandLineRunner {
 
         // 1. Crear Usuarios si no existen
         if (usuarioRepository.count() == 0) {
-            usuarioRepository.save(new Usuario(null, "admin@email.com", "admin123", "Administrador", "ADMIN"));
-            usuarioRepository.save(new Usuario(null, "profe@email.com", "profe123", "Profesor Ejemplo", "PROFESOR"));
+            usuarioRepository.save(new Usuario(null, "admin@email.com", "admin123", "Administrador", "ADMIN", true, ""));
+            usuarioRepository.save(new Usuario(null, "profe@email.com", "profe123", "Profesor Ejemplo", "PROFESOR", true, ""));
             System.out.println("-> Usuarios creados: admin@email.com y profe@email.com");
         } else {
             System.out.println("-> Usuarios ya existen. Saltando creación.");

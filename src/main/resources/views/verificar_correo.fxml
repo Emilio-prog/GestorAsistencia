@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<StackPane stylesheets="@../css/styles.css"
+           style="-fx-background-color: #F8FAFC;"
+           xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.dam.gestorasistencia.controller.VerificarCorreoController">
+
+    <VBox alignment="CENTER" spacing="20" maxWidth="450" maxHeight="400"
+          style="-fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 15, 0, 0, 4); -fx-padding: 40;">
+          
+        <!-- Icono principal -->
+        <FontIcon iconLiteral="mdmz-mark_email_unread" iconSize="64" iconColor="#4F46E5"/>
+
+        <!-- Títulos -->
+        <VBox alignment="CENTER" spacing="8">
+            <Label text="Verifica tu correo electrónico" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #1E293B;"/>
+            <Label text="Hemos enviado un código numérico a tu correo." style="-fx-font-size: 14; -fx-text-fill: #64748B; -fx-wrap-text: true; -fx-alignment: center;" textAlignment="CENTER"/>
+        </VBox>
+
+        <!-- Campo de texto para el código -->
+        <VBox spacing="8" prefWidth="300">
+            <Label text="Código de verificación" style="-fx-font-weight: bold; -fx-text-fill: #475569;"/>
+            <TextField fx:id="txtCodigo" promptText="Ej: 123456" prefHeight="45"
+                       style="-fx-font-size: 18; -fx-alignment: center; -fx-background-color: #F8FAFC; -fx-border-color: #CBD5E1; -fx-border-radius: 6; -fx-background-radius: 6;"/>
+        </VBox>
+
+        <!-- Botones -->
+        <VBox spacing="12" prefWidth="300" style="-fx-padding: 10 0 0 0;">
+            <Button text="Verificar Código" onAction="#onVerificar" prefWidth="300" prefHeight="45"
+                    style="-fx-background-color: #4F46E5; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-font-size: 14; -fx-cursor: hand;"/>
+                    
+            <Button text="Cancelar y Volver" onAction="#onCancelar" prefWidth="300" prefHeight="45"
+                    style="-fx-background-color: transparent; -fx-text-fill: #64748B; -fx-font-weight: bold; -fx-border-color: #E2E8F0; -fx-border-radius: 6; -fx-cursor: hand;"/>
+        </VBox>
+    </VBox>
+</StackPane>
