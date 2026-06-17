@@ -3,7 +3,7 @@
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
   <jar>gestionasistencia-0.0.1-SNAPSHOT.jar</jar>
-  <outfile>C:\Users\Usuario\OneDrive\2º DAM\Proyecto-AD-DI-2ºEval\GestorAsistencia\target\GestorAsistencia.exe</outfile>
+  <outfile>c:\Users\emili\OneDrive\Desktop\Gestor de Asistencia\GestorAsistencia\target\GestorAsistencia.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -13,7 +13,7 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon>C:\Users\Usuario\OneDrive\2º DAM\Proyecto-AD-DI-2ºEval\GestorAsistencia\deploy\icon.ico</icon>
+  <icon>c:\Users\emili\OneDrive\Desktop\Gestor de Asistencia\GestorAsistencia\deploy\icon.ico</icon>
   <jre>
     <path>custom-jre</path>
     <requiresJdk>false</requiresJdk>

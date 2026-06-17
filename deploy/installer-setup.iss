@@ -34,12 +34,12 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "Crear icono en el escritorio"; GroupDescription: "Iconos adicionales:"
 
 [Files]
-; Copiar el ejecutable (desde deploy/ donde esta este script)
-Source: "GestorAsistencia.exe"; DestDir: "{app}"; Flags: ignoreversion
+; Copiar el ejecutable
+Source: "..\target\GestorAsistencia.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; Copiar el JAR (Spring Boot Fat JAR con todas las dependencias)
-Source: "gestionasistencia-0.0.1-SNAPSHOT.jar"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\target\gestionasistencia-0.0.1-SNAPSHOT.jar"; DestDir: "{app}"; Flags: ignoreversion
 ; Copiar el JRE personalizado completo (para que funcione sin instalar Java)
-Source: "custom-jre\*"; DestDir: "{app}\custom-jre"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\target\custom-jre\*"; DestDir: "{app}\custom-jre"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 ; Acceso directo en el menu de inicio
