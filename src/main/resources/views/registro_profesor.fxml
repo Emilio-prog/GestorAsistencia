@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.gestorasistencia.controller.RegistroProfesorController" style="-fx-background-color: #F8FAFC;">
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+
+    <Label text="Registro de Profesor" textFill="#1E293B">
+        <font>
+            <Font name="System Bold" size="24.0" />
+        </font>
+    </Label>
+    
+    <Label text="Rellena los siguientes datos para crear tu cuenta." textFill="#64748B"/>
+
+    <TextField fx:id="txtNombre" promptText="Nombre completo" maxWidth="300" prefHeight="40" style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6; -fx-background-radius: 6;"/>
+    <TextField fx:id="txtEmail" promptText="Correo electrónico" maxWidth="300" prefHeight="40" style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6; -fx-background-radius: 6;"/>
+    <StackPane maxWidth="300" alignment="CENTER_RIGHT">
+        <PasswordField fx:id="txtPassword" promptText="Contraseña" prefHeight="40" style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6; -fx-background-radius: 6;"/>
+        <TextField fx:id="txtPasswordVisible" promptText="Contraseña" prefHeight="40" style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6; -fx-background-radius: 6;" visible="false" managed="false"/>
+        <FontIcon fx:id="iconTogglePassword" iconLiteral="mdmz-visibility_off" styleClass="input-group-icon-right" onMouseClicked="#onTogglePasswordVisibility">
+            <StackPane.margin>
+                <Insets right="10.0"/>
+            </StackPane.margin>
+        </FontIcon>
+    </StackPane>
+    <PasswordField fx:id="txtConfirmPassword" promptText="Confirmar contraseña" maxWidth="300" prefHeight="40" style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-border-radius: 6; -fx-background-radius: 6;"/>
+
+    <Button text="Generar contraseña segura" onAction="#onGenerarPassword" style="-fx-background-color: transparent; -fx-text-fill: #3B82F6; -fx-cursor: hand; -fx-padding: 0;" />
+
+    <Button text="Registrarse" onAction="#onRegistrar" defaultButton="true" style="-fx-background-color: #3B82F6; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6;" maxWidth="300" prefHeight="40" styleClass="btn-primary"/>
+    <Button text="Volver al Login" onAction="#onVolver" cancelButton="true" maxWidth="300" prefHeight="40" style="-fx-background-color: white; -fx-border-color: #CBD5E1; -fx-text-fill: #475569; -fx-background-radius: 6; -fx-border-radius: 6;"/>
+</VBox>

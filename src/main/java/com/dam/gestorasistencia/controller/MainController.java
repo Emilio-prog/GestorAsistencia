@@ -488,7 +488,7 @@ public class MainController {
     @FXML
     public void onCerrarSesion() {
         UserSession.getInstance().logOut();
-        SceneManager.switchScene("login");
+        SceneManager.switchScene("inicio_sesion");
     }
 
     /**

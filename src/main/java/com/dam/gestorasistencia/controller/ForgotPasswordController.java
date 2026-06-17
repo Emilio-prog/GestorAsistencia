@@ -82,7 +82,7 @@ public class ForgotPasswordController {
      */
     @FXML
     public void onBackToLogin() {
-        SceneManager.switchScene("login");
+        SceneManager.switchScene("inicio_sesion");
     }
 
     /**

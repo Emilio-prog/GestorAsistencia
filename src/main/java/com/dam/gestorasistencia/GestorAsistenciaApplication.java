@@ -46,7 +46,7 @@ public class GestorAsistenciaApplication extends Application {
         SceneManager.setInitialStage(stage, springContext);
 
         stage.setTitle("Gestor de Asistencia - IES");
-        SceneManager.switchScene("login");
+        SceneManager.switchScene("inicio_sesion");
     }
 
     /**

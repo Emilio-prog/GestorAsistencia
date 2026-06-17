@@ -20,7 +20,7 @@
 
 <StackPane xmlns="http://javafx.com/javafx/21"
            xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.dam.gestorasistencia.controller.LoginController"
+           fx:controller="com.dam.gestorasistencia.controller.InicioSesionController"
            styleClass="login-split-root"
            prefHeight="600.0" prefWidth="950.0">
 
@@ -129,10 +129,11 @@
 
         <Region prefHeight="10"/>
 
-        <!-- Link decorativo -->
-        <HBox alignment="CENTER">
+        <!-- Links adicionales -->
+        <VBox alignment="CENTER" spacing="5">
             <Hyperlink text="&#xbf;Olvidaste tu contrase&#xf1;a?" styleClass="login-link" onAction="#onForgotPassword"/>
-        </HBox>
+            <Hyperlink text="&#xbf;No tienes cuenta? Reg&#xed;strate como profesor" styleClass="login-link" onAction="#onSignUpProfesor"/>
+        </VBox>
 
     </VBox>
 

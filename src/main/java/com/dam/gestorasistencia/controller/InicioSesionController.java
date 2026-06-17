@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
  * @author Equipo de Desarrollo
  */
 @Component
-public class LoginController {
+public class InicioSesionController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -127,6 +127,18 @@ public class LoginController {
         Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
 
         if (usuario != null && usuario.getPassword().equals(pass)) {
+            
+            // Comprobación: ¿Está el usuario verificado?
+            // Si no está verificado, le decimos que no puede entrar todavía
+            if (!usuario.isVerificado()) {
+                mostrarAlerta("Error", "Tu cuenta no está verificada. Revisa tu correo y usa el enlace de verificación.");
+                
+                // Le pasamos a la pantalla de verificación por si quiere meter el código ahora
+                com.dam.gestorasistencia.controller.VerificarCorreoController.emailParaVerificar = email;
+                SceneManager.switchScene("verificar_correo");
+                return;
+            }
+
             UserSession.getInstance().logIn(usuario);
 
             System.out.println("Login exitoso: " + usuario.getNombre());
@@ -143,6 +155,14 @@ public class LoginController {
     @FXML
     public void onForgotPassword() {
         SceneManager.switchScene("forgot_password");
+    }
+
+    /**
+     * Redirige al formulario para que el usuario pueda registrarse como profesor.
+     */
+    @FXML
+    public void onSignUpProfesor() {
+        SceneManager.switchScene("registro_profesor");
     }
 
     /**
