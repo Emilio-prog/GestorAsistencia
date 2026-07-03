@@ -1,12 +1,17 @@
 ; Script de instalacion para GestorAsistencia
 ; Generado para el proyecto de 2a Evaluacion - Acceso a Datos y Desarrollo de Interfaces
 ; IMPORTANTE: Este archivo .iss esta en la carpeta /deploy.
-;             Las rutas Source usan ..\ para apuntar a la raiz del proyecto.
+;
+; El ejecutable ya NO se genera con launch4j (o el launcher C# de otros
+; proyectos): se usa el launcher NATIVO de jpackage (deploy\app-image\GestorAsistencia),
+; que es un binario estandar y no dispara la heuristica de antivirus como
+; los lanzadores que arrancan otro proceso oculto.
 
 #define MyAppName "Gestor de Asistencia"
 #define MyAppVersion "1.0"
 #define MyAppPublisher "ISEN - Desarrollo de Aplicaciones Multiplataforma"
 #define MyAppExeName "GestorAsistencia.exe"
+#define ImageDir "app-image\GestorAsistencia"
 
 [Setup]
 ; Informacion basica de la aplicacion
@@ -17,10 +22,11 @@ AppPublisher={#MyAppPublisher}
 DefaultDirName={autopf}\GestorAsistencia
 DefaultGroupName={#MyAppName}
 ; Ruta donde se guardara el instalador generado (relativa a este .iss)
-OutputDir=..\target\installer
+OutputDir=Output
 OutputBaseFilename=GestorAsistencia-Setup
 ; Icono del instalador (relativa a este .iss)
 SetupIconFile=icon.ico
+UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
@@ -34,12 +40,8 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "Crear icono en el escritorio"; GroupDescription: "Iconos adicionales:"
 
 [Files]
-; Copiar el ejecutable
-Source: "..\target\GestorAsistencia.exe"; DestDir: "{app}"; Flags: ignoreversion
-; Copiar el JAR (Spring Boot Fat JAR con todas las dependencias)
-Source: "..\target\gestionasistencia-0.0.1-SNAPSHOT.jar"; DestDir: "{app}"; Flags: ignoreversion
-; Copiar el JRE personalizado completo (para que funcione sin instalar Java)
-Source: "..\target\custom-jre\*"; DestDir: "{app}\custom-jre"; Flags: ignoreversion recursesubdirs createallsubdirs
+; Copia recursiva de TODA la app-image de jpackage (exe nativo + app\ + runtime\)
+Source: "{#ImageDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 ; Acceso directo en el menu de inicio

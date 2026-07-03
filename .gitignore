@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Build local (jpackage) ###
+# custom-jre es el JRE base para el build local con jpackage; no se versiona
+# suelto porque queda embebido en deploy/app-image/*/runtime al compilar.
+deploy/custom-jre/
+deploy/_jpinput/
