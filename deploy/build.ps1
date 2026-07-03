@@ -4,11 +4,33 @@
 #  Sustituye el antiguo launcher de launch4j por el launcher NATIVO
 #  de jpackage, que es un binario estandar y reconocido.
 #
-#  Uso:  powershell -File deploy\build.ps1
+#  Uso:  powershell -File deploy\build.ps1 [-MongoUri "mongodb+srv://..."]
 #  Requisitos: JDK 21 (jpackage en PATH) + Inno Setup (ISCC.exe)
+#
+#  -MongoUri es SOLO para comodidad de desarrollo local: si se indica,
+#  se guarda como variable de entorno de TU usuario de Windows para que
+#  puedas arrancar el jar/app-image sin pegar la cadena cada vez.
+#  NUNCA se incrusta en el .exe/instalador ni se sube al repositorio:
+#  la app la lee en tiempo de ejecucion via ${MONGODB_URI} (ver
+#  application.properties). Quien instale GestorAsistencia-Setup.exe en
+#  otra maquina debe definir esa misma variable de entorno alli.
 # ============================================================
 
+param(
+    [string]$MongoUri
+)
+
 $ErrorActionPreference = 'Stop'
+
+if ($MongoUri) {
+    [Environment]::SetEnvironmentVariable('MONGODB_URI', $MongoUri, 'User')
+    $env:MONGODB_URI = $MongoUri
+    Write-Host '== 0/4  MONGODB_URI guardada para tu usuario (solo uso local) ==' -ForegroundColor Cyan
+}
+if (-not $env:MONGODB_URI) {
+    Write-Host 'AVISO: no hay MONGODB_URI en el entorno. La app compilara igual,' -ForegroundColor Yellow
+    Write-Host '       pero fallara al arrancar hasta que definas esa variable.' -ForegroundColor Yellow
+}
 $Deploy   = $PSScriptRoot
 $Project  = Split-Path $Deploy -Parent
 $Jar      = Join-Path $Project 'target\gestionasistencia-0.0.1-SNAPSHOT.jar'
